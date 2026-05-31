@@ -1,12 +1,4 @@
-// ui/shopUI.js  (lines 2904-3075 of src/main.js)
-// renderEggShop, openEgg, hatch animation.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * ui/shopUI.js
- * renderEggShop, openEgg, hatch animation, updateShopAffordability.
- * Part of src/main.js — do not load standalone.
- */
 
   function renderEggShop() {
     els.shopTitle.textContent = "Брейнрот-яйца";
@@ -69,7 +61,7 @@
   function updateShopAffordability() {
     var buttons = els.shopList.querySelectorAll(".upgrade-button");
     buttons.forEach(function (button) {
-      // Special upgrades use data-special-id, not data-id — skip them here
+
       if (button.classList.contains("upgrade-special")) return;
       if (button.classList.contains("upgrade-phase-locked")) return;
       var upgrade = upgrades.find(function (item) { return item.id === button.dataset.id; });

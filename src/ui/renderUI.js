@@ -1,12 +1,4 @@
-// ui/renderUI.js  (lines 2691-2903 of src/main.js)
-// updateUi, renderShop, renderUpgradeShop, mirror pet.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * ui/renderUI.js
- * updateUi, renderShop, renderUpgradeShop, mirror pet block.
- * Part of src/main.js — do not load standalone.
- */
 
   function updateUi(force) {
     var time = performance.now();
@@ -192,14 +184,13 @@
       ].join("");
     });
 
-    // Питомец-копировщик за 5-е перерождение
     html += renderMirrorPetBlock();
 
     return html;
   }
 
   function getMirrorSourcePet() {
-    // Находим сильнейшего питомца игрока по суммарному доходу
+
     var best = null;
     var bestScore = -1;
     pets.forEach(function (pet) {

@@ -1,21 +1,12 @@
-/**
- * systems/eventSystem.js
- * Spawns and manages random timed gameplay events (storms, rains, combos).
- */
+
 
 import { state } from "../state.js";
 import { EVENTS, DEFAULT_COMBO_LIMIT } from "../data/events.js";
 
-/**
- * Try to spawn a random event. Called on an interval from main.js.
- * @param {Function} showToast
- * @param {Function} playSound
- * @param {object}   els        - { eventBanner }
- */
 export function spawnRandomEvent(showToast, playSound, els) {
-  // Don't spawn while another event is active
+
   if (Date.now() < state.eventUntil) return;
-  // Low probability per call (creates natural random intervals)
+
   if (Math.random() > 0.12) return;
 
   const event       = EVENTS[Math.floor(Math.random() * EVENTS.length)];
@@ -32,11 +23,6 @@ export function spawnRandomEvent(showToast, playSound, els) {
   playSound?.("event");
 }
 
-/**
- * Returns the current event's multiplier for a given context.
- * @param {"click"|"income"|"comboLimit"} type
- * @returns {number}
- */
 export function getEventMultiplier(type) {
   if (Date.now() > state.eventUntil) {
     return type === "comboLimit" ? DEFAULT_COMBO_LIMIT : 1;

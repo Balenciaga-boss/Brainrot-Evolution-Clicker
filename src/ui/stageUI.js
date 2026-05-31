@@ -1,12 +1,4 @@
-// ui/stageUI.js  (lines 2537-2690 of src/main.js)
-// updateStage, syncVisualModState, visual phase bursts.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * ui/stageUI.js
- * updateStage, syncVisualModState, visual phase bursts.
- * Part of src/main.js — do not load standalone.
- */
 
   function getStageNumber() {
     return state.stage + 1;
@@ -93,9 +85,8 @@
     if (modState >= 2) triggerTinyShake();
     if (modState >= 3) triggerFlash();
 
-    // === PHASE TRANSITION EFFECTS ===
     if (modState === 2) {
-      // Boss enters phase 2: enraged
+
       triggerShake();
       triggerBossPhaseFlash("#ff3d00");
       spawnParticles(x, y, 22, false);
@@ -104,7 +95,7 @@
       playSound("event");
       showToast("⚠️ Босс переходит во вторую фазу!");
     } else if (modState === 3) {
-      // Boss enters phase 3: final form
+
       triggerShake();
       setTimeout(triggerShake, 180);
       triggerFlash();

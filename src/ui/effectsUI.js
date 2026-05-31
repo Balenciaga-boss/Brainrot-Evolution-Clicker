@@ -1,12 +1,4 @@
-// ui/effectsUI.js  (lines 3676-3741 of src/main.js)
-// triggerShake/Flash, spawnRandomEvent, toasts.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * ui/effectsUI.js
- * bounceCreature, triggerShake, triggerFlash, spawnRandomEvent, toasts.
- * Part of src/main.js — do not load standalone.
- */
 
   function bounceCreature() {
     els.creature.classList.remove("clicked");
@@ -48,8 +40,7 @@
   }
 
   function spawnRandomEvent() {
-    // Не запускаем события пока вкладка скрыта — иначе при возврате
-    // мог бы сыграть накопленный звук события
+
     if (document.hidden || gamePaused) return;
     randomEventTimer -= 1;
     if (randomEventTimer > 0 || now() < state.eventUntil) return;

@@ -1,8 +1,4 @@
-/**
- * ads/adUI.js
- * All ad-related UI: buff popup, active buff badge, cooldown display,
- * ad simulator overlay injection, and the buff offer loop.
- */
+
 
 import { state } from "../state.js";
 import { AD_CONFIG, BUFF_TYPES } from "../config.js";
@@ -10,10 +6,8 @@ import { showRewardedAd, isAdRunning } from "./adManager.js";
 import { adState, adCanWatchEgg, adCanWatchUpgrade } from "./rewardedAds.js";
 import { adSaveState } from "../systems/saveSystem.js";
 
-// ── Buff state ────────────────────────────────────────────────────────────────
-
 export const buffState = {
-  activeBuff:       null,    // { id, label, icon, expiresAt }
+  activeBuff:       null,
   buffOfferTimer:   0,
   pendingBuffOffer: null,
 };
@@ -31,8 +25,6 @@ export function adResetBuffTimer() {
   const { offerIntervalMin: min, offerIntervalMax: max } = AD_CONFIG.buff;
   buffState.buffOfferTimer = min + Math.floor(Math.random() * (max - min + 1));
 }
-
-// ── Buff activation ───────────────────────────────────────────────────────────
 
 export function adActivateBuff(buffId, { showToast, recalculateStats }) {
   const buff = BUFF_TYPES.find(b => b.id === buffId);
@@ -75,8 +67,6 @@ function _clearBuffFields() {
   state._adBuffPassive = 1;
 }
 
-// ── Buff offer loop (called from main loop each second) ───────────────────────
-
 let _adLastSecond = 0;
 
 export function adTickSecond(deps) {
@@ -94,8 +84,6 @@ export function adTickSecond(deps) {
 
   adUpdateCooldownDisplay();
 }
-
-// ── Buff request (from UI) ────────────────────────────────────────────────────
 
 export function adRequestBuff(buffId, deps) {
   if (isAdRunning()) return;
@@ -116,8 +104,6 @@ export function adRequestBuff(buffId, deps) {
     adActivateBuff(buffId, deps);
   }, { showStackedToast: deps.showStackedToast });
 }
-
-// ── Buff popup UI ─────────────────────────────────────────────────────────────
 
 let _adEls = {};
 
@@ -162,10 +148,8 @@ export function adRenderStatus() {
   adUpdateCooldownDisplay();
 }
 
-// ── DOM injection ─────────────────────────────────────────────────────────────
-
 export function adInitDom() {
-  // Buff popup
+
   if (!document.getElementById("adBuffPopup")) {
     const popup = document.createElement("div");
     popup.id        = "adBuffPopup";
@@ -185,7 +169,6 @@ export function adInitDom() {
     };
   }
 
-  // Active buff badge (inside shop header area)
   if (!document.getElementById("adActiveBuff")) {
     const badge = document.createElement("div");
     badge.id        = "adActiveBuff";
@@ -195,7 +178,6 @@ export function adInitDom() {
     shopHeader?.appendChild(badge);
   }
 
-  // Ad simulator overlay (dev-only)
   if (!document.getElementById("adSimOverlay")) {
     const sim = document.createElement("div");
     sim.id        = "adSimOverlay";
@@ -211,7 +193,6 @@ export function adInitDom() {
     document.body.appendChild(sim);
   }
 
-  // Cache references
   _adEls = {
     buffPopup:  document.getElementById("adBuffPopup"),
     buffIcon:   document.getElementById("adBuffIcon"),
@@ -223,7 +204,6 @@ export function adInitDom() {
     simCancel:  document.getElementById("adSimCancel"),
   };
 
-  // Wire watch button dynamically (buffId set at offer time)
   document.getElementById("adBuffWatch").onclick = () => {
     if (buffState.pendingBuffOffer) {
       adRequestBuff(buffState.pendingBuffOffer.id, window._adDeps);

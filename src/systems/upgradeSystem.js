@@ -1,12 +1,4 @@
-// systems/upgradeSystem.js  (lines 3459-3557 of src/main.js)
-// buyUpgrade, buySpecialUpgrade, auto-clicker.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * systems/upgradeSystem.js
- * buyUpgrade, buySpecialUpgrade, auto-clicker.
- * Part of src/main.js — do not load standalone.
- */
 
   function describeUpgrade(upgrade) {
     var parts = [];
@@ -24,11 +16,8 @@
     return Math.floor(upgrade.baseCost * Math.pow(upgrade.costGrow, level));
   }
 
-  /* ══════════════════════════════════════════════════════════════
-     AUTO CLICKER (рекламный бонус на 60 секунд)
-     ══════════════════════════════════════════════════════════════ */
   var _autoClickerAccum = 0;
-  var AUTO_CLICKER_INTERVAL = 0.25; // клик каждые 250мс = 4 в секунду
+  var AUTO_CLICKER_INTERVAL = 0.25;
 
   function isAutoClickerActive() {
     return now() < state.autoClickerUntil;
@@ -39,10 +28,9 @@
       updateAutoClickerButton();
       return;
     }
-    // Сбрасываем накопленное время если вернулись с паузы/скрытой вкладки
-    // (dt уже зажат в 0.05 в loop, но _autoClickerAccum мог накопиться ранее)
+
     _autoClickerAccum += dt;
-    // Не допускаем более 1 клика за один тик loop() — это защита от пачки звуков
+
     if (_autoClickerAccum >= AUTO_CLICKER_INTERVAL) {
       _autoClickerAccum = _autoClickerAccum % AUTO_CLICKER_INTERVAL;
       var rect = els.creatureButton.getBoundingClientRect();

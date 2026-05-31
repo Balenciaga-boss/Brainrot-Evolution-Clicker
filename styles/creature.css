@@ -403,7 +403,6 @@
   filter: drop-shadow(0 0 12px rgba(255, 18, 63, 0.5));
 }
 
-/* ========== STAGE 28: DOUBLE HORNS ========== */
 .stage-28 .horn,
 .stage-29 .horn,
 .stage-30 .horn {
@@ -420,7 +419,6 @@
   filter: drop-shadow(0 0 18px rgba(255, 0, 0, 0.7));
 }
 
-/* Second horn pair via pseudo-elements — vertical, beside first pair */
 .stage-28 .horn-left::after,
 .stage-29 .horn-left::after,
 .stage-30 .horn-left::after {
@@ -453,7 +451,6 @@
   opacity: 1;
 }
 
-/* Stage 29: slightly different color */
 .stage-29 .horn-left::after {
   transform: rotate(-15deg);
 }
@@ -463,7 +460,6 @@
   background: linear-gradient(#7c2dff, #ff0000, #000);
 }
 
-/* Stage 30 */
 .stage-30 .horn-left::after {
   transform: rotate(-10deg);
 }
@@ -703,7 +699,6 @@ body.mod-phase-3 .creature.attacked {
   flex-shrink: 0;
 }
 
-/* Fifth stat (rebirth) injected at runtime */
 .bonus-row.bonus-row-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
@@ -731,15 +726,13 @@ body.mod-phase-3 .creature.attacked {
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 14px 8px 14px 12px;   /* right stays tight — scrollbar lives there */
+  padding: 14px 8px 14px 12px;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 
-  /* Firefox */
   scrollbar-width: thin;
   scrollbar-color: rgba(97, 255, 139, 0.28) transparent;
 
-  /* Soft fade dissolve at top and bottom edges */
   --fade-size: 16px;
   -webkit-mask-image:
     linear-gradient(
@@ -759,7 +752,6 @@ body.mod-phase-3 .creature.attacked {
     );
 }
 
-/* ── Webkit custom scrollbar ── */
 .shop-list::-webkit-scrollbar {
   width: 4px;
 }

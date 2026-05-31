@@ -1,14 +1,6 @@
-// systems/rebirthSystem.js  (lines 2054-2384 of src/main.js)
-// Rebirth unlock check, doRebirth(), track renderer.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * systems/rebirthSystem.js
- * Rebirth/prestige: unlock check, doRebirth, track renderer.
- * Part of src/main.js — do not load standalone.
- */
 
-  var REBIRTH_STAGES = [9, 14, 19, 24, 29]; // stage indices (0-based): стадии 10,15,20,25,30
+  var REBIRTH_STAGES = [9, 14, 19, 24, 29];
 
   function getRebirthUnlockStage() {
     if (state.rebirths >= 5) return null;
@@ -27,7 +19,6 @@
     var newRebirths = state.rebirths + 1;
     var sound = state.sound;
 
-    // Полный сброс
     state.points = 0;
     state.totalPoints = 0;
     state.clickPower = 1;
@@ -62,7 +53,6 @@
     state._adBuffPassive = 1;
     state.sound = sound;
 
-    // Устанавливаем перерождение ПОСЛЕ сброса
     state.rebirths = newRebirths;
 
     recalculateStats();
@@ -99,7 +89,6 @@
     var ready = canRebirth();
     var allDone = rebirths >= 5;
 
-    // Stage-panel open button: always enabled unless max rebirths
     if (stageBtn) {
       if (allDone) {
         stageBtn.textContent = "⭕ Путь Перерождений ✦";
@@ -116,7 +105,6 @@
       }
     }
 
-    // Modal action button: triggers actual rebirth
     if (actionBtn) {
       if (allDone) {
         actionBtn.disabled = true;
@@ -134,7 +122,6 @@
     renderRebirthTrack();
   }
 
-  /* ── Rebirth milestone track renderer ── */
   var _REBIRTH_MILESTONES = [
     { n: 1, icon: "🍀", reward: "Множитель удачи",   stage: 10 },
     { n: 2, icon: "🐾", reward: "2-й слот питомца",  stage: 15 },
@@ -161,7 +148,7 @@
     for (var i = 0; i < _REBIRTH_MILESTONES.length; i++) {
       var m = _REBIRTH_MILESTONES[i];
       var isDone    = rebirths >= m.n;
-      var isCurrent = !allDone && rebirths === m.n - 1; // next target
+      var isCurrent = !allDone && rebirths === m.n - 1;
       var isLocked  = !isDone && !isCurrent;
 
       var nodeClass = "rebirth-node " + (isDone ? (allDone && m.n === 5 ? "max done" : "done") : isCurrent ? "current" : "locked");
@@ -184,7 +171,6 @@
     }
     html += '</div>';
 
-    // Hint text
     var hintClass = "rebirth-track-hint" + (ready ? " ready" : "");
     var hintText;
     if (allDone) {
@@ -211,7 +197,6 @@
     return "стадий";
   }
 
-  // rebirthRequired: минимальное число перерождений для разблокировки
   var SPECIAL_UPGRADES = [
     {
       id: "luck_mult",

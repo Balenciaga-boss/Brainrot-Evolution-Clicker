@@ -1,17 +1,7 @@
-// systems/gameLoop.js  (lines 3558-3675 of src/main.js)
-// Main RAF loop, particle tick, drawEffects.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
-
-/**
- * systems/gameLoop.js
- * Main RAF loop, particle update, drawEffects.
- * Part of src/main.js — do not load standalone.
- */
 
 
   function loop(time) {
-    // Если вкладка скрыта — пропускаем весь игровой тик и обновляем lastTick,
-    // чтобы при возврате не было гигантского dt и накопленных звуков/событий.
+
     if (document.hidden) {
       lastTick = time;
       requestAnimationFrame(loop);
@@ -21,15 +11,14 @@
     var dt = Math.min(0.05, (time - lastTick) / 1000);
     lastTick = time;
 
-    // П. 4.7: пока идёт реклама — доход не начисляется, автокликер не работает
     if (!gamePaused) {
       if (state.income > 0) {
         addPoints(state.income * getEventMultiplier("income") * (state._adBuffIncome || 1) * dt);
       }
       adTickSecond();
       autoClickerTick(dt);
-      aiTick(dt); // авто-интерстишл: тикаем только во время активного геймплея
-      inviteTick(dt); // периодический инвайт-бонус
+      aiTick(dt);
+      inviteTick(dt);
     }
 
     if (state.passiveCombo > 0 && now() - state.lastClickAt < 5000) {
@@ -125,4 +114,3 @@
 
     ctx.globalAlpha = 1;
   }
-

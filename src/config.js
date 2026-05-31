@@ -1,12 +1,4 @@
-// config.js  (lines 2-46 of src/main.js)
-// Global constants and state object.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * config.js
- * Global constants, state object, and shared variables.
- * Part of src/main.js — do not load standalone.
- */
 
   "use strict";
 
@@ -15,7 +7,6 @@
   var MAX_FLOATING = 42;
   var now = Date.now;
 
-  /* Balance tuning — scaled to stage “boss” span (points between evolutions) */
   var BALANCE_PET_BASE = 0.42;
   var BALANCE_PET_SPAN_REF = 3000;
   var BALANCE_UPGRADE_SPAN_REF = 3000;

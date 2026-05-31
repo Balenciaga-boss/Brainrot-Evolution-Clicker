@@ -1,14 +1,9 @@
-/**
- * systems/saveSystem.js
- * Handles saving and loading game progress.
- * Supports Yandex PlayerData (cloud) with localStorage fallback.
- */
+
 
 import { state } from "../state.js";
 import { SAVE_KEY, OFFLINE_CAP_SEC, OFFLINE_FACTOR } from "../config.js";
 import { finiteNumber, formatNumber } from "../utils.js";
 
-/** External SDK references — set by main.js after SDK init. */
 export let ysdk    = null;
 export let yplayer = null;
 export let useCloudSave = false;
@@ -18,8 +13,6 @@ export function setSdkRefs(sdk, player, cloudSave) {
   yplayer       = player;
   useCloudSave  = cloudSave;
 }
-
-// ── Save ──────────────────────────────────────────────────────────────────────
 
 export function saveGame({ showToast } = {}) {
   const payload = {
@@ -58,12 +51,6 @@ function _localSave(payload, showToast) {
   }
 }
 
-// ── Load ──────────────────────────────────────────────────────────────────────
-
-/**
- * Loads game data and calls `onLoaded` when ready.
- * onLoaded receives no arguments; callers read from `state` directly.
- */
 export function loadGame({ onLoaded, showToast, addPoints, normalizeUpgradeState, normalizePetState, recalculateStats }) {
   if (useCloudSave && yplayer) {
     yplayer.getData(["save"])
@@ -131,7 +118,6 @@ function _applyLoadedData(data, { showToast, addPoints, normalizeUpgradeState, n
   }
 }
 
-// ── Ad state persistence (separate key) ───────────────────────────────────────
 const AD_SAVE_KEY = "brainrotAdStateV1";
 
 export function adSaveState(adState) {

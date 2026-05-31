@@ -1,12 +1,4 @@
-// pets/eggsData.js  (lines 1396-1410 of src/main.js)
-// Egg definitions with drop tables.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * pets/eggsData.js
- * Egg definitions with drop tables.
- * Part of src/main.js — do not load standalone.
- */
 
   var eggs = [
     { id: "cheap", tier: 1, unlockStage: 2, icon: "🥚", name: "Дешёвое Яйцо", desc: "Первый маленький источник подозрительных друзей.", cost: 320, drops: [{ pet: "crumb", chance: 60 }, { pet: "noodle", chance: 30 }, { pet: "sock", chance: 10 }] },
@@ -22,4 +14,3 @@
     { id: "infernal", tier: 11, unlockStage: 25, icon: "🔥", name: "Инфернальное Яйцо", desc: "Выкована в глубинах ада. Пылает изнутри и снаружи. Содержит существ, которых не должно существовать.", cost: 3.5e21, drops: [{ pet: "chaoscore", chance: 55 }, { pet: "demonlord", chance: 25 }, { pet: "infernalecho", chance: 18.57 }, { pet: "shadowpulse", chance: 1 }, { pet: "demonseraph", chance: 0.3 }, { pet: "abysswalker", chance: 0.1 }, { pet: "finaldemongod", chance: 0.02 }, { pet: "hellsovereign", chance: 0.01 }] },
     { id: "absolute", tier: 12, unlockStage: 28, icon: "🌑", name: "Абсолютное Яйцо Демона", desc: "Тьма внутри тьмы. Оно не просто светится — оно поглощает реальность. Только истинные повелители бездны могут его открыть.", cost: 8e22, drops: [{ pet: "voidthrone", chance: 50 }, { pet: "infernalecho", chance: 27 }, { pet: "demonlord", chance: 21.57 }, { pet: "shadowpulse", chance: 1 }, { pet: "demonseraph", chance: 0.3 }, { pet: "abysswalker", chance: 0.1 }, { pet: "finaldemongod", chance: 0.02 }, { pet: "hellsovereign", chance: 0.007 }, { pet: "voidemperor", chance: 0.003 }] }
   ];
-

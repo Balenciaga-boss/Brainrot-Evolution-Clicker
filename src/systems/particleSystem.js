@@ -1,14 +1,9 @@
-/**
- * systems/particleSystem.js
- * Canvas-based particle and floating text effects.
- */
+
 
 import { MAX_PARTICLES, MAX_FLOATING } from "../config.js";
 
 let particles    = [];
 let floatingTexts = [];
-
-// ── Particle spawning ─────────────────────────────────────────────────────────
 
 export function spawnParticles(x, y, count, rainbow = false) {
   for (let i = 0; i < count && particles.length < MAX_PARTICLES; i++) {
@@ -48,14 +43,10 @@ export function spawnCenterBurst(color, label) {
   spawnFloatingText(x, y - 70, label || "ВЫЛУПЛЕНИЕ!", color);
 }
 
-// ── Floating text ─────────────────────────────────────────────────────────────
-
 export function spawnFloatingText(x, y, text, color = "#ffffff") {
   if (floatingTexts.length >= MAX_FLOATING) return;
   floatingTexts.push({ x, y, text, color, life: 1.0, maxLife: 1.0, vy: -55 });
 }
-
-// ── Visual aura (boss phase) particles ───────────────────────────────────────
 
 export function emitVisualAuraParticles(dt, state, creatureEl) {
   if (state.visualModState === 0 || state.hatching) return;
@@ -101,19 +92,16 @@ export function emitVisualAuraParticles(dt, state, creatureEl) {
   }
 }
 
-// ── Per-frame update & render ─────────────────────────────────────────────────
-
 export function updateAndRenderParticles(ctx, dt, canvasW, canvasH) {
-  // Clear
+
   ctx.clearRect(0, 0, canvasW, canvasH);
 
-  // Particles
   particles = particles.filter(p => {
     p.life -= dt;
     if (p.life <= 0) return false;
     p.x  += p.vx * dt;
     p.y  += p.vy * dt;
-    p.vy += 320 * dt; // gravity
+    p.vy += 320 * dt;
     const alpha = p.life / p.maxLife;
     ctx.globalAlpha = alpha;
     ctx.fillStyle   = p.color;
@@ -123,7 +111,6 @@ export function updateAndRenderParticles(ctx, dt, canvasW, canvasH) {
     return true;
   });
 
-  // Floating text
   floatingTexts = floatingTexts.filter(ft => {
     ft.life -= dt;
     if (ft.life <= 0) return false;
@@ -140,8 +127,6 @@ export function updateAndRenderParticles(ctx, dt, canvasW, canvasH) {
   ctx.globalAlpha = 1;
   ctx.textAlign   = "left";
 }
-
-// ── Convenience accessors ─────────────────────────────────────────────────────
 
 export function getParticles()     { return particles;     }
 export function getFloatingTexts() { return floatingTexts; }

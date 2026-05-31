@@ -1,23 +1,7 @@
-// systems/coreSystem.js  (lines 3742-4007 of src/main.js)
-// playSound, saveGame, loadGame, formatNumber.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * systems/coreSystem.js
- * playSound, saveGame, loadGame, formatNumber, finiteNumber.
- * Part of src/main.js — do not load standalone.
- */
 
-  /* ── Toast registry for stacking ── */
   var _toastRegistry = {};
 
-  /*
-   * showToast(message)           — разовые уведомления (без стакинга)
-   * showStackedToast(key, text)  — повторяющиеся уведомления (стакаются по key)
-   *
-   * key — уникальный идентификатор группы (например "jackpot", "crit", "event_storm")
-   * При повторном вызове с тем же key счётчик увеличивается и таймер сбрасывается.
-   */
   function showToast(message) {
     var toast = document.createElement("div");
     toast.className = "toast";
@@ -109,13 +93,11 @@
     var osc  = audioContext.createOscillator();
     var gain = audioContext.createGain();
 
-    // Мягкий фильтр срезает резкие верхние частоты
     var filter = audioContext.createBiquadFilter();
     filter.type = "lowpass";
     filter.frequency.value = isHarsh ? 900 : 2200;
     filter.Q.value = 0.7;
 
-    // triangle — мягче всего; для deny — немного резче (sine)
     osc.type = isHarsh ? "sine" : "triangle";
 
     osc.frequency.setValueAtTime(base, audioContext.currentTime);
@@ -124,7 +106,6 @@
       audioContext.currentTime + duration
     );
 
-    // Громкость снижена с 0.12 → 0.06; атака плавная 40мс вместо 15мс
     var peak = isHarsh ? 0.045 : 0.065;
     gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
     gain.gain.exponentialRampToValueAtTime(peak, audioContext.currentTime + 0.04);
@@ -154,9 +135,8 @@
       savedAt: now()
     };
 
-    // ── Облачное сохранение через Yandex PlayerData ──
     if (useCloudSave && yplayer) {
-      yplayer.setData({ save: payload }, true /* flush */)
+      yplayer.setData({ save: payload }, true  )
         .then(function () {
           console.log("[YaSDK] Облачное сохранение выполнено");
         })
@@ -180,7 +160,7 @@
   }
 
   function loadGame() {
-    // ── Попытка загрузить из облака, потом fallback на localStorage ──
+
     if (useCloudSave && yplayer) {
       yplayer.getData(["save"])
         .then(function (cloudData) {
@@ -189,7 +169,7 @@
             console.log("[YaSDK] Загружено из облака");
             _applyLoadedData(data);
           } else {
-            // Облако пустое — пробуем localStorage (первый запуск / миграция)
+
             _loadFromLocalStorage();
           }
           _postLoadSetup();
@@ -247,7 +227,6 @@
     }
   }
 
-  /* Вызывается после любой загрузки (облако или localStorage) */
   function _postLoadSetup() {
     normalizeUpgradeState();
     normalizePetState();

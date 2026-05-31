@@ -1,7 +1,4 @@
-/**
- * pets/hatchAnimation.js
- * Controls the egg-hatching overlay animation sequence.
- */
+
 
 import { state } from "../state.js";
 import { eggs } from "./eggsData.js";
@@ -10,11 +7,6 @@ import { rarities, isUltraRarity, getUltraAnnouncement } from "./petsData.js";
 import { finiteNumber } from "../utils.js";
 import { HATCH_REVEAL_MS, HATCH_CLOSE_MS } from "../config.js";
 
-/**
- * Roll a random pet from an egg's drop table.
- * @param {object} egg
- * @returns {object} pet
- */
 export function rollEggPet(egg) {
   const roll  = Math.random() * 100;
   let   total = 0;
@@ -25,16 +17,6 @@ export function rollEggPet(egg) {
   return getPetById(egg.drops[egg.drops.length - 1].pet);
 }
 
-/**
- * Begin the hatch animation for a given egg + pet outcome.
- * @param {object} egg
- * @param {object} pet
- * @param {object} els      - Cached DOM element references
- * @param {object} api      - { showToast, showBigAnnouncement, spawnCenterBurst,
- *                             triggerShake, triggerFlash, recalculateStats,
- *                             renderShop, updateUi, updateShopAffordability,
- *                             playSound, saveGame }
- */
 export function startHatchAnimation(egg, pet, els, api) {
   const rarity = rarities[pet.rarity];
 

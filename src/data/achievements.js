@@ -1,10 +1,4 @@
-/**
- * data/achievements.js
- * Achievement definitions. Each achievement is checked passively
- * in the game loop; no side-effects live here — only pure data.
- *
- * trigger(state) → boolean — returns true when the achievement is earned.
- */
+
 
 export const achievements = [
   {

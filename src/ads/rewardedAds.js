@@ -1,7 +1,4 @@
-/**
- * ads/rewardedAds.js
- * Rewarded-ad flows for eggs and upgrades, including cooldown / quota logic.
- */
+
 
 import { state } from "../state.js";
 import { AD_CONFIG } from "../config.js";
@@ -11,8 +8,6 @@ import { eggs } from "../pets/eggsData.js";
 import { upgrades } from "../data/upgrades.js";
 import { isUpgradePhaseUnlocked } from "../systems/evolutionSystem.js";
 import { formatNumber } from "../utils.js";
-
-// ── Ad state ──────────────────────────────────────────────────────────────────
 
 export let adState = {
   egg:     { used: 0, cooldownUntil: 0 },
@@ -25,8 +20,6 @@ export function initAdState(saved) {
   if (saved.upgrade) adState.upgrade = { ...adState.upgrade, ...saved.upgrade };
 }
 
-// ── Cooldown helpers ──────────────────────────────────────────────────────────
-
 export function adCanWatchEgg() {
   return Date.now() >= adState.egg.cooldownUntil && adState.egg.used < AD_CONFIG.egg.maxPerCycle;
 }
@@ -34,8 +27,6 @@ export function adCanWatchEgg() {
 export function adCanWatchUpgrade() {
   return Date.now() >= adState.upgrade.cooldownUntil && adState.upgrade.used < AD_CONFIG.upgrade.maxPerCycle;
 }
-
-// ── Reward grants ─────────────────────────────────────────────────────────────
 
 export function adGrantEgg(eggId, { openEggFree, showStackedToast, playSound, adRenderStatus }) {
   adState.egg.used += 1;
@@ -83,8 +74,6 @@ export function adGrantUpgrade(upgradeId, { showToast, recalculateStats, renderS
   adSaveState(adState);
   adRenderStatus();
 }
-
-// ── Request entry points (called from UI click handlers) ──────────────────────
 
 export function adRequestEgg(eggId, deps) {
   if (!adCanWatchEgg()) {

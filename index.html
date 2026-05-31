@@ -7,12 +7,10 @@
   <meta name="description" content="Brainrot Evolution Clicker - лёгкий HTML5 idle clicker для Яндекс Игр.">
   <title>Brainrot Evolution Clicker</title>
 
-  <!-- Google Fonts for premium gaming aesthetics -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
 
-  <!-- Styles split by concern -->
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/layout.css">
   <link rel="stylesheet" href="styles/creature.css">
@@ -138,7 +136,6 @@
   <div class="big-announcement hidden" id="bigAnnouncement" aria-live="assertive"></div>
   <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
-  <!-- Yandex Games SDK — load on hosted builds; local dev uses the fallback path. -->
   <script>
     (function () {
       var host = window.location.hostname;
@@ -148,7 +145,7 @@
       }
     })();
   </script>
-  <!-- Game — single bundled file built from src/ modules -->
+
   <script src="src/main.js"></script>
 </body>
 </html>

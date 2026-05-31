@@ -20,9 +20,7 @@
     padding: 10px 10px 10px;
   }
 }
-/* ══════════════════════════════════════════════════════════════
-   STAGE ACTIONS — rebirth + auto-clicker row
-   ══════════════════════════════════════════════════════════════ */
+
 .stage-actions {
   display: flex;
   flex-wrap: wrap;
@@ -39,9 +37,6 @@
   width: auto;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   AUTO CLICKER — same footprint as .rebirth-open-btn
-   ══════════════════════════════════════════════════════════════ */
 .autoclicker-bar {
   display: flex;
   justify-content: center;
@@ -86,11 +81,6 @@
   50%       { box-shadow: 0 0 16px rgba(16, 185, 129, 0.52); }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   REVIEW BONUS SYSTEM
-   ═══════════════════════════════════════════════════════════════ */
-
-/* Daily/review bonus overlay: anchored to the footer, never part of footer layout. */
 .review-bonus-btn {
   position: absolute;
   left: 12px;
@@ -124,13 +114,11 @@
   transform: translateY(0);
 }
 
-/* Начало исчезновения: fade opacity */
 .review-bonus-btn.rb-btn-fading {
   opacity: 0;
   transform: translateY(-4px);
 }
 
-/* Hidden state keeps layout stable because the button is absolutely positioned. */
 .review-bonus-btn.rb-btn-gone {
   border-color: transparent;
   opacity: 0;
@@ -138,7 +126,6 @@
   pointer-events: none;
 }
 
-/* Suppress transitions during initial state restore — no animation on first paint */
 .review-bonus-btn.rb-no-transition {
   transition: none !important;
 }
@@ -183,7 +170,6 @@
   text-overflow: ellipsis;
 }
 
-/* ── Бейдж кулдауна — flex-item внутри .top-panel (левая игровая панель) ── */
 .rb-cooldown-badge {
   display: flex;
   align-items: center;
@@ -198,17 +184,15 @@
   font-family: Arial, sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
-  margin-left: auto;   /* отталкивает себя и кнопку звука вправо */
-  opacity: 0;          /* начинаем невидимым */
+  margin-left: auto;
+  opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-/* display:none когда совсем скрыт — не занимает место в flex */
 .rb-cooldown-badge.rb-badge-hidden {
   display: none;
 }
 
-/* opacity:1 после rAF — плавное появление */
 .rb-cooldown-badge.rb-badge-visible {
   opacity: 1;
 }
@@ -218,7 +202,6 @@
   flex-shrink: 0;
 }
 
-/* ── Общие оверлеи (благодарность и награда) ── */
 .rb-thanks-screen,
 .rb-reward-screen {
   position: fixed;
@@ -245,7 +228,6 @@
   display: none !important;
 }
 
-/* ── Карточка экрана благодарности ── */
 .rb-thanks-card {
   background: rgba(20, 16, 44, 0.96);
   border: 1px solid rgba(251,191,36,0.35);
@@ -293,7 +275,6 @@
   margin: 0 0 20px;
 }
 
-/* Dots loader */
 .rb-thanks-dots {
   display: flex;
   justify-content: center;
@@ -317,7 +298,6 @@
   40%           { opacity: 1;   transform: scale(1.15); }
 }
 
-/* ── Карточка экрана награды ── */
 .rb-reward-card {
   background: rgba(20, 16, 44, 0.97);
   border: 1px solid rgba(97,255,139,0.4);
@@ -397,7 +377,6 @@
   transform: scale(0.97);
 }
 
-/* ── Mobile adjustments ── */
 @media (max-width: 480px) {
   .rb-thanks-card,
   .rb-reward-card {
@@ -408,9 +387,6 @@
     font-size: 22px;
   }
 }
-/* ═══════════════════════════════════════════════════════════════
-   PERIODIC INVITE BONUS BUTTON
-   ═══════════════════════════════════════════════════════════════ */
 
 .invite-offer-btn {
   position: fixed;
@@ -474,7 +450,6 @@
   line-height: 1.2;
 }
 
-/* Mobile: чуть меньше, чтобы не перекрывать UI */
 @media (max-width: 600px) {
   .invite-offer-btn {
     top: 12px;

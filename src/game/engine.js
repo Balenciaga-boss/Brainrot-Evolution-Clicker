@@ -46,10 +46,8 @@ durationMax: 180
 
   var adEls = {};
 
-  
   var isAdRunning = false;
 
-  
   var gamePaused = false;
 
   function pauseGameForAd() {
@@ -68,7 +66,6 @@ durationMax: 180
     }
   }
 
-  
   function showRewardedAd(callback) {
 
     if (isAdRunning) {
@@ -80,7 +77,7 @@ durationMax: 180
     var session = { rewardGranted: false, settled: false };
 
     function settle(rewarded) {
-      if (session.settled) return; // защита от дублирования
+      if (session.settled) return;
       session.settled = true;
       isAdRunning = false;
 
@@ -118,7 +115,6 @@ durationMax: 180
     }
   }
 
-  
   function showAdSimOverlay(callback) {
     var overlay = adEls.simOverlay;
     if (!overlay) { callback(true); return; }
@@ -157,7 +153,6 @@ durationMax: 180
     };
   }
 
-  
   function adCanWatchEgg() {
     return Date.now() >= adState.egg.cooldownUntil && adState.egg.used < AD_CONFIG.egg.maxPerCycle;
   }
@@ -165,7 +160,6 @@ durationMax: 180
     return Date.now() >= adState.upgrade.cooldownUntil && adState.upgrade.used < AD_CONFIG.upgrade.maxPerCycle;
   }
 
-  
   function adGrantReward(type, payload) {
     if (type === "egg") {
       adState.egg.used += 1;
@@ -203,7 +197,6 @@ durationMax: 180
     }
   }
 
-  
   function adOpenEggFree(eggId) {
     var egg = eggs.find(function (e) { return e.id === eggId; });
     if (!egg || state.hatching) return;
@@ -216,7 +209,6 @@ durationMax: 180
     showToast("🎁 Бесплатное яйцо за рекламу: " + egg.name);
   }
 
-  
   function adApplyUpgradeFree(upgradeId) {
     var upgrade = upgrades.find(function (u) { return u.id === upgradeId; });
     if (!upgrade) return;
@@ -239,7 +231,6 @@ durationMax: 180
     showToast("🎁 Бесплатное улучшение: " + upgrade.name + " ур. " + state.upgrades[upgradeId]);
   }
 
-  
   function adActivateBuff(buffId) {
     var buff = BUFF_TYPES.find(function (b) { return b.id === buffId; });
     if (!buff) return;
@@ -279,7 +270,6 @@ durationMax: 180
     return Math.max(0, Math.ceil((adState.activeBuff.expiresAt - Date.now()) / 1000));
   }
 
-  
   var _adLastSecond = 0;
   function adTickSecond() {
     var t = Math.floor(Date.now() / 1000);
@@ -299,7 +289,6 @@ durationMax: 180
       Math.floor(Math.random() * (AD_CONFIG.buff.offerIntervalMax - AD_CONFIG.buff.offerIntervalMin + 1));
   }
 
-  
   function adRequestEgg(eggId) {
     if (!adCanWatchEgg()) { showStackedToast("ad_egg_cd", "Реклама за яйцо недоступна — перезарядка"); playSound("deny"); return; }
     var egg = eggs.find(function (e) { return e.id === eggId; });
@@ -311,7 +300,7 @@ durationMax: 180
     showRewardedAd(function (rewarded) {
 
       adBtns.forEach(function (b) { b.disabled = false; });
-      adUpdateCooldownDisplay(); // обновить состояние disabled по cooldown
+      adUpdateCooldownDisplay();
       if (!rewarded) { showStackedToast("ad_not_watched_egg", "Реклама не досмотрена — яйцо не выдано"); return; }
       adGrantReward("egg", { eggId: eggId });
     });
@@ -348,7 +337,6 @@ durationMax: 180
     });
   }
 
-  
   function adShowBuffPopup(buff) {
     var el = adEls.buffPopup;
     if (!el) return;
@@ -361,7 +349,6 @@ durationMax: 180
     if (adEls.buffPopup) adEls.buffPopup.classList.add("ad-hidden");
   }
 
-  
   function adRenderActiveBuff() {
     var el = adEls.activeBuff;
     if (!el) return;
@@ -374,7 +361,6 @@ durationMax: 180
     el.classList.remove("ad-hidden");
   }
 
-  
   function adUpdateCooldownDisplay() {
     adUpdateOneCounter("adEggCounter", "adEggCooldown", adState.egg, AD_CONFIG.egg);
     adUpdateOneCounter("adUpgradeCounter", "adUpgradeCooldown", adState.upgrade, AD_CONFIG.upgrade);
@@ -404,7 +390,6 @@ durationMax: 180
     adRenderActiveBuff();
   }
 
-  
   var AD_SAVE_KEY = "brainrotAdStateV1";
 
   function adSaveState() {
@@ -440,7 +425,6 @@ durationMax: 180
     } catch (e) {}
   }
 
-  
   function adGetUpgradeAdBtn(upgradeId) {
     var can = adCanWatchUpgrade();
 
@@ -461,7 +445,6 @@ durationMax: 180
     ].join("");
   }
 
-  
   function adInitDom() {
 
     var adHtml = [
@@ -533,13 +516,9 @@ durationMax: 180
     });
   }
 
-  
-
-  
-
   var REVIEW_BONUS_SAVE_KEY = "brainrotReviewBonusV1";
 
   var reviewBonus = {
-    sessionUsed:   false,  // true = бонус уже получен в этой сессии
-    cooldownUntil: 0,      // timestamp следующего дневного сброса
-    lastClaimDay:  
+    sessionUsed:   false,
+    cooldownUntil: 0,
+    lastClaimDay:

@@ -1,12 +1,4 @@
-// ui/init.js  (lines 1658-1958 of src/main.js)
-// init(), cacheElements(), injectUI(), bindEvents().
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * ui/init.js
- * init(), cacheElements(), injectEquippedPetsUI(), bindEvents().
- * Part of src/main.js — do not load standalone.
- */
 
   function init() {
     cacheElements();
@@ -20,8 +12,7 @@
     aiInit();
     inviteInit();
     injectAutoClickerButton();
-    // loadGame() запускает асинхронную цепочку; renderShop/updateUi
-    // вызываются внутри _postLoadSetup() после получения данных.
+
     loadGame();
     requestAnimationFrame(loop);
     setInterval(saveGame, 10000);
@@ -71,7 +62,6 @@
     els.equippedModalClose = document.getElementById("equippedModalClose");
     els.equippedModalBody = document.getElementById("equippedModalBody");
 
-    // If button/modal aren't in the HTML yet, inject them now
     if (!els.equippedPetsBtn) {
       injectEquippedPetsUI();
       els.equippedPetsBtn     = document.getElementById("equippedPetsBtn");
@@ -87,7 +77,7 @@
   }
 
   function injectEquippedPetsUI() {
-    // Find the Питомец article inside .bonus-row and append button there
+
     var petArticle = null;
     var bonusRow = document.querySelector(".bonus-row");
     if (bonusRow) {
@@ -106,7 +96,6 @@
       petArticle.appendChild(btn);
     }
 
-    // Inject rebirth stat card into bonus-row (before pet article)
     if (bonusRow && !document.getElementById("rebirthStatText")) {
       var rebirthArticle = document.createElement("article");
       rebirthArticle.innerHTML = '<span>Перерождения</span><strong id="rebirthStatText">нет</strong>';
@@ -115,11 +104,10 @@
       } else {
         bonusRow.appendChild(rebirthArticle);
       }
-      // Expand grid to fit 5 columns
+
       bonusRow.classList.add("bonus-row-cols-5");
     }
 
-    // Inject rarity badge into stage name span
     var stageNameEl = document.getElementById("stageName");
     if (stageNameEl && !document.getElementById("stageRarityBadge")) {
       var badge = document.createElement("span");
@@ -129,7 +117,6 @@
       stageNameEl.appendChild(badge);
     }
 
-    // Inject rebirth button under stage progress bar (opens modal, does NOT perform rebirth directly)
     if (!document.getElementById("rebirthBtn")) {
       var stagePanel = document.querySelector(".stage-panel");
       if (stagePanel) {
@@ -144,13 +131,11 @@
         rebirthBar.innerHTML = '<button class="rebirth-btn rebirth-open-btn" id="rebirthBtn" type="button" disabled>⭕ Путь Перерождений</button>';
         actionsRow.appendChild(rebirthBar);
 
-        // Bind click → open modal
         var rebirthBtnEl = rebirthBar.querySelector("#rebirthBtn");
         if (rebirthBtnEl) rebirthBtnEl.addEventListener("click", openRebirthModal);
       }
     }
 
-    // Inject equipped pets modal into body
     var wrapperPets = document.createElement("div");
     wrapperPets.innerHTML = [
       '<div class="equipped-modal-backdrop hidden" id="equippedModal" aria-modal="true" role="dialog" aria-label="Одетые питомцы">',
@@ -168,7 +153,6 @@
     ].join("");
     document.body.appendChild(wrapperPets.firstElementChild);
 
-    // Inject rebirth modal into body
     var wrapperRebirth = document.createElement("div");
     wrapperRebirth.innerHTML = [
       '<div class="rebirth-modal-backdrop hidden" id="rebirthModal" aria-modal="true" role="dialog" aria-label="Путь Перерождений">',
@@ -209,15 +193,13 @@
   function bindEvents() {
     registerAudioUnlockHandlers();
 
-    // П. 1.6.1.8 / 1.6.2.7: запрет контекстного меню на игровом поле
-    // (лонгтап / правая кнопка мыши не должны открывать системное меню)
     document.getElementById("gameShell").addEventListener("contextmenu", function (e) {
       e.preventDefault();
     });
 
     els.creatureButton.addEventListener("pointerdown", function (event) {
       event.preventDefault();
-      ensureAudio(); // must be called directly inside a user gesture handler
+      ensureAudio();
       handleCreatureClick(event.clientX, event.clientY);
     });
 
@@ -284,13 +266,11 @@
       saveGame();
     });
 
-    // П. 1.3: при сворачивании страницы звук останавливается (требование Яндекс Игр)
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) {
         saveGame();
       } else {
-        // Сбрасываем lastTick чтобы первый кадр после возврата имел dt=0
-        // и не спровоцировал накопленный игровой тик
+
         lastTick = performance.now();
       }
     });
@@ -322,7 +302,6 @@
       if (event.target === els.equippedModal) closeEquippedModal();
     });
 
-    // Rebirth modal wiring (elements injected by injectEquippedPetsUI)
     var rebirthModalEl = document.getElementById("rebirthModal");
     var rebirthModalCloseEl = document.getElementById("rebirthModalClose");
     var rebirthActionBtnEl = document.getElementById("rebirthActionBtn");

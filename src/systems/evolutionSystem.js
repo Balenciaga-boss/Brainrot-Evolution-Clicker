@@ -1,12 +1,4 @@
-// systems/evolutionSystem.js  (lines 2385-2536 of src/main.js)
-// recalculateStats, getComboStep, getEventMultiplier.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * systems/evolutionSystem.js
- * recalculateStats, getComboStep, getEventMultiplier.
- * Part of src/main.js — do not load standalone.
- */
 
   function getBossSpan() {
     var currentStage = stages[state.stage];
@@ -83,7 +75,7 @@
       state.passiveCombo += petBonus.passiveCombo;
       petSummaries.push(shortPetBonus(activePet, petBonus));
     });
-    // Мягкий кеп на суммарный incomeMult питомцев: после порога 1.0 рост замедляется
+
     var PET_MULT_CAP = 0.55;
     var softPetMult = rawPetIncomeMult <= PET_MULT_CAP
       ? rawPetIncomeMult
@@ -97,13 +89,12 @@
       : RAW_COMBO_CAP + Math.sqrt(state.petComboBonus - RAW_COMBO_CAP) * 0.32;
     state.passiveCombo = Math.min(0.08, state.passiveCombo);
 
-    // Зеркальный питомец за 5-е перерождение: динамически копирует лучшего питомца
     if (state.rebirths >= 5) {
       var mirrorSource = getMirrorSourcePet();
       if (mirrorSource) {
         var mirrorBonus = getPetBonus(mirrorSource);
         income += mirrorBonus.income + (mirrorBonus.autoclick * clickPower * BALANCE_PET_AUTOCLICK_INCOME);
-        // Зеркальный питомец тоже проходит через мягкий кеп — отдельно
+
         var mirrorMult = mirrorBonus.incomeMult;
         var mirrorSoftMult = mirrorMult <= PET_MULT_CAP
           ? mirrorMult
@@ -120,9 +111,6 @@
 
     state.petBonusText = petSummaries.length ? petSummaries.length + "/3 В· " + petSummaries[0] : "нет";
 
-    // Мягкий предел множителя: замедляем рост после порога, чтобы
-    // предотвратить экспоненциальное стакирование улучшений.
-    // Формула: если raw > cap → cap + sqrt(raw - cap) * 0.8
     var RAW_MULT_CAP = 8;
     var softMultiplier = multiplier <= RAW_MULT_CAP
       ? multiplier
@@ -156,10 +144,9 @@
     return type === "comboLimit" ? 2.5 : 1;
   }
 
-  /* ── Stage rarity tier: returns 1-6 based on stage index ── */
   var STAGE_TIER_NAMES = ["Обычный", "Редкий", "Эпический", "Космический", "Трансцендентный", "Демонический"];
   function getStageRarityTier(stageIndex) {
-    var n = stageIndex + 1; // 1-based
+    var n = stageIndex + 1;
     if (n <= 5)  return 1;
     if (n <= 10) return 2;
     if (n <= 15) return 3;
@@ -181,7 +168,7 @@
       document.body.classList.add("stage-" + (state.stage + 1));
       document.body.classList.add("stage-tier-" + tier);
       els.creatureSymbol.textContent = stages[state.stage].symbol;
-      // Update rarity badge
+
       var badgeEl = document.getElementById("stageRarityBadge");
       if (badgeEl) {
         badgeEl.textContent = STAGE_TIER_NAMES[tier - 1];

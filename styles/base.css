@@ -42,7 +42,7 @@ body {
   background-size: 180% 180%;
   animation: gradientDrift 13s ease-in-out infinite;
   touch-action: manipulation;
-  /* П. 1.6.1.8 / 1.6.2.7: запрет системного меню при лонгтапе и выделения текста */
+
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
@@ -130,7 +130,6 @@ body::after {
   flex-shrink: 0;
 }
 
-/* top-panel: заголовок слева, таймер+кнопка звука справа вместе */
 .top-panel {
   justify-content: flex-start;
 }

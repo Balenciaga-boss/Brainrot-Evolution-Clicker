@@ -1,14 +1,9 @@
-/**
- * systems/audioSystem.js
- * Web Audio API sound synthesis. All sounds are generated procedurally —
- * no audio files required.
- */
+
 
 let audioContext = null;
 
 export function getAudioContext() { return audioContext; }
 
-/** Must be called from within a user-gesture handler to unlock audio. */
 export function ensureAudio(soundEnabled) {
   if (!soundEnabled || document.hidden) return;
   const AudioCtx = window.AudioContext || window.webkitAudioContext;

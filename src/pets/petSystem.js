@@ -1,12 +1,3 @@
-// pets/petSystem.js  (lines 3076-3458 of src/main.js)
-// Pet equip/upgrade, attack anims, modal rendering.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
-
-/**
- * pets/petSystem.js
- * Pet equip, upgrade, attack animations, modal rendering.
- * Part of src/main.js — do not load standalone.
- */
 
 
   function addOwnedPet(pet) {
@@ -51,7 +42,6 @@
     var currentBonus = getPetBonus(pet);
     var levelBarPct = Math.round((level / maxLevel) * 100);
 
-    // ── Badge pills row ──
     var rarityColor = rarity.color || "#9ca3af";
     var pills = [
       "<span class='pc2-pill pc2-pill-rarity " + rarity.className + "'>" + rarity.name + "</span>"
@@ -59,7 +49,6 @@
     if (count > 1) pills.push("<span class='pc2-pill pc2-pill-dup'>×" + count + "</span>");
     if (active) pills.push("<span class='pc2-pill pc2-pill-slot'>Слот " + (slot + 1) + "</span>");
 
-    // ── Stat chips ──
     var statChips = [];
     if (currentBonus.income)      statChips.push({ icon: "💰", val: formatNumber(currentBonus.income) + "/с" });
     if (currentBonus.autoclick)   statChips.push({ icon: "🖱", val: "×" + (Math.round(currentBonus.autoclick * 10) / 10) });
@@ -73,7 +62,6 @@
       return "<span class='pc2-stat-chip'><span class='pc2-stat-icon'>" + c.icon + "</span><span>" + c.val + "</span></span>";
     }).join("");
 
-    // ── Upgrade button ──
     var upgBtnClass = "pet-upgrade-btn" + (isMaxed ? " pet-upgrade-maxed" : canAfford ? "" : " pet-upgrade-locked");
     var upgBtnText = isMaxed
       ? "✦ Максимальный уровень"
@@ -81,7 +69,6 @@
     var nextStatHint = isMaxed ? "" :
       "<span class='pc2-upg-hint'>+" + Math.round(scalePerLevel * 100) + "% к статам · Ур. " + (level + 1) + "</span>";
 
-    // ── Equip hint ──
     var equipHintHtml = active
       ? "<span class='pc2-equip-active'>✓ Слот " + (slot + 1) + " · нажми чтобы снять</span>"
       : "<span class='pc2-equip-hint'>Нажми чтобы экипировать</span>";
@@ -89,7 +76,6 @@
     return [
       "<div class='pc2-wrap" + (active ? " pc2-active" : "") + "'>",
 
-      // ─ Top: face + header ─
       "<button class='pc2-main " + rarity.className + "' type='button' data-id='" + pet.id + "'>",
         "<div class='pc2-face " + rarity.className + "'>" + pet.face + "</div>",
         "<div class='pc2-header'>",
@@ -99,10 +85,8 @@
         "</div>",
       "</button>",
 
-      // ─ Stats row ─
       chipsHtml ? "<div class='pc2-stats'>" + chipsHtml + "</div>" : "",
 
-      // ─ Level bar ─
       "<div class='pc2-level'>",
         "<div class='pc2-level-top'>",
           "<span class='pc2-level-label'>Ур. <b>" + level + "</b></span>",
@@ -305,7 +289,7 @@
   function maybePetAttack(dt) {
     var activePets = getActivePets();
     if (!activePets.length || state.hatching) return;
-    // Не атакуем пока вкладка скрыта — при возврате таймер мог уйти в минус
+
     if (document.hidden) {
       state.petAttackTimer = 3.8 + Math.random() * 4.2;
       return;

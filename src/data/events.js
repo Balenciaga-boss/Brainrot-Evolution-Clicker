@@ -1,16 +1,12 @@
-/**
- * data/events.js
- * Definitions for random in-game events (storms, rains, etc.).
- * The eventSystem picks from this list and applies multipliers.
- */
+
 
 export const EVENTS = [
   {
     id:       "storm",
     name:     "Мемный шторм!",
-    duration: 20,          // seconds
+    duration: 20,
     toast:    "⚡ Мемный шторм! Клики ×2 на 20 сек!",
-    /** Returns a click multiplier when this event is active. */
+
     clickMult:  2,
     incomeMult: 1,
     comboLimit: 2.5,
@@ -35,5 +31,4 @@ export const EVENTS = [
   },
 ];
 
-/** Default combo limit when no event is active. */
 export const DEFAULT_COMBO_LIMIT = 2.5;

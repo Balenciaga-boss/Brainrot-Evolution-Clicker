@@ -1,12 +1,4 @@
-// ui/creatureUI.js  (lines 1959-2053 of src/main.js)
-// handleCreatureClick, addPoints, showUpgradeToast.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * ui/creatureUI.js
- * handleCreatureClick, addPoints, showUpgradeToast.
- * Part of src/main.js — do not load standalone.
- */
 
   function handleCreatureClick(x, y) {
     var current = now();
@@ -88,7 +80,7 @@
     var existing = _upgradeToasts[id];
 
     if (existing && existing.el && existing.el.parentNode) {
-      // Stack: increment count, update text, reset timer
+
       existing.count += 1;
       existing.el.textContent = "Куплено: " + upgrade.name + " ур. " + level + " · " + existing.count + "x";
       clearTimeout(existing.timer);
@@ -97,7 +89,7 @@
         delete _upgradeToasts[id];
       }, 3000);
     } else {
-      // First purchase — create new toast
+
       var toast = document.createElement("div");
       toast.className = "toast";
       toast.textContent = "Куплено: " + upgrade.name + " ур. " + level;

@@ -84,7 +84,6 @@
   font-weight: 900;
 }
 
-/* Upgrade phase headers */
 .upgrade-phase-header {
   padding: 6px 10px;
   margin-bottom: 6px;
@@ -102,14 +101,12 @@
 .upgrade-phase-3 { border-left: 3px solid #a855f7; color: #c084fc; }
 .upgrade-phase-4 { border-left: 3px solid #ff2200; color: #ff6644; }
 
-/* Phase 3 late upgrades */
 .upgrade-button.upgrade-late {
   border-color: rgba(168, 85, 247, 0.45);
   background: rgba(168, 85, 247, 0.1);
 }
 .upgrade-button.upgrade-late .upgrade-name { color: #c084fc; }
 
-/* Phase 4 endgame upgrades */
 .upgrade-button.upgrade-endgame {
   border-color: rgba(255, 34, 0, 0.55);
   background: rgba(255, 34, 0, 0.08);
@@ -505,10 +502,6 @@
   gap: 10px;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   PET CARD v2 — полированный инвентарь брейнротов
-   ═══════════════════════════════════════════════════════════════ */
-
 .pc2-wrap {
   display: flex;
   flex-direction: column;
@@ -529,7 +522,6 @@
   background: rgba(20, 24, 41, 0.88);
 }
 
-/* leveled-up flash */
 .pc2-wrap.leveled-up {
   animation: pc2LevelUp 0.9s ease-out;
 }
@@ -540,7 +532,6 @@
   100% { transform: scale(1);    box-shadow: none; }
 }
 
-/* ── Top clickable row ── */
 .pc2-main {
   display: flex;
   align-items: center;
@@ -565,7 +556,6 @@
   background: rgba(255, 255, 255, 0.14);
 }
 
-/* ── Face circle ── */
 .pc2-face {
   flex-shrink: 0;
   display: grid;
@@ -579,10 +569,9 @@
   font-size: 18px;
   font-weight: 900;
   animation: petWiggle 2.2s ease-in-out infinite;
-  /* inherit border-color from rarity class */
+
 }
 
-/* ── Header section ── */
 .pc2-header {
   flex: 1 1 0;
   min-width: 0;
@@ -615,10 +604,9 @@
   letter-spacing: 0.02em;
   line-height: 1.5;
   border: 1px solid;
-  /* rarity class supplies color & border-color via pill-rarity below */
+
 }
 
-/* pill tints per rarity */
 .pc2-pill-rarity.rarity-common       { color: #9ca3af; border-color: rgba(156,163,175,0.4); background: rgba(156,163,175,0.1); }
 .pc2-pill-rarity.rarity-uncommon     { color: #4ade80; border-color: rgba(34,197,94,0.4);   background: rgba(34,197,94,0.1); }
 .pc2-pill-rarity.rarity-rare         { color: #7dd3fc; border-color: rgba(56,189,248,0.4);  background: rgba(56,189,248,0.1); }
@@ -643,7 +631,6 @@
   background: rgba(97,255,139,0.1);
 }
 
-/* equip hints */
 .pc2-equip-active,
 .pc2-equip-hint {
   font-size: 10px;
@@ -660,7 +647,6 @@
   color: rgba(200,208,232,0.5);
 }
 
-/* ── Stat chips strip ── */
 .pc2-stats {
   display: flex;
   flex-wrap: wrap;
@@ -689,7 +675,6 @@
   line-height: 1;
 }
 
-/* ── Level + upgrade panel ── */
 .pc2-level {
   padding: 10px 14px 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
@@ -731,7 +716,6 @@
   transition: width 0.4s ease;
 }
 
-/* rarity-tinted level bars */
 .pc2-level-bar.rarity-uncommon     { background: #22c55e; }
 .pc2-level-bar.rarity-rare         { background: linear-gradient(90deg, #38bdf8, #61ff8b); }
 .pc2-level-bar.rarity-epic         { background: linear-gradient(90deg, #a855f7, #ff3d81); }
@@ -756,7 +740,6 @@
   white-space: nowrap;
 }
 
-/* upgrade row */
 .pc2-upg-row {
   display: flex;
   align-items: center;
@@ -770,7 +753,6 @@
   font-weight: 700;
 }
 
-/* reuse existing pet-upgrade-btn + new specifics */
 .pet-upgrade-btn {
   flex-shrink: 0;
   padding: 7px 13px;
@@ -812,7 +794,6 @@
   opacity: 0.8;
 }
 
-/* old classes kept for backwards compat (equipped modal etc.) */
 .pet-card {
   grid-template-columns: 52px minmax(0, 1fr);
   min-height: 94px;

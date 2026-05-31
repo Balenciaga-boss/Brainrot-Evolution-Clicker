@@ -54,17 +54,6 @@
     autoClickerUntil: 0
   };
 
-
-  /* ═══════════════════════════════════════════════════════════════
-     AD MANAGER
-     Yandex Games Ads Integration Layer.
-
-     showRewardedAd() вызывает ysdk.adv.showRewardedVideo() если SDK
-     доступен, иначе падает в dev-симулятор (showAdSimOverlay).
-     Симулятор оставлен специально для локальной разработки —
-     в продакшене на Яндекс Играх он никогда не вызывается.
-     ═══════════════════════════════════════════════════════════════ */
-
   var AD_CONFIG = {
     egg:     { maxPerCycle: 10, cooldownMs: 7 * 60 * 1000 },
     upgrade: { maxPerCycle: 10, cooldownMs: 6 * 60 * 1000 },
@@ -93,32 +82,13 @@
 
   var adEls = {};
 
-  /* ═══════════════════════════════════════════════════════════════
-     AD SESSION LOCK — предотвращает одновременные рекламные сессии
-     и дублирование наград.
-
-     isAdRunning:  глобальный мьютекс — true пока любая реклама
-                   загружается или показывается. Любой повторный
-                   вызов showRewardedAd() во время активной сессии
-                   немедленно отклоняется.
-
-     session:      объект с двумя флагами, создаётся заново при
-                   каждом вызове showRewardedAd():
-                   - rewardGranted: true только после onRewarded
-                   - settled:       true после первого финального
-                                    колбэка (onClose / onError).
-                   Гарантирует ровно один вызов callback().
-     ═══════════════════════════════════════════════════════════════ */
   var isAdRunning = false;
 
-  /* ── П. 4.7: пауза игры во время рекламы ──
-     gamePaused = true — игровой цикл не начисляет очки и не воспроизводит звуки.
-     Устанавливается при открытии рекламы, снимается в settle(). */
   var gamePaused = false;
 
   function pauseGameForAd() {
     gamePaused = true;
-    // Приостанавливаем звук (п. 4.7)
+
     if (audioContext && audioContext.state === "running") {
       try {
         audioContext.suspend().catch(function () {});
@@ -128,50 +98,44 @@
 
   function resumeGameAfterAd() {
     gamePaused = false;
-    // Возобновляем звук если он включён
+
     ensureAudio();
   }
 
-  /* ── Yandex SDK: показ рекламы с вознаграждением ── */
   function showRewardedAd(callback) {
-    // ── Глобальный мьютекс: отклоняем повторный вызов ──
+
     if (isAdRunning) {
       showStackedToast("ad_loading", "Реклама уже запущена — подождите");
       return;
     }
     isAdRunning = true;
 
-    // ── Сессионный объект — одноразовый, на каждую рекламу ──
     var session = { rewardGranted: false, settled: false };
 
     function settle(rewarded) {
-      if (session.settled) return; // защита от дублирования
+      if (session.settled) return;
       session.settled = true;
       isAdRunning = false;
-      // П. 4.7: снимаем паузу игры после закрытия рекламы
+
       resumeGameAfterAd();
       callback(rewarded);
     }
 
     if (ysdk && ysdk.adv) {
-      // ── Реальный вызов Yandex Games SDK ──
-      // onRewarded вызывается ДО onClose: запоминаем факт награды,
-      // но НЕ вызываем callback здесь — ждём onClose/onError.
+
       ysdk.adv.showRewardedVideo({
         callbacks: {
           onOpen: function () {
-            // П. 4.7: реклама открылась — паузим игру и звук
+
             pauseGameForAd();
             console.log("[YaSDK] Rewarded ad opened");
           },
           onRewarded: function () {
-            // Игрок досмотрел до конца — ставим флаг
-            // Reward будет выдан в onClose, когда окно закроется
+
             session.rewardGranted = true;
           },
           onClose: function () {
-            // Окно закрылось (в любом случае — после просмотра или пропуска)
-            // Используем флаг rewardGranted, а не аргумент — он более надёжен
+
             settle(session.rewardGranted);
           },
           onError: function (e) {
@@ -181,18 +145,16 @@
         }
       });
     } else {
-      // ── Fallback: SDK недоступен — используем симулятор (только для dev) ──
+
       pauseGameForAd();
       showAdSimOverlay(function (watched) { settle(watched); });
     }
   }
 
-  /* ── Ad simulation overlay (dev-only fallback) ── */
   function showAdSimOverlay(callback) {
     var overlay = adEls.simOverlay;
     if (!overlay) { callback(true); return; }
 
-    // ── Защита от дублирования в симуляторе: однократный вызов ──
     var simSettled = false;
     function simSettle(result) {
       if (simSettled) return;
@@ -217,8 +179,6 @@
       }
     }, 100);
 
-    // Обнуляем старые обработчики через onclick (не addEventListener)
-    // чтобы не накапливались слушатели между вызовами
     adEls.simCancel.onclick = function () {
       clearInterval(tick);
       simSettle(false);
@@ -229,7 +189,6 @@
     };
   }
 
-  /* ── canWatch helpers ── */
   function adCanWatchEgg() {
     return Date.now() >= adState.egg.cooldownUntil && adState.egg.used < AD_CONFIG.egg.maxPerCycle;
   }
@@ -237,7 +196,6 @@
     return Date.now() >= adState.upgrade.cooldownUntil && adState.upgrade.used < AD_CONFIG.upgrade.maxPerCycle;
   }
 
-  /* ── Central reward dispatcher ── */
   function adGrantReward(type, payload) {
     if (type === "egg") {
       adState.egg.used += 1;
@@ -275,7 +233,6 @@
     }
   }
 
-  /* ── Egg free open ── */
   function adOpenEggFree(eggId) {
     var egg = eggs.find(function (e) { return e.id === eggId; });
     if (!egg || state.hatching) return;
@@ -288,7 +245,6 @@
     showToast("🎁 Бесплатное яйцо за рекламу: " + egg.name);
   }
 
-  /* ── Upgrade free level ── */
   function adApplyUpgradeFree(upgradeId) {
     var upgrade = upgrades.find(function (u) { return u.id === upgradeId; });
     if (!upgrade) return;
@@ -311,7 +267,6 @@
     showToast("🎁 Бесплатное улучшение: " + upgrade.name + " ур. " + state.upgrades[upgradeId]);
   }
 
-  /* ── Buff activation ── */
   function adActivateBuff(buffId) {
     var buff = BUFF_TYPES.find(function (b) { return b.id === buffId; });
     if (!buff) return;
@@ -351,7 +306,6 @@
     return Math.max(0, Math.ceil((adState.activeBuff.expiresAt - Date.now()) / 1000));
   }
 
-  /* ── Buff offer loop (called from main game loop each second) ── */
   var _adLastSecond = 0;
   function adTickSecond() {
     var t = Math.floor(Date.now() / 1000);
@@ -371,19 +325,18 @@
       Math.floor(Math.random() * (AD_CONFIG.buff.offerIntervalMax - AD_CONFIG.buff.offerIntervalMin + 1));
   }
 
-  /* ── Ad request entry points (called from UI) ── */
   function adRequestEgg(eggId) {
     if (!adCanWatchEgg()) { showStackedToast("ad_egg_cd", "Реклама за яйцо недоступна — перезарядка"); playSound("deny"); return; }
     var egg = eggs.find(function (e) { return e.id === eggId; });
     if (!egg || !isEggUnlocked(egg)) { showStackedToast("egg_locked_ad_" + eggId, "Яйцо недоступно на этой стадии"); playSound("deny"); return; }
-    // Блокируем все кнопки яиц на время рекламы
+
     var adBtns = document.querySelectorAll("[data-ad-egg]");
     adBtns.forEach(function (b) { b.disabled = true; });
     showStackedToast("ad_loading", "Реклама загружается...");
     showRewardedAd(function (rewarded) {
-      // Разблокировка всегда, независимо от результата
+
       adBtns.forEach(function (b) { b.disabled = false; });
-      adUpdateCooldownDisplay(); // обновить состояние disabled по cooldown
+      adUpdateCooldownDisplay();
       if (!rewarded) { showStackedToast("ad_not_watched_egg", "Реклама не досмотрена — яйцо не выдано"); return; }
       adGrantReward("egg", { eggId: eggId });
     });
@@ -393,7 +346,7 @@
     if (!adCanWatchUpgrade()) { showStackedToast("ad_upg_cd", "Реклама за улучшение недоступна — перезарядка"); playSound("deny"); return; }
     var upgrade = upgrades.find(function (u) { return u.id === upgradeId; });
     if (!upgrade) { showToast("Улучшение не найдено"); return; }
-    // Блокируем все кнопки улучшений на время рекламы
+
     var adBtns = document.querySelectorAll("[data-ad-upgrade]");
     adBtns.forEach(function (b) { b.disabled = true; });
     showStackedToast("ad_loading", "Реклама загружается...");
@@ -420,7 +373,6 @@
     });
   }
 
-  /* ── UI: buff popup ── */
   function adShowBuffPopup(buff) {
     var el = adEls.buffPopup;
     if (!el) return;
@@ -433,7 +385,6 @@
     if (adEls.buffPopup) adEls.buffPopup.classList.add("ad-hidden");
   }
 
-  /* ── UI: active buff badge ── */
   function adRenderActiveBuff() {
     var el = adEls.activeBuff;
     if (!el) return;
@@ -446,7 +397,6 @@
     el.classList.remove("ad-hidden");
   }
 
-  /* ── UI: cooldown counters ── */
   function adUpdateCooldownDisplay() {
     adUpdateOneCounter("adEggCounter", "adEggCooldown", adState.egg, AD_CONFIG.egg);
     adUpdateOneCounter("adUpgradeCounter", "adUpgradeCooldown", adState.upgrade, AD_CONFIG.upgrade);
@@ -476,7 +426,6 @@
     adRenderActiveBuff();
   }
 
-  /* ── Persistence ── */
   var AD_SAVE_KEY = "brainrotAdStateV1";
 
   function adSaveState() {
@@ -492,13 +441,13 @@
       if (d.upgrade) Object.assign(adState.upgrade, d.upgrade);
       if (d.activeBuff && Date.now() < d.activeBuff.expiresAt) {
         adState.activeBuff = d.activeBuff;
-        // restore buff multipliers
+
         var bid = d.activeBuff.id;
         if (bid === "income2x")   state._adBuffIncome  = 2;
         if (bid === "petStats2x") state._adBuffPet     = 2;
         if (bid === "upgrade2x")  state._adBuffUpgrade = 2;
         if (bid === "passive2x")  state._adBuffPassive = 2;
-        // schedule expiry
+
         var msLeft = d.activeBuff.expiresAt - Date.now();
         setTimeout(function () {
           adClearBuffFields();
@@ -512,10 +461,9 @@
     } catch (e) {}
   }
 
-  /* ── HTML builder helpers for shop rendering ── */
   function adGetUpgradeAdBtn(upgradeId) {
     var can = adCanWatchUpgrade();
-    // П. 4.5.1: кнопка должна явно показывать что игрок получит за просмотр рекламы
+
     return '<button class="upgrade-ad-btn" type="button" data-ad-upgrade="' + upgradeId + '"' + (can ? '' : ' disabled') + '>📺 Реклама → бесплатный уровень</button>';
   }
 
@@ -533,11 +481,10 @@
     ].join("");
   }
 
-  /* ── DOM init for AdManager ── */
   function adInitDom() {
-    // Inject ad HTML into document
+
     var adHtml = [
-      // Buff offer popup
+
       '<div id="adBuffPopup" class="ad-hidden" role="dialog" aria-label="Рекламное предложение">',
         '<div class="ad-popup-header"><span>📺</span><span>Специальное предложение</span></div>',
         '<span id="adBuffIcon" class="ad-popup-icon">⚡</span>',
@@ -548,11 +495,11 @@
           '<button id="adBuffCancel" class="ad-cancel-btn" type="button">Отмена</button>',
         '</div>',
       '</div>',
-      // Active buff badge
+
       '<div id="adActiveBuff" class="ad-hidden" aria-live="polite">',
         '<span id="adActiveBuffText"></span>',
       '</div>',
-      // Ad sim overlay
+
       '<div id="adSimOverlay" class="ad-hidden" role="dialog" aria-modal="true">',
         '<div class="ad-sim-card">',
           '<span class="ad-sim-title">Просмотр рекламы</span>',
@@ -586,11 +533,6 @@
     adEls.simCancel     = document.getElementById("adSimCancel");
     adEls.simConfirm    = document.getElementById("adSimConfirm");
 
-    // Move #adActiveBuff directly to <body> so it is never inside a container
-    // that could create a new fixed-positioning containing block (e.g. one with
-    // a CSS transform or filter).  Also promote it to its own compositing layer
-    // via transform: translateZ(0) so the browser doesn't repaint it during the
-    // forced reflow that triggerFlash() causes (void el.offsetWidth).
     if (adEls.activeBuff && adEls.activeBuff.parentNode !== document.body) {
       document.body.appendChild(adEls.activeBuff);
     }
@@ -610,33 +552,12 @@
     });
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-     END AD MANAGER
-     ═══════════════════════════════════════════════════════════════ */
-
-  /* ═══════════════════════════════════════════════════════════════
-     REVIEW BONUS SYSTEM
-     ───────────────────────────────────────────────────────────────
-     Полный поток: кнопка → запрос отзыва (Yandex SDK canReview /
-     requestReview) → экран благодарности → fullscreen-реклама
-     (ysdk.adv.showFullscreenAdv) → выдача награды.
-
-     Защита от злоупотреблений:
-       reviewBonus.usedToday  — флаг "уже использовано сегодня"
-       reviewBonus.sessionUsed — флаг "уже использовано в сессии"
-       reviewBonus.cooldownUntil — timestamp снятия суточной блокировки
-
-     Наградa: фиксированный бонус к очкам (10 % от текущего дохода
-     за 60 с, но не менее 1000 очков). Выдаётся единожды за сессию
-     и единожды за календарный день.
-     ═══════════════════════════════════════════════════════════════ */
-
   var REVIEW_BONUS_SAVE_KEY = "brainrotReviewBonusV1";
 
   var reviewBonus = {
-    sessionUsed:   false,  // true = бонус уже получен в этой сессии
-    cooldownUntil: 0,      // timestamp следующего дневного сброса
-    lastClaimDay:  ""      // YYYY-MM-DD в локальном времени
+    sessionUsed:   false,
+    cooldownUntil: 0,
+    lastClaimDay:  ""
   };
 
   function rbTodayKey(date) {
@@ -668,7 +589,6 @@
     }
   }
 
-  /* ── Загрузить / сохранить состояние Review Bonus ── */
   function rbLoad() {
     try {
       var raw = localStorage.getItem(REVIEW_BONUS_SAVE_KEY);
@@ -695,7 +615,6 @@
     } catch (e) {}
   }
 
-  /* ── Можно ли получить бонус прямо сейчас? ── */
   function rbCanClaim() {
     rbNormalizeState();
     if (Date.now() < reviewBonus.cooldownUntil) return false;
@@ -703,30 +622,22 @@
     return true;
   }
 
-  /* ── Сколько секунд до снятия кулдауна ── */
   function rbCooldownSeconds() {
     return Math.max(0, Math.ceil((reviewBonus.cooldownUntil - Date.now()) / 1000));
   }
 
-  /* ── Размер награды: 10 % дохода за 60 с, минимум 1000 ── */
   function rbRewardAmount() {
     return Math.max(1000, Math.floor(state.income * 60 * 0.10));
   }
 
-  /* ══════════════════════════════════════════════════════════════
-     UI — HTML кнопки и модальных экранов
-     ══════════════════════════════════════════════════════════════ */
   function rbInjectUI() {
-    /* ── Кнопка уже в index.html (с классом rb-btn-gone) — просто вешаем listener ── */
+
     var btnEl = document.getElementById("reviewBonusBtn");
     if (btnEl && !btnEl.dataset.rbWired) {
       btnEl.dataset.rbWired = "1";
       btnEl.addEventListener("click", rbHandleClick);
     }
 
-    /* ── Таймер кулдауна — вставляем в top-panel (левая панель).
-          Когда скрыт: display:none — не занимает места.
-          Когда виден: flex-item, прижат к правому краю рядом с кнопкой звука. ── */
     if (!document.getElementById("rbCooldownBadge")) {
       var topPanel = document.querySelector(".top-panel");
       var soundBtn = document.getElementById("soundButton");
@@ -737,12 +648,11 @@
         timerEl.setAttribute("aria-live", "polite");
         timerEl.setAttribute("title", "Ежедневный бонус — следующий через:");
         timerEl.innerHTML = '<span class="rb-badge-icon">⭐</span><span id="rbCooldownText">24:00:00</span>';
-        /* Вставляем перед кнопкой звука — она остаётся последней */
+
         topPanel.insertBefore(timerEl, soundBtn);
       }
     }
 
-    /* ── Экран благодарности ── */
     if (!document.getElementById("rbThanksScreen")) {
       var thanksEl = document.createElement("div");
       thanksEl.id        = "rbThanksScreen";
@@ -759,7 +669,6 @@
       document.body.appendChild(thanksEl);
     }
 
-    /* ── Экран получения награды ── */
     if (!document.getElementById("rbRewardScreen")) {
       var rewardEl = document.createElement("div");
       rewardEl.id        = "rbRewardScreen";
@@ -778,11 +687,6 @@
       document.getElementById("rbRewardClose").addEventListener("click", rbCloseRewardScreen);
     }
 
-    /* ── Восстанавливаем правильное состояние кнопки без анимации.
-          rb-no-transition отключает все CSS transitions на один paint-цикл,
-          чтобы переход hidden→visible (или наоборот) был мгновенным при загрузке.
-          Двойной rAF гарантирует, что браузер завершил хотя бы один полный paint
-          перед тем, как transitions включатся обратно. ── */
     if (btnEl) btnEl.classList.add("rb-no-transition");
     rbUpdateButton();
     requestAnimationFrame(function () {
@@ -801,7 +705,7 @@
     rbNormalizeState();
 
     if (!rbCanClaim()) {
-      /* ── Кулдаун активен: плавно скрываем кнопку ── */
+
       if (btn && !btn.classList.contains("rb-btn-fading") && !btn.classList.contains("rb-btn-gone")) {
         btn.classList.add("rb-btn-fading");
         setTimeout(function () {
@@ -809,7 +713,6 @@
         }, 500);
       }
 
-      /* Обновляем текст таймера */
       var sec = rbCooldownSeconds();
       if (badgeText) {
         if (sec > 0) {
@@ -825,7 +728,6 @@
         }
       }
 
-      /* Показываем бейдж: сначала display:flex, потом opacity через rAF */
       if (badge && badge.classList.contains("rb-badge-hidden")) {
         badge.classList.remove("rb-badge-hidden");
         requestAnimationFrame(function () {
@@ -834,14 +736,13 @@
       }
 
     } else {
-      /* ── Кулдаун снят: возвращаем кнопку, прячем бейдж ── */
+
       if (btn) {
         btn.classList.remove("rb-btn-fading", "rb-btn-gone");
         btn.disabled = false;
         btn.querySelector(".rb-btn-text").textContent = "Бонус за отзыв";
       }
 
-      /* Скрываем бейдж: fade opacity, потом display:none */
       if (badge && !badge.classList.contains("rb-badge-hidden")) {
         badge.classList.remove("rb-badge-visible");
         setTimeout(function () {
@@ -850,10 +751,6 @@
       }
     }
   }
-
-  /* ══════════════════════════════════════════════════════════════
-     ОСНОВНОЙ ПОТОК
-     ══════════════════════════════════════════════════════════════ */
 
   function rbHandleClick() {
     if (!rbCanClaim()) {
@@ -866,44 +763,40 @@
       return;
     }
 
-    /* Шаг 1 — запрос отзыва через Yandex SDK */
     rbRequestReview();
   }
 
   function rbRequestReview() {
     if (ysdk && ysdk.feedback) {
-      /* Yandex SDK 2.x: проверяем canReview, потом requestReview */
+
       ysdk.feedback.canReview()
         .then(function (result) {
           if (result.value) {
-            /* Платформа разрешает запросить отзыв */
+
             showToast("Оставленный отзыв помогает улучшить игру ❤️");
             return ysdk.feedback.requestReview();
           } else {
-            /* canReview вернул false (уже оставлял, платформа не поддерживает) —
-               всё равно идём дальше к экрану благодарности */
+
             console.log("[RB] canReview false:", result.reason);
             return Promise.resolve({ feedbackSent: false });
           }
         })
         .then(function () {
-          /* Независимо от того, оставил ли игрок отзыв —
-             показываем экран благодарности и запускаем рекламу */
+
           rbShowThanksScreen();
         })
         .catch(function (err) {
           console.warn("[RB] feedback API error:", err);
-          /* При ошибке API тоже идём дальше — не блокируем игрока */
+
           rbShowThanksScreen();
         });
     } else {
-      /* SDK недоступен (локальная разработка) — пропускаем запрос отзыва */
+
       showToast("Оставленный отзыв помогает улучшить игру ❤️");
       rbShowThanksScreen();
     }
   }
 
-  /* Шаг 2 — экран благодарности (1.8 сек, затем реклама) */
   function rbShowThanksScreen() {
     var el = document.getElementById("rbThanksScreen");
     if (!el) return;
@@ -912,22 +805,21 @@
     el.classList.add("rb-visible");
 
     setTimeout(function () {
-      /* Шаг 3 — fullscreen реклама Yandex SDK */
+
       rbShowInterstitialAd(function (adShown) {
-        /* Реклама завершена (или не показалась) — скрываем экран благодарности */
+
         el.classList.remove("rb-visible");
         setTimeout(function () {
           el.classList.add("rb-hidden");
-          /* Шаг 4 — выдаём награду */
+
           rbGrantReward(adShown);
         }, 350);
       });
     }, 1800);
   }
 
-  /* Шаг 3 — Fullscreen / Interstitial реклама Yandex Games SDK */
   function rbShowInterstitialAd(callback) {
-    /* Единственный вызов; все защиты от дублирования внутри */
+
     var settled = false;
     function settle(shown) {
       if (settled) return;
@@ -945,8 +837,7 @@
             console.log("[RB] Fullscreen ad opened");
           },
           onClose: function (wasShown) {
-            /* wasShown=true — реклама показалась и закрылась;
-               wasShown=false — рекламы не было (лимит, ошибка сети) */
+
             settle(!!wasShown);
           },
           onError: function (e) {
@@ -960,12 +851,11 @@
         }
       });
     } else {
-      /* Dev-режим: симулируем задержку рекламы */
+
       setTimeout(function () { settle(true); }, 1200);
     }
   }
 
-  /* Шаг 4 — выдаём награду (только если поток завершён корректно) */
   function rbGrantReward(adWasShown) {
     reviewBonus.sessionUsed   = true;
     reviewBonus.lastClaimDay  = rbTodayKey();
@@ -977,11 +867,9 @@
     addPoints(amount);
     saveGame();
 
-    /* Показываем экран награды */
     var amountEl = document.getElementById("rbRewardAmount");
     if (amountEl) amountEl.textContent = "+" + formatNumber(amount) + " очков";
 
-    /* Меняем подпись под дневной цикл */
     var subEl = document.querySelector(".rb-reward-sub");
     if (subEl) subEl.textContent = "Спасибо за отзыв! Следующий дневной бонус появится после сброса таймера.";
 
@@ -1009,89 +897,56 @@
     setTimeout(function () { el.classList.add("rb-hidden"); }, 350);
   }
 
-  /* ── Инициализация системы ── */
   function rbInit() {
     rbLoad();
     rbInjectUI();
-    /* Тикаем каждую секунду — для точного обратного отсчёта в бейдже */
+
     setInterval(rbUpdateButton, 1000);
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-     END REVIEW BONUS SYSTEM
-     ═══════════════════════════════════════════════════════════════ */
-
-  /* ═══════════════════════════════════════════════════════════════
-     AUTO INTERSTITIAL SYSTEM
-     ───────────────────────────────────────────────────────────────
-     Показывает fullscreen interstitial каждые INTERSTITIAL_INTERVAL
-     секунд АКТИВНОГО геймплея. Таймер работает только когда нет
-     блокирующих состояний и вкладка видима.
-
-     Блокирующие состояния (таймер стоит):
-       · gamePaused (идёт любая реклама)
-       · document.hidden (вкладка свёрнута)
-       · state.hatching (анимация яйца)
-       · equippedModal открыт
-       · rebirthModal открыт
-       · rbThanksScreen / rbRewardScreen видимы
-       · bigAnnouncement показывается (эволюция / boss)
-       · isAdRunning (другая реклама в процессе)
-       · pendingDelay (реклама отложена — ждём стабильного момента)
-
-     Архитектура без setInterval:
-     aiTick(dt) вызывается прямо из loop() — точный dt без дрейфа.
-     ═══════════════════════════════════════════════════════════════ */
-
-  var INTERSTITIAL_INTERVAL = 10 * 60;  // секунды между показами (10 мин)
+  var INTERSTITIAL_INTERVAL = 10 * 60;
 
   var aiState = {
-    elapsed:      0,       // активное время (сек) с последнего показа
-    pending:      false,   // таймер сработал, ждём подходящего момента
-    pendingWait:  0,       // сколько секунд ждём уже в pending-режиме
-    lastShownAt:  0,       // timestamp последнего показа (мс)
-    running:      false    // флаг "система запущена"
+    elapsed:      0,
+    pending:      false,
+    pendingWait:  0,
+    lastShownAt:  0,
+    running:      false
   };
 
-  /* ── Проверяем: сейчас безопасный момент для показа рекламы? ── */
   function aiIsSafeToShow() {
-    // Другая реклама активна
+
     if (isAdRunning) return false;
-    // Игра на паузе (rewarded/fullscreen реклама)
+
     if (gamePaused) return false;
-    // Вкладка скрыта
+
     if (document.hidden) return false;
-    // Анимация вылупления яйца
+
     if (state.hatching) return false;
-    // Модальные окна открыты
+
     var equippedModal = document.getElementById("equippedModal");
     if (equippedModal && !equippedModal.classList.contains("hidden")) return false;
     var rebirthModal = document.getElementById("rebirthModal");
     if (rebirthModal && !rebirthModal.classList.contains("hidden")) return false;
-    // Review bonus экраны
+
     var rbThanks = document.getElementById("rbThanksScreen");
     if (rbThanks && !rbThanks.classList.contains("rb-hidden")) return false;
     var rbReward = document.getElementById("rbRewardScreen");
     if (rbReward && !rbReward.classList.contains("rb-hidden")) return false;
-    // Big announcement (эволюция, boss, перерождение)
+
     if (els.bigAnnouncement && !els.bigAnnouncement.classList.contains("hidden")) return false;
     return true;
   }
 
-  /* ── Таймер активного геймплея — вызывается из loop() ── */
   function aiTick(dt) {
     if (!aiState.running) return;
 
-    // Не тикаем в блокирующих состояниях
     if (isAdRunning || gamePaused || document.hidden || state.hatching) return;
 
-    // Накапливаем активное время
     aiState.elapsed += dt;
 
-    // Таймер ещё не достиг порога — ничего не делаем
     if (aiState.elapsed < INTERSTITIAL_INTERVAL && !aiState.pending) return;
 
-    // Порог достигнут — переходим в pending
     if (!aiState.pending) {
       aiState.pending     = true;
       aiState.pendingWait = 0;
@@ -1099,19 +954,16 @@
 
     aiState.pendingWait += dt;
 
-    // Проверяем безопасность момента
     if (!aiIsSafeToShow()) {
-      // Ждём не более 60 сек, потом всё равно пробуем
+
       if (aiState.pendingWait < 60) return;
     }
 
-    // Запускаем рекламу
     aiTrigger();
   }
 
-  /* ── Запуск interstitial ── */
   function aiTrigger() {
-    // Сбрасываем состояние сразу, чтобы не было двойного вызова
+
     aiState.elapsed      = 0;
     aiState.pending      = false;
     aiState.pendingWait  = 0;
@@ -1120,7 +972,6 @@
     aiShowAd();
   }
 
-  /* ── Реальный вызов Yandex SDK ── */
   function aiShowAd() {
     var settled = false;
 
@@ -1140,15 +991,14 @@
           },
           onClose: function (wasShown) {
             if (!wasShown) {
-              // Реклама не показалась (нет инвентаря, сеть упала)
-              // Сдвигаем следующий показ на 3 мин, чтобы не спамить
+
               aiState.elapsed = INTERSTITIAL_INTERVAL - 180;
             }
             settle();
           },
           onError: function (e) {
             console.error("[AI] Interstitial error:", e);
-            // При ошибке откатываем таймер на 5 мин вперёд
+
             aiState.elapsed = INTERSTITIAL_INTERVAL - 300;
             settle();
           },
@@ -1160,23 +1010,17 @@
         }
       });
     } else {
-      // SDK нет (локальная разработка) — просто снимаем паузу
+
       console.log("[AI] SDK не найден, пропускаем interstitial (dev-режим)");
       setTimeout(settle, 400);
     }
   }
 
-  /* ── Инициализация ── */
   function aiInit() {
     aiState.running = true;
-    // Если игрок только что вернулся и последний показ был давно —
-    // сдвигаем до половины интервала, чтобы не ударить сразу при старте
+
     aiState.elapsed = 0;
   }
-
-  /* ═══════════════════════════════════════════════════════════════
-     END AUTO INTERSTITIAL SYSTEM
-     ═══════════════════════════════════════════════════════════════ */
 
   var stages = [
     { need: 0, name: "Стадия 1: Странный Комочек", symbol: "?", toast: "Появился Странный Комочек!" },
@@ -1211,11 +1055,10 @@
     { need: 2.4e26, name: "Стадия 30: АБСОЛЮТНЫЙ ДЕМОН-ВЛАДЫКА", symbol: "∞ДМ", toast: "ФИНАЛЬНАЯ ФОРМА: Абсолютный Демон-Владыка!" }
   ];
 
-  // Стадии разблокировки фаз (0-based, т.е. stage 7 = стадия 8)
   var PHASE_UNLOCK_STAGES = { 1: 0, 2: 7, 3: 14, 4: 23 };
 
   var upgrades = [
-    // === ФАЗА 1: Ранняя игра (стадии 1–8) ===
+
     { id: "fingers",     phase: 1, icon: "☝",  name: "Лучшие Пальцы",         desc: "Клики становятся мясистее.",                          baseCost: 15,          costGrow: 1.25, click: 0.25 },
     { id: "mouse",       phase: 1, icon: "🖱",  name: "Геймерская Мышь",        desc: "RGB добавляет уверенности.",                          baseCost: 80,          costGrow: 1.28, click: 1 },
     { id: "keyboard",    phase: 1, icon: "⌨",   name: "Клавиатура Паники",      desc: "Каждая кнопка думает за тебя.",                       baseCost: 210,         costGrow: 1.30, click: 2 },
@@ -1224,7 +1067,7 @@
     { id: "memeFarm",    phase: 1, icon: "📱",  name: "Ферма Мемов",            desc: "Генерирует смешнявки каждую секунду.",                 baseCost: 2500,        costGrow: 1.35, income: 8 },
     { id: "aiFarm",      phase: 1, icon: "🤖",  name: "ИИ-Ферма",              desc: "Роботы выращивают абсурд.",                            baseCost: 7200,        costGrow: 1.37, income: 28 },
     { id: "reactor",     phase: 1, icon: "☢",   name: "Мемный Реактор",         desc: "Светится подозрительно, но эффективно.",              baseCost: 18000,       costGrow: 1.38, income: 85 },
-    // === ФАЗА 2: Средняя игра (стадии 8–14) — разблокируется на стадии 8 ===
+
     { id: "dopamine",    phase: 2, icon: "⚡",  name: "Бесконечный Дофамин",    desc: "Комбо растёт бодрее.",                                baseCost: 42000,       costGrow: 1.40, combo: 0.006 },
     { id: "crit",        phase: 2, icon: "💥",  name: "Критический Кринж",      desc: "Чаще выпадают мощные клики.",                         baseCost: 90000,       costGrow: 1.41, crit: 0.003 },
     { id: "quantum",     phase: 2, icon: "🌀",  name: "Квантовый Брейнрот",     desc: "Все доходы слегка ломают реальность.",                baseCost: 220000,      costGrow: 1.43, multiplier: 0.035, maxLevel: 15 },
@@ -1234,7 +1077,7 @@
     { id: "neuralnet",   phase: 2, icon: "🔗",  name: "Нейросеть Хаоса",        desc: "Связывает клики с пассивным доходом.",                baseCost: 14000000,    costGrow: 1.51, income: 6000, click: 85 },
     { id: "viralloop",   phase: 2, icon: "🔁",  name: "Вирусная Петля",         desc: "Каждый мем порождает новый мем.",                     baseCost: 48000000,    costGrow: 1.52, income: 24000, combo: 0.004 },
     { id: "memegod",     phase: 2, icon: "🌐",  name: "Бог Мемов",              desc: "Интернет работает на тебя.",                          baseCost: 180000000,   costGrow: 1.53, income: 90000, multiplier: 0.04, maxLevel: 12 },
-    // === ФАЗА 3: Поздняя средняя игра (стадии 15–23) — разблокируется на стадии 15 ===
+
     { id: "synapse",     phase: 3, icon: "🫀",  name: "Синаптический Взрыв",    desc: "Крит и комбо усиливают друг друга.",                  baseCost: 900000000,    costGrow: 1.55, crit: 0.005, combo: 0.008, multiplier: 0.06, maxLevel: 10 },
     { id: "deepcringe",  phase: 3, icon: "😵",  name: "Глубокий Кринж-Поток",   desc: "Пассивный доход начинает самоусиливаться.",           baseCost: 4500000000,   costGrow: 1.56, income: 1200000000, multiplier: 0.07, maxLevel: 10 },
     { id: "clickfusion",  phase: 3, icon: "🖐",  name: "Клик-Фузия",             desc: "Каждый клик чуть умножает сам себя.",                 baseCost: 22000000000,  costGrow: 1.57, clickMult: 0.06, multiplier: 0.05, maxLevel: 10 },
@@ -1242,7 +1085,7 @@
     { id: "doomscroll",  phase: 3, icon: "📜",  name: "Бесконечный Думскролл",  desc: "Чем дольше играешь, тем больше зарабатываешь.",      baseCost: 600000000000, costGrow: 1.59, income: 8000000000000, combo: 0.01, multiplier: 0.08, maxLevel: 8 },
     { id: "brainworm",   phase: 3, icon: "🪱",  name: "Мозговой Червь",         desc: "Разъедает реальность, оставляя только очки.",         baseCost: 3500000000000, costGrow: 1.60, multiplier: 0.12, income: 60000000000000, maxLevel: 8 },
     { id: "voidpulse",   phase: 3, icon: "🕳",  name: "Пульс Пустоты",          desc: "Каждый тик пустоты приносит значительный доход.",     baseCost: 22000000000000, costGrow: 1.61, income: 600000000000000, multiplier: 0.14, clickMult: 0.07, maxLevel: 8 },
-    // === ФАЗА 4: Финальная игра (стадии 24–30) — разблокируется на стадии 24 ===
+
     { id: "brainsing",   phase: 4, icon: "🌌",  name: "Брейнрот-Сингулярность", desc: "Пассивный доход масштабируется мощно.",               baseCost: 2e14,         costGrow: 1.63, income: 8000000000000000, multiplier: 0.28, maxLevel: 6 },
     { id: "clickloop",   phase: 4, icon: "♾",   name: "Бесконечная Клик-Петля", desc: "Клики генерируют множители, множители генерируют клики.", baseCost: 1.8e15,    costGrow: 1.64, clickMult: 0.14, combo: 0.015, multiplier: 0.18, maxLevel: 6 },
     { id: "cosmicmult",  phase: 4, icon: "✨",  name: "Космический Мультипликатор", desc: "Умножает все источники дохода глобально.",        baseCost: 1.6e16,       costGrow: 1.65, multiplier: 0.38, income: 90000000000000000, maxLevel: 5 },
@@ -1266,11 +1109,6 @@
     demonic: { name: "Демонический", className: "rarity-demonic", color: "#ff2200" }
   };
 
-  /* ══════════════════════════════════════════════════════════════
-     PET LEVELING SYSTEM
-     ══════════════════════════════════════════════════════════════ */
-
-  // Rarity → max level
   var PET_MAX_LEVELS = {
     common: 10, uncommon: 12, rare: 15,
     epic: 18, legendary: 20, mythic: 22,
@@ -1278,7 +1116,6 @@
     transcendent: 30, demonic: 30
   };
 
-  // Rarity → stat multiplier added per level (fraction of base stats)
   var PET_SCALE_PER_LEVEL = {
     common: 0.038, uncommon: 0.042, rare: 0.046,
     epic: 0.052, legendary: 0.056, mythic: 0.06,
@@ -1286,7 +1123,6 @@
     transcendent: 0.072, demonic: 0.072
   };
 
-  // Rarity → cost multiplier on top of base formula
   var PET_RARITY_COST_MULT = {
     common: 1, uncommon: 1.4, rare: 2,
     epic: 3.5, legendary: 6, mythic: 10,
@@ -1312,12 +1148,12 @@
     var level = getPetLevel(pet.id);
     var maxLevel = getPetMaxLevel(pet);
     if (level >= maxLevel) return Infinity;
-    // Base cost: ~12s worth of the pet's income contribution, scaled by rarity
+
     var incomeBase = (pet.income || 0) + (pet.autoclick || 0) * 50;
     var rarityMult = PET_RARITY_COST_MULT[pet.rarity] || 1;
     var minimum = rarityMult * 50;
     var baseCost = Math.max(minimum, incomeBase * 12 * rarityMult);
-    // Progressive cost: grows 55% per level
+
     return Math.floor(baseCost * Math.pow(1.55, level - 1));
   }
 
@@ -1362,44 +1198,40 @@
     saveGame();
   }
 
-  /* ══════════════════════════════════════════════════════════════
-     END PET LEVELING SYSTEM
-     ══════════════════════════════════════════════════════════════ */
-
   var pets = [
-    // ── Tier 1: Дешёвое яйцо (стадия 2) ──
+
     { id: "crumb",        face: "•_•",   name: "Крошка Кринжа",              rarity: "common",       income: 0.6,           combo: 0.001 },
     { id: "noodle",       face: "≈_≈",   name: "Лапшичный Мыслитель",        rarity: "uncommon",     income: 2,             crit: 0.001 },
     { id: "sock",         face: "⊙▂⊙",  name: "Носок Предсказатель",         rarity: "uncommon",     income: 4,             autoclick: 0.1 },
-    // ── Tier 2: Странное яйцо (стадия 4) ──
+
     { id: "pickle",       face: "ಠ_ಠ",   name: "Огурец Паники",              rarity: "common",       income: 8,             combo: 0.002 },
     { id: "wifi",         face: "≋_≋",   name: "Вайфайный Пупс",             rarity: "uncommon",     income: 18,            crit: 0.002 },
     { id: "teapot",       face: "◉_◉",   name: "Чайник Бессмыслицы",         rarity: "rare",         income: 55,            autoclick: 0.35 },
-    // ── Tier 3: Глючное яйцо (стадия 6) ──
+
     { id: "pixel",        face: "▣_▣",   name: "Пиксельный Визгун",          rarity: "uncommon",     income: 80,            combo: 0.005 },
     { id: "cursor",       face: "↖_↗",   name: "Курсор Судьбы",              rarity: "rare",         income: 280,           crit: 0.005 },
     { id: "portal",       face: "◌_◌",   name: "Портальная Булочка",         rarity: "epic",         income: 900,           autoclick: 1.2 },
-    // ── Tier 4: Космическое яйцо (стадия 8) ──
+
     { id: "moon",         face: "☾_☽",   name: "Лунный Бубнитель",           rarity: "rare",         income: 1800,          combo: 0.009 },
     { id: "crown",        face: "♛_♛",   name: "Король Микроволн",           rarity: "epic",         income: 6000,          crit: 0.009 },
     { id: "sun",          face: "☀_☀",   name: "Солнечный Сырник",           rarity: "legendary",    income: 22000,         autoclick: 4,          incomeMult: 0.012 },
-    // ── Tier 5: Реакторное яйцо (стадия 10) ──
+
     { id: "antenna",      face: "⌁_⌁",   name: "Антенна Хихиканья",          rarity: "rare",         income: 620000,        crit: 0.006,           incomeMult: 0.018 },
     { id: "mixer",        face: "◐_◑",   name: "Блендер Мыслей",             rarity: "epic",         income: 2400000,       combo: 0.014,          autoclick: 7 },
     { id: "idol",         face: "◆_◆",   name: "Золотой Болванчик",          rarity: "legendary",    income: 9000000,       incomeMult: 0.038 },
-    // ── Tier 6: Королевское яйцо (стадия 13) ──
+
     { id: "clock",        face: "◷_◶",   name: "Часы Нервного Тика",         rarity: "rare",         income: 60000000,      autoclick: 18 },
     { id: "drama",        face: "ಥ_ಥ",   name: "Драма-Глаз",                 rarity: "epic",         income: 210000000,     crit: 0.015,           combo: 0.012 },
     { id: "throne",       face: "♚_♚",   name: "Тронный Брейнрот",           rarity: "legendary",    income: 720000000,     incomeMult: 0.055 },
-    // ── Tier 7: Пустотное яйцо (стадия 16) ──
+
     { id: "cubelet",      face: "▤_▥",   name: "Кубик Нелогики",             rarity: "epic",         income: 6000000000,    autoclick: 45,         combo: 0.018 },
     { id: "angel",        face: "✦_✦",   name: "Ангел Абсурда",              rarity: "legendary",    income: 28000000000,   crit: 0.022,           incomeMult: 0.07 },
     { id: "voidling",     face: "●_●",   name: "Пустотный Малыш",            rarity: "mythic",       income: 130000000000,  combo: 0.038,          autoclick: 90,         incomeMult: 0.09 },
-    // ── Tier 8: Неоновое яйцо (стадия 19) ──
+
     { id: "neon",         face: "▰_▰",   name: "Неоновый Скример",           rarity: "epic",         income: 960000000000,  crit: 0.02 },
     { id: "kingbyte",     face: "K_B",   name: "Король Байтокринжа",         rarity: "legendary",    income: 5200000000000, autoclick: 260,        incomeMult: 0.08 },
     { id: "mythsignal",   face: "∞_∞",   name: "Мифический Сигнал",          rarity: "mythic",       income: 26000000000000, combo: 0.048,         crit: 0.032,           incomeMult: 0.12 },
-    // ── Tier 9: Запрещённое яйцо (стадия 22) ──
+
     { id: "glitch",       face: "▓_▒",   name: "Глючный Абсолют",            rarity: "epic",         income: 120000000000000, combo: 0.028,        autoclick: 480 },
     { id: "oracle",       face: "👁",    name: "Оракул Дофамина",            rarity: "legendary",    income: 480000000000000, crit: 0.032,          autoclick: 1800,       incomeMult: 0.10 },
     { id: "redacted",     face: "?!",    name: "Запрещённый Шум",            rarity: "mythic",       income: 2200000000000000, combo: 0.062,        crit: 0.045,           autoclick: 7200,       incomeMult: 0.17 },
@@ -1407,7 +1239,7 @@
     { id: "divinebell",   face: "✧_✧",   name: "Божественный Колокольчик",   rarity: "divine",       income: 3.2e16,        crit: 0.058,           incomeMult: 0.16,      jackpotBoost: 0.003 },
     { id: "cosmicmouth",  face: "★_★",   name: "Космический Рот Шума",       rarity: "cosmic",       income: 1.2e17,        crit: 0.072,           combo: 0.10,           incomeMult: 0.24,      jackpotBoost: 0.005 },
     { id: "transglitch",  face: "ЖЖЖ",   name: "Трансцендентный Глитч",      rarity: "transcendent", income: 4.8e17,        crit: 0.09,            combo: 0.14,           incomeMult: 0.36,      duplicate: 0.045,      jackpotBoost: 0.007 },
-    // ── Tier 10: Омега-яйцо (стадия 23) ──
+
     { id: "finalspark",   face: "✺_✺",   name: "Финальная Искра",            rarity: "legendary",    income: 180000000000000000, autoclick: 600,    crit: 0.024 },
     { id: "apocalypse",   face: "!!!",   name: "Апокалипсис Мемов",          rarity: "mythic",       income: 1.1e18,        combo: 0.055,          crit: 0.038,           incomeMult: 0.14 },
     { id: "overbrain",    face: "Ω_Ω",   name: "Сверхбрейнрот Омега",        rarity: "mythic",       income: 6e18,          autoclick: 1800,       combo: 0.068,          incomeMult: 0.19 },
@@ -1415,7 +1247,7 @@
     { id: "divinehand",   face: "☼_☼",   name: "Святая Ладонь Бонка",        rarity: "divine",       income: 9.6e19,        autoclick: 4800,       combo: 0.09,           duplicate: 0.024 },
     { id: "galaxyeye",    face: "◎_◎",   name: "Галактический Глаз Повтора", rarity: "cosmic",       income: 3.6e20,        autoclick: 12000,      duplicate: 0.036,      passiveCombo: 0.022 },
     { id: "beyondbrain",  face: "Ω!Ω",   name: "Брейнрот За Пределом",       rarity: "transcendent", income: 1.44e21,       autoclick: 36000,      combo: 0.18,           incomeMult: 0.45,      duplicate: 0.06,       passiveCombo: 0.036 },
-    // ── Tier 11: Инфернальное яйцо (стадия 25) ──
+
     { id: "chaoscore",    face: "◈_◈",   name: "Ядро Хаоса",                 rarity: "epic",         income: 5e21,          combo: 0.08,           autoclick: 180000 },
     { id: "demonlord",    face: "⛧_⛧",   name: "Демонический Владыка",       rarity: "mythic",       income: 3.5e22,        combo: 0.078,          crit: 0.052,           autoclick: 60000,      incomeMult: 0.22 },
     { id: "infernalecho", face: "ψ_ψ",   name: "Адское Эхо",                 rarity: "mythic",       income: 8e22,          autoclick: 120000,     combo: 0.065,          incomeMult: 0.17 },
@@ -1423,7 +1255,7 @@
     { id: "demonseraph",  face: "✞_✞",   name: "Демонический Серафим",       rarity: "divine",       income: 1.28e24,       crit: 0.076,           incomeMult: 0.28,      jackpotBoost: 0.006,   duplicate: 0.028 },
     { id: "abysswalker",  face: "◬_◬",   name: "Странник Бездны",            rarity: "cosmic",       income: 5.1e24,        combo: 0.14,           crit: 0.086,           autoclick: 600000,     incomeMult: 0.34,      jackpotBoost: 0.008 },
     { id: "finaldemongod",face: "Ω⛧Ω",  name: "Финальный Бог Демонов",      rarity: "transcendent", income: 2.04e25,       crit: 0.11,            combo: 0.22,           incomeMult: 0.65,      duplicate: 0.09,       autoclick: 2400000,    passiveCombo: 0.055,   jackpotBoost: 0.009 },
-    // ── Tier 12: Абсолютное яйцо (стадия 28) ──
+
     { id: "voidthrone",   face: "▼_▼",   name: "Трон Пустоты",               rarity: "legendary",    income: 8.16e25,       autoclick: 9600000,    incomeMult: 0.18,      crit: 0.032 },
     { id: "hellsovereign",face: "⛦_⛦",  name: "Владыка Адского Пламени",     rarity: "demonic",      income: 3.26e26,       crit: 0.14,            combo: 0.30,           incomeMult: 0.90,      duplicate: 0.11,       autoclick: 36000000,   passiveCombo: 0.08,    jackpotBoost: 0.012 },
     { id: "voidemperor",  face: "҉_҉",   name: "Император Вечной Бездны",     rarity: "demonic",      income: 1.3e27,        crit: 0.17,            combo: 0.40,           incomeMult: 1.40,      duplicate: 0.14,       autoclick: 180000000,  passiveCombo: 0.11,    jackpotBoost: 0.017 }
@@ -1453,27 +1285,14 @@
   var randomEventTimer = 18;
   var activePetRenderKey = "";
 
-  /* ═══════════════════════════════════════════════════════════════
-     YANDEX GAMES SDK — инициализация
-     Инициализируем SDK первым делом; игра стартует только после
-     успешного получения объекта ysdk.  Если SDK недоступен
-     (локальная разработка, сеть упала) — падаем в graceful-режим
-     и запускаем игру без облачных фич.
-     ═══════════════════════════════════════════════════════════════ */
+  var ysdk   = null;
+  var yplayer = null;
 
-  var ysdk   = null;   // Yandex Games SDK instance
-  var yplayer = null;  // Player object (для облачных сохранений)
-
-  /* Флаг: использовать ли облачные сохранения.
-     true  — PlayerData API доступен (авторизованный игрок).
-     false — fallback на localStorage.                          */
   var useCloudSave = false;
 
-  /* Запускаем инициализацию SDK сразу при парсинге скрипта.
-     Игра ждёт промиса и стартует внутри .then/.catch.         */
   (function bootWithSdk() {
     if (typeof YaGames === "undefined") {
-      // SDK не загружен (локальная разработка)
+
       console.warn("[YaSDK] YaGames не найден — запуск без SDK");
       document.addEventListener("DOMContentLoaded", init);
       return;
@@ -1484,19 +1303,15 @@
         ysdk = sdk;
         console.log("[YaSDK] SDK инициализирован");
 
-        // Сообщаем Яндексу, что игра готова к показу
         if (ysdk.features && ysdk.features.LoadingAPI) {
           ysdk.features.LoadingAPI.ready();
         }
 
-        // П. 2.14: автоопределение языка через SDK (рекомендуется Яндексом)
-        // Игра русскоязычная, но логируем язык для будущей локализации
         try {
           var lang = ysdk.environment && ysdk.environment.i18n && ysdk.environment.i18n.lang;
           if (lang) console.log("[YaSDK] Язык игрока:", lang);
-        } catch (e) { /* некритично */ }
+        } catch (e) {   }
 
-        // Пробуем получить объект игрока для облачных сохранений
         return ysdk.getPlayer({ scopes: false });
       })
       .then(function (player) {
@@ -1505,12 +1320,12 @@
         console.log("[YaSDK] Игрок получен, облачные сохранения активны");
       })
       .catch(function (err) {
-        // Игрок не авторизован или getPlayer упал — не критично
+
         console.warn("[YaSDK] getPlayer недоступен, используем localStorage:", err);
         useCloudSave = false;
       })
       .finally(function () {
-        // В любом случае запускаем игру
+
         if (document.readyState === "loading") {
           document.addEventListener("DOMContentLoaded", init);
         } else {
@@ -1519,26 +1334,16 @@
       });
   })();
 
-  /* ═══════════════════════════════════════════════════════════════
-     PERIODIC INVITE BONUS SYSTEM
-     Каждые 20 минут активного геймплея показывает кнопку
-     «Пригласить друга за бонус» на 30 секунд.
-     Таймер паузируется при неактивной вкладке, рекламе, оверлеях.
-     Награда: единовременный бонус очками (5-минутный доход).
-     Нет рекламы. Нет принуждения.
-     ═══════════════════════════════════════════════════════════════ */
-
-  var INVITE_INTERVAL   = 20 * 60;    // секунды активного геймплея между показами
-  var INVITE_SHOW_SECS  = 30;        // сколько секунд кнопка висит на экране
+  var INVITE_INTERVAL   = 20 * 60;
+  var INVITE_SHOW_SECS  = 30;
 
   var inviteState = {
-    elapsed:   0,       // активное время с последнего показа/сброса
-    visible:   false,   // кнопка сейчас на экране
-    hideTimer: null,    // setTimeout для автоскрытия
+    elapsed:   0,
+    visible:   false,
+    hideTimer: null,
     running:   false
   };
 
-  /* ── Блокирующие состояния (те же что у aiIsSafeToShow) ── */
   function inviteCanTick() {
     if (!inviteState.running) return false;
     if (gamePaused)           return false;
@@ -1548,10 +1353,9 @@
     return true;
   }
 
-  /* ── Вызывается из loop() каждый кадр ── */
   function inviteTick(dt) {
     if (!inviteCanTick()) return;
-    if (inviteState.visible) return;   // кнопка уже видна — не накапливаем
+    if (inviteState.visible) return;
     inviteState.elapsed += dt;
     if (inviteState.elapsed >= INVITE_INTERVAL) {
       inviteState.elapsed = 0;
@@ -1559,57 +1363,52 @@
     }
   }
 
-  /* ── Показать кнопку ── */
   function inviteShowButton() {
-    if (inviteState.visible) return;          // anti-duplicate guard
+    if (inviteState.visible) return;
     var btn = document.getElementById("inviteOfferBtn");
     if (!btn) return;
 
     inviteState.visible = true;
     btn.classList.remove("invite-hidden");
-    // rAF → класс visible для плавного fade-in
+
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         btn.classList.add("invite-visible");
       });
     });
 
-    // Автоскрытие через INVITE_SHOW_SECS
     if (inviteState.hideTimer) clearTimeout(inviteState.hideTimer);
     inviteState.hideTimer = setTimeout(function () {
       inviteHideButton(false);
     }, INVITE_SHOW_SECS * 1000);
   }
 
-  /* ── Скрыть кнопку ── */
   function inviteHideButton(clicked) {
     if (inviteState.hideTimer) { clearTimeout(inviteState.hideTimer); inviteState.hideTimer = null; }
     var btn = document.getElementById("inviteOfferBtn");
     if (!btn) return;
 
     btn.classList.remove("invite-visible");
-    // После transition удаляем из потока
+
     setTimeout(function () {
       btn.classList.add("invite-hidden");
       inviteState.visible = false;
     }, 400);
 
     if (!clicked) {
-      // Игрок не кликнул — сбрасываем таймер, ждём следующего цикла
+
       inviteState.elapsed = 0;
     }
   }
 
-  /* ── Клик по кнопке: открываем шеринг ── */
   function inviteHandleClick() {
     inviteHideButton(true);
-    inviteState.elapsed = 0;   // сбросить таймер независимо от результата
+    inviteState.elapsed = 0;
 
     var shareUrl   = (typeof location !== "undefined") ? location.href : "https://yandex.ru/games/";
     var shareTitle = "Brainrot Evolution Clicker";
     var shareText  = "Играю в Brainrot Evolution Clicker — засасывает с первого клика! Присоединяйся 🧠";
 
-    /* Попытка 1: Yandex Games SDK shortcut/environment share */
     if (ysdk && ysdk.shortcut && typeof ysdk.shortcut.canShowPrompt === "function") {
       ysdk.shortcut.canShowPrompt().then(function (result) {
         if (result && result.canShow) {
@@ -1625,19 +1424,16 @@
       return;
     }
 
-    /* Попытка 2: Web Share API (мобильный браузер, Яндекс Браузер) */
     if (navigator.share) {
       navigator.share({ title: shareTitle, text: shareText, url: shareUrl })
         .then(function () { inviteGrantReward(); })
-        .catch(function () { /* пользователь отменил — без награды */ });
+        .catch(function () {   });
       return;
     }
 
-    /* Попытка 3: копируем ссылку в буфер и выдаём награду */
     inviteFallbackShare(shareText, shareUrl);
   }
 
-  /* ── Fallback: копируем ссылку, показываем тост, выдаём награду ── */
   function inviteFallbackShare(text, url) {
     var combined = text + "\n" + url;
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1652,22 +1448,19 @@
     }
   }
 
-  /* ── Последний fallback: prompt с текстом для ручного копирования ── */
   function inviteManualCopyPrompt(text) {
     try { window.prompt("Скопируй и отправь другу:", text); } catch (e) {}
     inviteGrantReward();
   }
 
-  /* ── Выдача награды ── */
   function inviteGrantReward() {
-    // Бонус = 5 минут текущего пассивного дохода (минимум 50 очков)
+
     var bonus = Math.max(50, Math.round(state.income * 300));
     addPoints(bonus);
     showToast("🎉 Спасибо за приглашение! +" + formatNumber(bonus) + " брейнрот-очков");
     playSound("evolve");
   }
 
-  /* ── Инъекция кнопки в DOM ── */
   function inviteInitDom() {
     var btn = document.createElement("button");
     btn.id        = "inviteOfferBtn";
@@ -1681,15 +1474,10 @@
     document.body.appendChild(btn);
   }
 
-  /* ── Инициализация ── */
   function inviteInit() {
     inviteInitDom();
     inviteState.running = true;
   }
-
-  /* ═══════════════════════════════════════════════════════════════
-     END PERIODIC INVITE BONUS SYSTEM
-     ═══════════════════════════════════════════════════════════════ */
 
   function init() {
     cacheElements();
@@ -1703,8 +1491,7 @@
     aiInit();
     inviteInit();
     injectAutoClickerButton();
-    // loadGame() запускает асинхронную цепочку; renderShop/updateUi
-    // вызываются внутри _postLoadSetup() после получения данных.
+
     loadGame();
     requestAnimationFrame(loop);
     setInterval(saveGame, 10000);
@@ -1754,7 +1541,6 @@
     els.equippedModalClose = document.getElementById("equippedModalClose");
     els.equippedModalBody = document.getElementById("equippedModalBody");
 
-    // If button/modal aren't in the HTML yet, inject them now
     if (!els.equippedPetsBtn) {
       injectEquippedPetsUI();
       els.equippedPetsBtn     = document.getElementById("equippedPetsBtn");
@@ -1770,7 +1556,7 @@
   }
 
   function injectEquippedPetsUI() {
-    // Find the Питомец article inside .bonus-row and append button there
+
     var petArticle = null;
     var bonusRow = document.querySelector(".bonus-row");
     if (bonusRow) {
@@ -1789,7 +1575,6 @@
       petArticle.appendChild(btn);
     }
 
-    // Inject rebirth stat card into bonus-row (before pet article)
     if (bonusRow && !document.getElementById("rebirthStatText")) {
       var rebirthArticle = document.createElement("article");
       rebirthArticle.innerHTML = '<span>Перерождения</span><strong id="rebirthStatText">нет</strong>';
@@ -1798,11 +1583,10 @@
       } else {
         bonusRow.appendChild(rebirthArticle);
       }
-      // Expand grid to fit 5 columns
+
       bonusRow.classList.add("bonus-row-cols-5");
     }
 
-    // Inject rarity badge into stage name span
     var stageNameEl = document.getElementById("stageName");
     if (stageNameEl && !document.getElementById("stageRarityBadge")) {
       var badge = document.createElement("span");
@@ -1812,7 +1596,6 @@
       stageNameEl.appendChild(badge);
     }
 
-    // Inject rebirth button under stage progress bar (opens modal, does NOT perform rebirth directly)
     if (!document.getElementById("rebirthBtn")) {
       var stagePanel = document.querySelector(".stage-panel");
       if (stagePanel) {
@@ -1827,13 +1610,11 @@
         rebirthBar.innerHTML = '<button class="rebirth-btn rebirth-open-btn" id="rebirthBtn" type="button" disabled>⭕ Путь Перерождений</button>';
         actionsRow.appendChild(rebirthBar);
 
-        // Bind click → open modal
         var rebirthBtnEl = rebirthBar.querySelector("#rebirthBtn");
         if (rebirthBtnEl) rebirthBtnEl.addEventListener("click", openRebirthModal);
       }
     }
 
-    // Inject equipped pets modal into body
     var wrapperPets = document.createElement("div");
     wrapperPets.innerHTML = [
       '<div class="equipped-modal-backdrop hidden" id="equippedModal" aria-modal="true" role="dialog" aria-label="Одетые питомцы">',
@@ -1851,7 +1632,6 @@
     ].join("");
     document.body.appendChild(wrapperPets.firstElementChild);
 
-    // Inject rebirth modal into body
     var wrapperRebirth = document.createElement("div");
     wrapperRebirth.innerHTML = [
       '<div class="rebirth-modal-backdrop hidden" id="rebirthModal" aria-modal="true" role="dialog" aria-label="Путь Перерождений">',
@@ -1892,15 +1672,13 @@
   function bindEvents() {
     registerAudioUnlockHandlers();
 
-    // П. 1.6.1.8 / 1.6.2.7: запрет контекстного меню на игровом поле
-    // (лонгтап / правая кнопка мыши не должны открывать системное меню)
     document.getElementById("gameShell").addEventListener("contextmenu", function (e) {
       e.preventDefault();
     });
 
     els.creatureButton.addEventListener("pointerdown", function (event) {
       event.preventDefault();
-      ensureAudio(); // must be called directly inside a user gesture handler
+      ensureAudio();
       handleCreatureClick(event.clientX, event.clientY);
     });
 
@@ -1967,13 +1745,11 @@
       saveGame();
     });
 
-    // П. 1.3: при сворачивании страницы звук останавливается (требование Яндекс Игр)
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) {
         saveGame();
       } else {
-        // Сбрасываем lastTick чтобы первый кадр после возврата имел dt=0
-        // и не спровоцировал накопленный игровой тик
+
         lastTick = performance.now();
       }
     });
@@ -2005,7 +1781,6 @@
       if (event.target === els.equippedModal) closeEquippedModal();
     });
 
-    // Rebirth modal wiring (elements injected by injectEquippedPetsUI)
     var rebirthModalEl = document.getElementById("rebirthModal");
     var rebirthModalCloseEl = document.getElementById("rebirthModalClose");
     var rebirthActionBtnEl = document.getElementById("rebirthActionBtn");
@@ -2106,7 +1881,7 @@
     var existing = _upgradeToasts[id];
 
     if (existing && existing.el && existing.el.parentNode) {
-      // Stack: increment count, update text, reset timer
+
       existing.count += 1;
       existing.el.textContent = "Куплено: " + upgrade.name + " ур. " + level + " · " + existing.count + "x";
       clearTimeout(existing.timer);
@@ -2115,7 +1890,7 @@
         delete _upgradeToasts[id];
       }, 3000);
     } else {
-      // First purchase — create new toast
+
       var toast = document.createElement("div");
       toast.className = "toast";
       toast.textContent = "Куплено: " + upgrade.name + " ур. " + level;
@@ -2129,7 +1904,7 @@
     }
   }
 
-  var REBIRTH_STAGES = [9, 14, 19, 24, 29]; // stage indices (0-based): стадии 10,15,20,25,30
+  var REBIRTH_STAGES = [9, 14, 19, 24, 29];
 
   function getRebirthUnlockStage() {
     if (state.rebirths >= 5) return null;
@@ -2148,7 +1923,6 @@
     var newRebirths = state.rebirths + 1;
     var sound = state.sound;
 
-    // Полный сброс
     state.points = 0;
     state.totalPoints = 0;
     state.clickPower = 1;
@@ -2183,7 +1957,6 @@
     state._adBuffPassive = 1;
     state.sound = sound;
 
-    // Устанавливаем перерождение ПОСЛЕ сброса
     state.rebirths = newRebirths;
 
     recalculateStats();
@@ -2220,7 +1993,6 @@
     var ready = canRebirth();
     var allDone = rebirths >= 5;
 
-    // Stage-panel open button: always enabled unless max rebirths
     if (stageBtn) {
       if (allDone) {
         stageBtn.textContent = "⭕ Путь Перерождений ✦";
@@ -2237,7 +2009,6 @@
       }
     }
 
-    // Modal action button: triggers actual rebirth
     if (actionBtn) {
       if (allDone) {
         actionBtn.disabled = true;
@@ -2255,7 +2026,6 @@
     renderRebirthTrack();
   }
 
-  /* ── Rebirth milestone track renderer ── */
   var _REBIRTH_MILESTONES = [
     { n: 1, icon: "🍀", reward: "Множитель удачи",   stage: 10 },
     { n: 2, icon: "🐾", reward: "2-й слот питомца",  stage: 15 },
@@ -2282,7 +2052,7 @@
     for (var i = 0; i < _REBIRTH_MILESTONES.length; i++) {
       var m = _REBIRTH_MILESTONES[i];
       var isDone    = rebirths >= m.n;
-      var isCurrent = !allDone && rebirths === m.n - 1; // next target
+      var isCurrent = !allDone && rebirths === m.n - 1;
       var isLocked  = !isDone && !isCurrent;
 
       var nodeClass = "rebirth-node " + (isDone ? (allDone && m.n === 5 ? "max done" : "done") : isCurrent ? "current" : "locked");
@@ -2305,7 +2075,6 @@
     }
     html += '</div>';
 
-    // Hint text
     var hintClass = "rebirth-track-hint" + (ready ? " ready" : "");
     var hintText;
     if (allDone) {
@@ -2332,7 +2101,6 @@
     return "стадий";
   }
 
-  // rebirthRequired: минимальное число перерождений для разблокировки
   var SPECIAL_UPGRADES = [
     {
       id: "luck_mult",
@@ -2547,7 +2315,7 @@
       state.passiveCombo += petBonus.passiveCombo;
       petSummaries.push(shortPetBonus(activePet, petBonus));
     });
-    // Мягкий кеп на суммарный incomeMult питомцев: после порога 1.0 рост замедляется
+
     var PET_MULT_CAP = 0.55;
     var softPetMult = rawPetIncomeMult <= PET_MULT_CAP
       ? rawPetIncomeMult
@@ -2561,13 +2329,12 @@
       : RAW_COMBO_CAP + Math.sqrt(state.petComboBonus - RAW_COMBO_CAP) * 0.32;
     state.passiveCombo = Math.min(0.08, state.passiveCombo);
 
-    // Зеркальный питомец за 5-е перерождение: динамически копирует лучшего питомца
     if (state.rebirths >= 5) {
       var mirrorSource = getMirrorSourcePet();
       if (mirrorSource) {
         var mirrorBonus = getPetBonus(mirrorSource);
         income += mirrorBonus.income + (mirrorBonus.autoclick * clickPower * BALANCE_PET_AUTOCLICK_INCOME);
-        // Зеркальный питомец тоже проходит через мягкий кеп — отдельно
+
         var mirrorMult = mirrorBonus.incomeMult;
         var mirrorSoftMult = mirrorMult <= PET_MULT_CAP
           ? mirrorMult
@@ -2584,9 +2351,6 @@
 
     state.petBonusText = petSummaries.length ? petSummaries.length + "/3 В· " + petSummaries[0] : "нет";
 
-    // Мягкий предел множителя: замедляем рост после порога, чтобы
-    // предотвратить экспоненциальное стакирование улучшений.
-    // Формула: если raw > cap → cap + sqrt(raw - cap) * 0.8
     var RAW_MULT_CAP = 8;
     var softMultiplier = multiplier <= RAW_MULT_CAP
       ? multiplier
@@ -2620,10 +2384,9 @@
     return type === "comboLimit" ? 2.5 : 1;
   }
 
-  /* ── Stage rarity tier: returns 1-6 based on stage index ── */
   var STAGE_TIER_NAMES = ["Обычный", "Редкий", "Эпический", "Космический", "Трансцендентный", "Демонический"];
   function getStageRarityTier(stageIndex) {
-    var n = stageIndex + 1; // 1-based
+    var n = stageIndex + 1;
     if (n <= 5)  return 1;
     if (n <= 10) return 2;
     if (n <= 15) return 3;
@@ -2645,7 +2408,7 @@
       document.body.classList.add("stage-" + (state.stage + 1));
       document.body.classList.add("stage-tier-" + tier);
       els.creatureSymbol.textContent = stages[state.stage].symbol;
-      // Update rarity badge
+
       var badgeEl = document.getElementById("stageRarityBadge");
       if (badgeEl) {
         badgeEl.textContent = STAGE_TIER_NAMES[tier - 1];
@@ -2745,9 +2508,8 @@
     if (modState >= 2) triggerTinyShake();
     if (modState >= 3) triggerFlash();
 
-    // === PHASE TRANSITION EFFECTS ===
     if (modState === 2) {
-      // Boss enters phase 2: enraged
+
       triggerShake();
       triggerBossPhaseFlash("#ff3d00");
       spawnParticles(x, y, 22, false);
@@ -2756,7 +2518,7 @@
       playSound("event");
       showToast("⚠️ Босс переходит во вторую фазу!");
     } else if (modState === 3) {
-      // Boss enters phase 3: final form
+
       triggerShake();
       setTimeout(triggerShake, 180);
       triggerFlash();
@@ -2999,14 +2761,13 @@
       ].join("");
     });
 
-    // Питомец-копировщик за 5-е перерождение
     html += renderMirrorPetBlock();
 
     return html;
   }
 
   function getMirrorSourcePet() {
-    // Находим сильнейшего питомца игрока по суммарному доходу
+
     var best = null;
     var bestScore = -1;
     pets.forEach(function (pet) {
@@ -3103,7 +2864,7 @@
   function updateShopAffordability() {
     var buttons = els.shopList.querySelectorAll(".upgrade-button");
     buttons.forEach(function (button) {
-      // Special upgrades use data-special-id, not data-id — skip them here
+
       if (button.classList.contains("upgrade-special")) return;
       if (button.classList.contains("upgrade-phase-locked")) return;
       var upgrade = upgrades.find(function (item) { return item.id === button.dataset.id; });
@@ -3278,7 +3039,6 @@
     var currentBonus = getPetBonus(pet);
     var levelBarPct = Math.round((level / maxLevel) * 100);
 
-    // ── Badge pills row ──
     var rarityColor = rarity.color || "#9ca3af";
     var pills = [
       "<span class='pc2-pill pc2-pill-rarity " + rarity.className + "'>" + rarity.name + "</span>"
@@ -3286,7 +3046,6 @@
     if (count > 1) pills.push("<span class='pc2-pill pc2-pill-dup'>×" + count + "</span>");
     if (active) pills.push("<span class='pc2-pill pc2-pill-slot'>Слот " + (slot + 1) + "</span>");
 
-    // ── Stat chips ──
     var statChips = [];
     if (currentBonus.income)      statChips.push({ icon: "💰", val: formatNumber(currentBonus.income) + "/с" });
     if (currentBonus.autoclick)   statChips.push({ icon: "🖱", val: "×" + (Math.round(currentBonus.autoclick * 10) / 10) });
@@ -3300,7 +3059,6 @@
       return "<span class='pc2-stat-chip'><span class='pc2-stat-icon'>" + c.icon + "</span><span>" + c.val + "</span></span>";
     }).join("");
 
-    // ── Upgrade button ──
     var upgBtnClass = "pet-upgrade-btn" + (isMaxed ? " pet-upgrade-maxed" : canAfford ? "" : " pet-upgrade-locked");
     var upgBtnText = isMaxed
       ? "✦ Максимальный уровень"
@@ -3308,7 +3066,6 @@
     var nextStatHint = isMaxed ? "" :
       "<span class='pc2-upg-hint'>+" + Math.round(scalePerLevel * 100) + "% к статам · Ур. " + (level + 1) + "</span>";
 
-    // ── Equip hint ──
     var equipHintHtml = active
       ? "<span class='pc2-equip-active'>✓ Слот " + (slot + 1) + " · нажми чтобы снять</span>"
       : "<span class='pc2-equip-hint'>Нажми чтобы экипировать</span>";
@@ -3316,7 +3073,6 @@
     return [
       "<div class='pc2-wrap" + (active ? " pc2-active" : "") + "'>",
 
-      // ─ Top: face + header ─
       "<button class='pc2-main " + rarity.className + "' type='button' data-id='" + pet.id + "'>",
         "<div class='pc2-face " + rarity.className + "'>" + pet.face + "</div>",
         "<div class='pc2-header'>",
@@ -3326,10 +3082,8 @@
         "</div>",
       "</button>",
 
-      // ─ Stats row ─
       chipsHtml ? "<div class='pc2-stats'>" + chipsHtml + "</div>" : "",
 
-      // ─ Level bar ─
       "<div class='pc2-level'>",
         "<div class='pc2-level-top'>",
           "<span class='pc2-level-label'>Ур. <b>" + level + "</b></span>",
@@ -3532,7 +3286,7 @@
   function maybePetAttack(dt) {
     var activePets = getActivePets();
     if (!activePets.length || state.hatching) return;
-    // Не атакуем пока вкладка скрыта — при возврате таймер мог уйти в минус
+
     if (document.hidden) {
       state.petAttackTimer = 3.8 + Math.random() * 4.2;
       return;
@@ -3635,11 +3389,8 @@
     return Math.floor(upgrade.baseCost * Math.pow(upgrade.costGrow, level));
   }
 
-  /* ══════════════════════════════════════════════════════════════
-     AUTO CLICKER (рекламный бонус на 60 секунд)
-     ══════════════════════════════════════════════════════════════ */
   var _autoClickerAccum = 0;
-  var AUTO_CLICKER_INTERVAL = 0.25; // клик каждые 250мс = 4 в секунду
+  var AUTO_CLICKER_INTERVAL = 0.25;
 
   function isAutoClickerActive() {
     return now() < state.autoClickerUntil;
@@ -3650,10 +3401,9 @@
       updateAutoClickerButton();
       return;
     }
-    // Сбрасываем накопленное время если вернулись с паузы/скрытой вкладки
-    // (dt уже зажат в 0.05 в loop, но _autoClickerAccum мог накопиться ранее)
+
     _autoClickerAccum += dt;
-    // Не допускаем более 1 клика за один тик loop() — это защита от пачки звуков
+
     if (_autoClickerAccum >= AUTO_CLICKER_INTERVAL) {
       _autoClickerAccum = _autoClickerAccum % AUTO_CLICKER_INTERVAL;
       var rect = els.creatureButton.getBoundingClientRect();
@@ -3729,8 +3479,7 @@
   }
 
   function loop(time) {
-    // Если вкладка скрыта — пропускаем весь игровой тик и обновляем lastTick,
-    // чтобы при возврате не было гигантского dt и накопленных звуков/событий.
+
     if (document.hidden) {
       lastTick = time;
       requestAnimationFrame(loop);
@@ -3740,15 +3489,14 @@
     var dt = Math.min(0.05, (time - lastTick) / 1000);
     lastTick = time;
 
-    // П. 4.7: пока идёт реклама — доход не начисляется, автокликер не работает
     if (!gamePaused) {
       if (state.income > 0) {
         addPoints(state.income * getEventMultiplier("income") * (state._adBuffIncome || 1) * dt);
       }
       adTickSecond();
       autoClickerTick(dt);
-      aiTick(dt); // авто-интерстишл: тикаем только во время активного геймплея
-      inviteTick(dt); // периодический инвайт-бонус
+      aiTick(dt);
+      inviteTick(dt);
     }
 
     if (state.passiveCombo > 0 && now() - state.lastClickAt < 5000) {
@@ -3885,8 +3633,7 @@
   }
 
   function spawnRandomEvent() {
-    // Не запускаем события пока вкладка скрыта — иначе при возврате
-    // мог бы сыграть накопленный звук события
+
     if (document.hidden || gamePaused) return;
     randomEventTimer -= 1;
     if (randomEventTimer > 0 || now() < state.eventUntil) return;
@@ -3918,16 +3665,8 @@
     }
   }
 
-  /* ── Toast registry for stacking ── */
   var _toastRegistry = {};
 
-  /*
-   * showToast(message)           — разовые уведомления (без стакинга)
-   * showStackedToast(key, text)  — повторяющиеся уведомления (стакаются по key)
-   *
-   * key — уникальный идентификатор группы (например "jackpot", "crit", "event_storm")
-   * При повторном вызове с тем же key счётчик увеличивается и таймер сбрасывается.
-   */
   function showToast(message) {
     var toast = document.createElement("div");
     toast.className = "toast";
@@ -3941,15 +3680,12 @@
   function showStackedToast(key, message) {
     var existing = _toastRegistry[key];
 
-    // Always clear any pending removal timer
     if (existing) clearTimeout(existing.timer);
 
-    // Remove the old element if it exists (CSS animation may have already faded it out)
     if (existing && existing.el && existing.el.parentNode) {
       existing.el.parentNode.removeChild(existing.el);
     }
 
-    // Always create a fresh element so the CSS animation restarts from the beginning
     var count = existing ? existing.count + 1 : 1;
     var toast = document.createElement("div");
     toast.className = "toast";
@@ -4021,13 +3757,11 @@
     var osc  = audioContext.createOscillator();
     var gain = audioContext.createGain();
 
-    // Мягкий фильтр срезает резкие верхние частоты
     var filter = audioContext.createBiquadFilter();
     filter.type = "lowpass";
     filter.frequency.value = isHarsh ? 900 : 2200;
     filter.Q.value = 0.7;
 
-    // triangle — мягче всего; для deny — немного резче (sine)
     osc.type = isHarsh ? "sine" : "triangle";
 
     osc.frequency.setValueAtTime(base, audioContext.currentTime);
@@ -4036,7 +3770,6 @@
       audioContext.currentTime + duration
     );
 
-    // Громкость снижена с 0.12 → 0.06; атака плавная 40мс вместо 15мс
     var peak = isHarsh ? 0.045 : 0.065;
     gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
     gain.gain.exponentialRampToValueAtTime(peak, audioContext.currentTime + 0.04);
@@ -4066,9 +3799,8 @@
       savedAt: now()
     };
 
-    // ── Облачное сохранение через Yandex PlayerData ──
     if (useCloudSave && yplayer) {
-      yplayer.setData({ save: payload }, true /* flush */)
+      yplayer.setData({ save: payload }, true  )
         .then(function () {
           console.log("[YaSDK] Облачное сохранение выполнено");
         })
@@ -4092,7 +3824,7 @@
   }
 
   function loadGame() {
-    // ── Попытка загрузить из облака, потом fallback на localStorage ──
+
     if (useCloudSave && yplayer) {
       yplayer.getData(["save"])
         .then(function (cloudData) {
@@ -4101,7 +3833,7 @@
             console.log("[YaSDK] Загружено из облака");
             _applyLoadedData(data);
           } else {
-            // Облако пустое — пробуем localStorage (первый запуск / миграция)
+
             _loadFromLocalStorage();
           }
           _postLoadSetup();
@@ -4159,7 +3891,6 @@
     }
   }
 
-  /* Вызывается после любой загрузки (облако или localStorage) */
   function _postLoadSetup() {
     normalizeUpgradeState();
     normalizePetState();

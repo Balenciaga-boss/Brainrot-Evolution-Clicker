@@ -1,22 +1,9 @@
-/**
- * ui/toastUI.js
- * Non-blocking toast notifications and the big-announcement banner.
- */
+
 
 import { TOAST_DURATION_MS, BIG_ANNOUNCEMENT_MS } from "../config.js";
 
-// ── Active toast deduplication ────────────────────────────────────────────────
-
 const _activeToastKeys = new Set();
 
-// ── Toast notifications ───────────────────────────────────────────────────────
-
-/**
- * Show a brief toast notification.
- * @param {string} message
- * @param {string|null} dedupeKey  - If set, only one toast per key at a time.
- * @param {HTMLElement} stackEl    - The toast stack container element.
- */
 export function showToast(message, dedupeKey, stackEl) {
   if (!stackEl) return;
 
@@ -30,7 +17,6 @@ export function showToast(message, dedupeKey, stackEl) {
   el.textContent = message;
   stackEl.appendChild(el);
 
-  // Trigger CSS fade-in on next frame
   requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add("visible")));
 
   setTimeout(() => {
@@ -42,25 +28,12 @@ export function showToast(message, dedupeKey, stackEl) {
   }, TOAST_DURATION_MS);
 }
 
-/**
- * Convenience wrapper that mirrors the legacy showStackedToast(key, msg) signature.
- * @param {string} dedupeKey
- * @param {string} message
- * @param {HTMLElement} stackEl
- */
 export function showStackedToast(dedupeKey, message, stackEl) {
   showToast(message, dedupeKey, stackEl);
 }
 
-// ── Big announcement banner ───────────────────────────────────────────────────
-
 let _bigAnnouncementTimer = null;
 
-/**
- * Show the large centered announcement banner briefly.
- * @param {string}      message
- * @param {HTMLElement} bannerEl
- */
 export function showBigAnnouncement(message, bannerEl) {
   if (!bannerEl) return;
 

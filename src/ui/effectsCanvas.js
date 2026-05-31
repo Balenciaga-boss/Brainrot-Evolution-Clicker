@@ -1,7 +1,4 @@
-/**
- * ui/effectsCanvas.js
- * Sets up and manages the fullscreen effects canvas used by the particle system.
- */
+
 
 import { updateAndRenderParticles, emitVisualAuraParticles } from "../systems/particleSystem.js";
 import { state } from "../state.js";
@@ -24,11 +21,6 @@ function _resizeCanvas() {
   _canvas.height = window.innerHeight;
 }
 
-/**
- * Called every animation frame. Emits aura particles and renders all effects.
- * @param {number} dt        - Delta time in seconds
- * @param {HTMLElement} creatureEl
- */
 export function renderEffects(dt, creatureEl) {
   if (!_ctx || !_canvas) return;
   emitVisualAuraParticles(dt, state, creatureEl);

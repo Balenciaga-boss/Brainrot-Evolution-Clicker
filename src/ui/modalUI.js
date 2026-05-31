@@ -1,13 +1,8 @@
-/**
- * ui/modalUI.js
- * Manages modal-style overlays: invite-friend banner and future popups.
- */
+
 
 import { state } from "../state.js";
 import { INVITE_INTERVAL_SEC, INVITE_SHOW_SECS } from "../config.js";
 import { formatNumber } from "../utils.js";
-
-// ── Invite banner ─────────────────────────────────────────────────────────────
 
 let _inviteShowing  = false;
 let _inviteTimer    = INVITE_INTERVAL_SEC;
@@ -75,12 +70,6 @@ export function hideInviteBanner() {
   _inviteShowing = false;
 }
 
-// ── Generic confirm modal ─────────────────────────────────────────────────────
-
-/**
- * Show a simple native confirm() — easily swappable for a custom modal later.
- * @returns {boolean}
- */
 export function confirmModal(message) {
   return confirm(message);
 }

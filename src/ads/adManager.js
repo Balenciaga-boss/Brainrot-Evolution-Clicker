@@ -1,23 +1,4 @@
-// ads/adManager.js  (lines 48-603 of src/main.js)
-// Rewarded video, ad session lock, buff activation.
-// NOTE: This file is a readable extract. The live bundle is src/main.js.
 
-/**
- * ads/adManager.js
- * Yandex Ads integration: rewarded video, ad session lock, buff system.
- * Part of src/main.js — do not load standalone.
- */
-
-
-  /* ═══════════════════════════════════════════════════════════════
-     AD MANAGER
-     Yandex Games Ads Integration Layer.
-
-     showRewardedAd() вызывает ysdk.adv.showRewardedVideo() если SDK
-     доступен, иначе падает в dev-симулятор (showAdSimOverlay).
-     Симулятор оставлен специально для локальной разработки —
-     в продакшене на Яндекс Играх он никогда не вызывается.
-     ═══════════════════════════════════════════════════════════════ */
 
   var AD_CONFIG = {
     egg:     { maxPerCycle: 10, cooldownMs: 7 * 60 * 1000 },
@@ -47,32 +28,13 @@
 
   var adEls = {};
 
-  /* ═══════════════════════════════════════════════════════════════
-     AD SESSION LOCK — предотвращает одновременные рекламные сессии
-     и дублирование наград.
-
-     isAdRunning:  глобальный мьютекс — true пока любая реклама
-                   загружается или показывается. Любой повторный
-                   вызов showRewardedAd() во время активной сессии
-                   немедленно отклоняется.
-
-     session:      объект с двумя флагами, создаётся заново при
-                   каждом вызове showRewardedAd():
-                   - rewardGranted: true только после onRewarded
-                   - settled:       true после первого финального
-                                    колбэка (onClose / onError).
-                   Гарантирует ровно один вызов callback().
-     ═══════════════════════════════════════════════════════════════ */
   var isAdRunning = false;
 
-  /* ── П. 4.7: пауза игры во время рекламы ──
-     gamePaused = true — игровой цикл не начисляет очки и не воспроизводит звуки.
-     Устанавливается при открытии рекламы, снимается в settle(). */
   var gamePaused = false;
 
   function pauseGameForAd() {
     gamePaused = true;
-    // Приостанавливаем звук (п. 4.7)
+
     if (audioContext && audioContext.state === "running") {
       try {
         audioContext.suspend().catch(function () {});
@@ -82,50 +44,44 @@
 
   function resumeGameAfterAd() {
     gamePaused = false;
-    // Возобновляем звук если он включён
+
     ensureAudio();
   }
 
-  /* ── Yandex SDK: показ рекламы с вознаграждением ── */
   function showRewardedAd(callback) {
-    // ── Глобальный мьютекс: отклоняем повторный вызов ──
+
     if (isAdRunning) {
       showStackedToast("ad_loading", "Реклама уже запущена — подождите");
       return;
     }
     isAdRunning = true;
 
-    // ── Сессионный объект — одноразовый, на каждую рекламу ──
     var session = { rewardGranted: false, settled: false };
 
     function settle(rewarded) {
-      if (session.settled) return; // защита от дублирования
+      if (session.settled) return;
       session.settled = true;
       isAdRunning = false;
-      // П. 4.7: снимаем паузу игры после закрытия рекламы
+
       resumeGameAfterAd();
       callback(rewarded);
     }
 
     if (ysdk && ysdk.adv) {
-      // ── Реальный вызов Yandex Games SDK ──
-      // onRewarded вызывается ДО onClose: запоминаем факт награды,
-      // но НЕ вызываем callback здесь — ждём onClose/onError.
+
       ysdk.adv.showRewardedVideo({
         callbacks: {
           onOpen: function () {
-            // П. 4.7: реклама открылась — паузим игру и звук
+
             pauseGameForAd();
             console.log("[YaSDK] Rewarded ad opened");
           },
           onRewarded: function () {
-            // Игрок досмотрел до конца — ставим флаг
-            // Reward будет выдан в onClose, когда окно закроется
+
             session.rewardGranted = true;
           },
           onClose: function () {
-            // Окно закрылось (в любом случае — после просмотра или пропуска)
-            // Используем флаг rewardGranted, а не аргумент — он более надёжен
+
             settle(session.rewardGranted);
           },
           onError: function (e) {
@@ -135,18 +91,16 @@
         }
       });
     } else {
-      // ── Fallback: SDK недоступен — используем симулятор (только для dev) ──
+
       pauseGameForAd();
       showAdSimOverlay(function (watched) { settle(watched); });
     }
   }
 
-  /* ── Ad simulation overlay (dev-only fallback) ── */
   function showAdSimOverlay(callback) {
     var overlay = adEls.simOverlay;
     if (!overlay) { callback(true); return; }
 
-    // ── Защита от дублирования в симуляторе: однократный вызов ──
     var simSettled = false;
     function simSettle(result) {
       if (simSettled) return;
@@ -171,8 +125,6 @@
       }
     }, 100);
 
-    // Обнуляем старые обработчики через onclick (не addEventListener)
-    // чтобы не накапливались слушатели между вызовами
     adEls.simCancel.onclick = function () {
       clearInterval(tick);
       simSettle(false);
@@ -183,7 +135,6 @@
     };
   }
 
-  /* ── canWatch helpers ── */
   function adCanWatchEgg() {
     return Date.now() >= adState.egg.cooldownUntil && adState.egg.used < AD_CONFIG.egg.maxPerCycle;
   }
@@ -191,7 +142,6 @@
     return Date.now() >= adState.upgrade.cooldownUntil && adState.upgrade.used < AD_CONFIG.upgrade.maxPerCycle;
   }
 
-  /* ── Central reward dispatcher ── */
   function adGrantReward(type, payload) {
     if (type === "egg") {
       adState.egg.used += 1;
@@ -229,7 +179,6 @@
     }
   }
 
-  /* ── Egg free open ── */
   function adOpenEggFree(eggId) {
     var egg = eggs.find(function (e) { return e.id === eggId; });
     if (!egg || state.hatching) return;
@@ -242,7 +191,6 @@
     showToast("🎁 Бесплатное яйцо за рекламу: " + egg.name);
   }
 
-  /* ── Upgrade free level ── */
   function adApplyUpgradeFree(upgradeId) {
     var upgrade = upgrades.find(function (u) { return u.id === upgradeId; });
     if (!upgrade) return;
@@ -265,7 +213,6 @@
     showToast("🎁 Бесплатное улучшение: " + upgrade.name + " ур. " + state.upgrades[upgradeId]);
   }
 
-  /* ── Buff activation ── */
   function adActivateBuff(buffId) {
     var buff = BUFF_TYPES.find(function (b) { return b.id === buffId; });
     if (!buff) return;
@@ -305,7 +252,6 @@
     return Math.max(0, Math.ceil((adState.activeBuff.expiresAt - Date.now()) / 1000));
   }
 
-  /* ── Buff offer loop (called from main game loop each second) ── */
   var _adLastSecond = 0;
   function adTickSecond() {
     var t = Math.floor(Date.now() / 1000);
@@ -325,19 +271,18 @@
       Math.floor(Math.random() * (AD_CONFIG.buff.offerIntervalMax - AD_CONFIG.buff.offerIntervalMin + 1));
   }
 
-  /* ── Ad request entry points (called from UI) ── */
   function adRequestEgg(eggId) {
     if (!adCanWatchEgg()) { showStackedToast("ad_egg_cd", "Реклама за яйцо недоступна — перезарядка"); playSound("deny"); return; }
     var egg = eggs.find(function (e) { return e.id === eggId; });
     if (!egg || !isEggUnlocked(egg)) { showStackedToast("egg_locked_ad_" + eggId, "Яйцо недоступно на этой стадии"); playSound("deny"); return; }
-    // Блокируем все кнопки яиц на время рекламы
+
     var adBtns = document.querySelectorAll("[data-ad-egg]");
     adBtns.forEach(function (b) { b.disabled = true; });
     showStackedToast("ad_loading", "Реклама загружается...");
     showRewardedAd(function (rewarded) {
-      // Разблокировка всегда, независимо от результата
+
       adBtns.forEach(function (b) { b.disabled = false; });
-      adUpdateCooldownDisplay(); // обновить состояние disabled по cooldown
+      adUpdateCooldownDisplay();
       if (!rewarded) { showStackedToast("ad_not_watched_egg", "Реклама не досмотрена — яйцо не выдано"); return; }
       adGrantReward("egg", { eggId: eggId });
     });
@@ -347,7 +292,7 @@
     if (!adCanWatchUpgrade()) { showStackedToast("ad_upg_cd", "Реклама за улучшение недоступна — перезарядка"); playSound("deny"); return; }
     var upgrade = upgrades.find(function (u) { return u.id === upgradeId; });
     if (!upgrade) { showToast("Улучшение не найдено"); return; }
-    // Блокируем все кнопки улучшений на время рекламы
+
     var adBtns = document.querySelectorAll("[data-ad-upgrade]");
     adBtns.forEach(function (b) { b.disabled = true; });
     showStackedToast("ad_loading", "Реклама загружается...");
@@ -374,7 +319,6 @@
     });
   }
 
-  /* ── UI: buff popup ── */
   function adShowBuffPopup(buff) {
     var el = adEls.buffPopup;
     if (!el) return;
@@ -387,7 +331,6 @@
     if (adEls.buffPopup) adEls.buffPopup.classList.add("ad-hidden");
   }
 
-  /* ── UI: active buff badge ── */
   function adRenderActiveBuff() {
     var el = adEls.activeBuff;
     if (!el) return;
@@ -400,7 +343,6 @@
     el.classList.remove("ad-hidden");
   }
 
-  /* ── UI: cooldown counters ── */
   function adUpdateCooldownDisplay() {
     adUpdateOneCounter("adEggCounter", "adEggCooldown", adState.egg, AD_CONFIG.egg);
     adUpdateOneCounter("adUpgradeCounter", "adUpgradeCooldown", adState.upgrade, AD_CONFIG.upgrade);
@@ -430,7 +372,6 @@
     adRenderActiveBuff();
   }
 
-  /* ── Persistence ── */
   var AD_SAVE_KEY = "brainrotAdStateV1";
 
   function adSaveState() {
@@ -446,13 +387,13 @@
       if (d.upgrade) Object.assign(adState.upgrade, d.upgrade);
       if (d.activeBuff && Date.now() < d.activeBuff.expiresAt) {
         adState.activeBuff = d.activeBuff;
-        // restore buff multipliers
+
         var bid = d.activeBuff.id;
         if (bid === "income2x")   state._adBuffIncome  = 2;
         if (bid === "petStats2x") state._adBuffPet     = 2;
         if (bid === "upgrade2x")  state._adBuffUpgrade = 2;
         if (bid === "passive2x")  state._adBuffPassive = 2;
-        // schedule expiry
+
         var msLeft = d.activeBuff.expiresAt - Date.now();
         setTimeout(function () {
           adClearBuffFields();
@@ -466,10 +407,9 @@
     } catch (e) {}
   }
 
-  /* ── HTML builder helpers for shop rendering ── */
   function adGetUpgradeAdBtn(upgradeId) {
     var can = adCanWatchUpgrade();
-    // П. 4.5.1: кнопка должна явно показывать что игрок получит за просмотр рекламы
+
     return '<button class="upgrade-ad-btn" type="button" data-ad-upgrade="' + upgradeId + '"' + (can ? '' : ' disabled') + '>📺 Реклама → бесплатный уровень</button>';
   }
 
@@ -487,11 +427,10 @@
     ].join("");
   }
 
-  /* ── DOM init for AdManager ── */
   function adInitDom() {
-    // Inject ad HTML into document
+
     var adHtml = [
-      // Buff offer popup
+
       '<div id="adBuffPopup" class="ad-hidden" role="dialog" aria-label="Рекламное предложение">',
         '<div class="ad-popup-header"><span>📺</span><span>Специальное предложение</span></div>',
         '<span id="adBuffIcon" class="ad-popup-icon">⚡</span>',
@@ -502,11 +441,11 @@
           '<button id="adBuffCancel" class="ad-cancel-btn" type="button">Отмена</button>',
         '</div>',
       '</div>',
-      // Active buff badge
+
       '<div id="adActiveBuff" class="ad-hidden" aria-live="polite">',
         '<span id="adActiveBuffText"></span>',
       '</div>',
-      // Ad sim overlay
+
       '<div id="adSimOverlay" class="ad-hidden" role="dialog" aria-modal="true">',
         '<div class="ad-sim-card">',
           '<span class="ad-sim-title">Просмотр рекламы</span>',
@@ -540,11 +479,6 @@
     adEls.simCancel     = document.getElementById("adSimCancel");
     adEls.simConfirm    = document.getElementById("adSimConfirm");
 
-    // Move #adActiveBuff directly to <body> so it is never inside a container
-    // that could create a new fixed-positioning containing block (e.g. one with
-    // a CSS transform or filter).  Also promote it to its own compositing layer
-    // via transform: translateZ(0) so the browser doesn't repaint it during the
-    // forced reflow that triggerFlash() causes (void el.offsetWidth).
     if (adEls.activeBuff && adEls.activeBuff.parentNode !== document.body) {
       document.body.appendChild(adEls.activeBuff);
     }
