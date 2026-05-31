@@ -1,0 +1,888 @@
+.stage-1 .creature { background: linear-gradient(135deg, #9cffb7, #ffd6f4); filter: saturate(0.95) brightness(1.04); border-radius: 50%; }
+.stage-2 .creature { background: linear-gradient(135deg, #fff6a7, #9eeeff); filter: saturate(0.98) brightness(1.05); border-radius: 52% 48% 50% 50% / 55% 45% 55% 45%; }
+.stage-3 .creature { background: linear-gradient(135deg, #ffbdd1, #a8ffbf); filter: saturate(1.02); border-radius: 58% 42% 54% 46% / 52% 58% 42% 48%; }
+.stage-4 .creature { background: radial-gradient(circle at 34% 26%, rgba(255, 255, 255, 0.82) 0 12%, transparent 13%), linear-gradient(135deg, #b9f7ff, #ffe78a); filter: saturate(1.04); border-radius: 45% 55% 50% 50% / 57% 43% 55% 45%; }
+.stage-5 .creature { background: linear-gradient(135deg, #8dffcf, #ffc0e5, #fff19f); filter: saturate(1.08); border-radius: 62% 38% 58% 42% / 47% 58% 42% 53%; }
+.stage-6 .creature { background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.72) 0 8%, transparent 9%), linear-gradient(135deg, #b6ff76, #8de9ff); filter: saturate(1.12); border-radius: 50% 50% 44% 56% / 58% 42% 56% 44%; }
+.stage-7 .creature { background: conic-gradient(from 40deg, #fff8a8, #9effd0, #b9e8ff, #ffc4ec, #fff8a8); filter: saturate(1.14) brightness(1.04); border-radius: 56% 44% 46% 54% / 50% 57% 43% 50%; }
+.stage-8 .creature { background: radial-gradient(circle at 32% 28%, #fff 0 7%, transparent 8%), linear-gradient(140deg, #fff06a, #98f5ff 50%, #ffb7dd); filter: saturate(1.18); border-radius: 44% 56% 57% 43% / 58% 42% 55% 45%; }
+.stage-9 .creature { background: repeating-linear-gradient(45deg, #fff2a8 0 18px, #b7ffde 18px 34px, #ffd1e8 34px 50px); filter: saturate(1.2) brightness(1.02); border-radius: 58% 42% 62% 38% / 46% 58% 42% 54%; }
+.stage-10 .creature { background: radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.82) 0 7%, transparent 8%), conic-gradient(#fff49b, #98f5ff, #ffbdd7, #a8ffbf, #fff49b); filter: saturate(1.24) drop-shadow(0 0 12px rgba(255, 255, 255, 0.55)); }
+.stage-11 .creature { background: linear-gradient(135deg, #ffeb3b, #ff3d81 45%, #111827 100%); filter: saturate(1.55) contrast(1.1); border-radius: 44% 56% 38% 62% / 62% 38% 58% 42%; }
+.stage-12 .creature { background: radial-gradient(circle at 50% 18%, #fff 0 7%, transparent 8%), conic-gradient(#ff3d81, #ffeb3b, #111827, #00d4ff, #ff3d81); filter: saturate(1.75) contrast(1.12); }
+.stage-13 .creature { background: linear-gradient(160deg, #111827 0 16%, #8d4dff 16% 42%, #22c55e 42% 64%, #f97316 64%); filter: saturate(1.85) contrast(1.18); border-radius: 56% 44% 29% 71% / 37% 66% 34% 63%; }
+.stage-14 .creature { background: repeating-conic-gradient(from 20deg, #ffeb3b 0 10deg, #111827 10deg 15deg, #ff3d81 15deg 27deg, #00d4ff 27deg 38deg); filter: saturate(1.95) contrast(1.18) drop-shadow(0 0 18px rgba(255, 61, 129, 0.55)); }
+.stage-15 .creature { background: radial-gradient(circle at 50% 47%, #111827 0 12%, #fff 13% 18%, transparent 19%), conic-gradient(#22c55e, #06b6d4, #a855f7, #f43f5e, #22c55e); filter: saturate(2.1) contrast(1.22); border-radius: 50% 50% 30% 70% / 66% 34% 66% 34%; }
+.stage-16 .creature { background: linear-gradient(120deg, #ffffff 0 7%, #ffeb3b 7% 18%, #ff3d81 18% 39%, #00d4ff 39% 58%, #111827 58% 100%); filter: saturate(2.15) contrast(1.22) drop-shadow(0 0 18px rgba(0, 212, 255, 0.5)); border-radius: 36% 64% 48% 52% / 63% 37% 64% 36%; }
+.stage-17 .creature { background: radial-gradient(circle at 50% 50%, #fff 0 5%, transparent 6%), repeating-radial-gradient(circle, #111827 0 10px, #8d4dff 10px 20px, #00d4ff 20px 30px); filter: saturate(2.25) brightness(1.08) contrast(1.24); border-radius: 8px 44% 8px 44%; }
+.stage-18 .creature { background: conic-gradient(from 90deg, #fff, #ff3d81, #111827, #ffe600, #00d4ff, #fff); filter: saturate(2.45) contrast(1.28) drop-shadow(0 0 24px rgba(255, 255, 255, 0.65)); }
+.stage-19 .creature { background: repeating-linear-gradient(90deg, #111827 0 12px, #61ff8b 12px 24px, #ffeb3b 24px 36px, #ff3d81 36px 48px); filter: saturate(2.45) hue-rotate(45deg) contrast(1.3); border-radius: 34% 66% 34% 66% / 66% 34% 66% 34%; }
+.stage-20 .creature { background: radial-gradient(circle at 50% 50%, #fff 0 7%, transparent 8%), repeating-conic-gradient(#00d4ff 0 10deg, #ffeb3b 10deg 15deg, #ff3d81 15deg 25deg, #111827 25deg 31deg); filter: saturate(2.65) brightness(1.12) contrast(1.3); }
+.stage-21 .creature { background: radial-gradient(circle at 50% 48%, #ffeb3b 0 5%, transparent 6%), linear-gradient(45deg, #08040d, #5b1023 28%, #7c2dff 56%, #111827); filter: saturate(2.25) contrast(1.42) drop-shadow(0 0 30px rgba(255, 61, 129, 0.72)); border-radius: 28% 72% 36% 64% / 63% 37% 68% 32%; }
+.stage-22 .creature { background: linear-gradient(135deg, #050508, #3b0714 20%, #ff3d81 38%, #111827 62%, #5b21b6 100%); filter: saturate(2.5) contrast(1.55) drop-shadow(0 0 34px rgba(124, 45, 255, 0.7)); border-radius: 10px 44% 10px 44%; transform: rotate(3deg); }
+.stage-23 .creature { background: radial-gradient(circle at 30% 30%, #fff 0 4%, transparent 5%), radial-gradient(circle at 70% 70%, #ffeb3b 0 6%, transparent 7%), conic-gradient(from 180deg, #020204, #ff123f, #44126d, #111827, #ffeb3b, #020204); filter: saturate(2.75) contrast(1.58) drop-shadow(0 0 38px rgba(255, 18, 63, 0.75)); border-radius: 18% 82% 44% 56% / 58% 22% 78% 42%; }
+.stage-24 .creature { background: repeating-conic-gradient(from 0deg, #050508 0 7deg, #ff123f 7deg 13deg, #2e1065 13deg 19deg, #111827 19deg 25deg, #fff 25deg 29deg); filter: saturate(3) contrast(1.7) drop-shadow(0 0 46px rgba(255, 255, 255, 0.75)); border-radius: 20% 80% 48% 52% / 56% 24% 76% 44%; }
+.stage-25 .creature { background: radial-gradient(circle at 50% 50%, #ff123f 0 6%, transparent 7%), conic-gradient(from 270deg, #020204, #7c2dff, #ff123f, #1a0024, #ff6b00, #020204); filter: saturate(3.1) contrast(1.75) drop-shadow(0 0 50px rgba(255, 18, 63, 0.85)); border-radius: 14% 86% 52% 48% / 62% 18% 82% 38%; }
+.stage-26 .creature { background: linear-gradient(170deg, #000 0 8%, #6b0000 8% 28%, #ff123f 28% 48%, #2e1065 48% 72%, #000 72%); filter: saturate(3.2) contrast(1.8) brightness(1.05) drop-shadow(0 0 54px rgba(124, 45, 255, 0.85)); border-radius: 8% 92% 12% 88% / 72% 12% 88% 28%; }
+.stage-27 .creature { background: radial-gradient(circle at 30% 28%, #ff123f 0 5%, transparent 6%), radial-gradient(circle at 72% 68%, #7c2dff 0 7%, transparent 8%), conic-gradient(from 0deg, #000, #4a0000, #ff123f, #000, #2e1065, #ff6b00, #000); filter: saturate(3.35) contrast(1.85) brightness(1.08) drop-shadow(0 0 58px rgba(255, 18, 63, 0.9)); border-radius: 50% 50% 8% 92% / 84% 16% 84% 16%; }
+.stage-28 .creature { background: radial-gradient(circle at 50% 44%, #fff 0 4%, transparent 5%), repeating-conic-gradient(from 180deg, #000 0 5deg, #ff0000 5deg 10deg, #3d0080 10deg 16deg, #000 16deg 22deg, #ff6b00 22deg 27deg); filter: saturate(3.5) contrast(1.9) brightness(1.12) drop-shadow(0 0 64px rgba(255, 0, 0, 0.95)); border-radius: 22% 78% 56% 44% / 42% 62% 38% 58%; }
+.stage-29 .creature { background: conic-gradient(from 90deg, #000, #ff0000, #3d0080, #000, #ff6b00, #4a0000, #fff, #000); filter: saturate(3.65) contrast(2) brightness(1.16) drop-shadow(0 0 72px rgba(255, 0, 0, 1)) drop-shadow(0 0 40px rgba(124, 45, 255, 0.8)); border-radius: 6% 94% 6% 94% / 88% 6% 94% 6%; }
+.stage-30 .creature { background: radial-gradient(circle at 50% 46%, #fff 0 5%, rgba(255,0,0,0.85) 5% 14%, transparent 15%), radial-gradient(circle at 20% 20%, #ff6b00 0 6%, transparent 7%), conic-gradient(from 0deg, #000, #7c0000, #ff0000, #3d0080, #000, #4a0000, #ff6b00, #7c2dff, #000); filter: saturate(4) contrast(2.1) brightness(1.2) drop-shadow(0 0 80px rgba(255, 0, 0, 1)) drop-shadow(0 0 50px rgba(124, 45, 255, 0.95)); border-radius: 50%; }
+.stage-11 .horn,
+.stage-11 .limb,
+.stage-12 .horn,
+.stage-12 .limb,
+.stage-13 .horn,
+.stage-13 .limb,
+.stage-14 .horn,
+.stage-14 .limb,
+.stage-15 .horn,
+.stage-15 .limb,
+.stage-16 .horn,
+.stage-16 .limb,
+.stage-17 .horn,
+.stage-17 .limb,
+.stage-18 .horn,
+.stage-18 .limb,
+.stage-19 .horn,
+.stage-19 .limb,
+.stage-20 .horn,
+.stage-20 .limb,
+.stage-21 .horn,
+.stage-21 .limb,
+.stage-22 .horn,
+.stage-22 .limb,
+.stage-23 .horn,
+.stage-23 .limb,
+.stage-24 .horn,
+.stage-24 .limb { opacity: 1; }
+
+.stage-25 .horn,
+.stage-25 .limb,
+.stage-26 .horn,
+.stage-26 .limb,
+.stage-27 .horn,
+.stage-27 .limb,
+.stage-28 .horn,
+.stage-28 .limb,
+.stage-29 .horn,
+.stage-29 .limb,
+.stage-30 .horn,
+.stage-30 .limb { opacity: 1; }
+
+.stage-1 .aura,
+.stage-2 .aura,
+.stage-3 .aura,
+.stage-4 .aura,
+.stage-5 .aura,
+.stage-6 .aura,
+.stage-7 .aura,
+.stage-8 .aura,
+.stage-9 .aura,
+.stage-10 .aura {
+  inset: -6%;
+  opacity: 0.46;
+  filter: blur(9px);
+  animation-duration: 10s, 4.2s;
+}
+
+.stage-1 .mouth,
+.stage-2 .mouth,
+.stage-3 .mouth,
+.stage-4 .mouth,
+.stage-5 .mouth,
+.stage-6 .mouth,
+.stage-7 .mouth,
+.stage-8 .mouth,
+.stage-9 .mouth,
+.stage-10 .mouth {
+  bottom: 24%;
+  height: 13%;
+  border-top: 0;
+  border-radius: 0 0 60px 60px;
+  background: #ff7aa5;
+}
+
+.stage-1 .eye,
+.stage-2 .eye,
+.stage-3 .eye,
+.stage-4 .eye,
+.stage-5 .eye,
+.stage-6 .eye,
+.stage-7 .eye,
+.stage-8 .eye,
+.stage-9 .eye,
+.stage-10 .eye {
+  border-color: #1f2937;
+  background: #ffffff;
+}
+
+.stage-11 .aura,
+.stage-12 .aura,
+.stage-13 .aura,
+.stage-14 .aura,
+.stage-15 .aura {
+  inset: -9%;
+  opacity: 0.72;
+  filter: blur(13px);
+  animation-duration: 7s, 2.3s;
+}
+
+.stage-11 .eye,
+.stage-12 .eye,
+.stage-13 .eye,
+.stage-14 .eye,
+.stage-15 .eye {
+  top: 35%;
+  height: 15%;
+  background: #fff4c7;
+}
+
+.stage-11 .eye-left,
+.stage-12 .eye-left,
+.stage-13 .eye-left,
+.stage-14 .eye-left,
+.stage-15 .eye-left {
+  transform: rotate(-14deg) translateY(-2px);
+}
+
+.stage-11 .eye-right,
+.stage-12 .eye-right,
+.stage-13 .eye-right,
+.stage-14 .eye-right,
+.stage-15 .eye-right {
+  transform: rotate(16deg) translateY(-2px);
+}
+
+.stage-11 .eye::after,
+.stage-12 .eye::after,
+.stage-13 .eye::after,
+.stage-14 .eye::after,
+.stage-15 .eye::after {
+  background: #ff3d81;
+  box-shadow: 0 0 14px rgba(255, 61, 129, 0.75);
+}
+
+.stage-11 .mouth,
+.stage-12 .mouth,
+.stage-13 .mouth,
+.stage-14 .mouth,
+.stage-15 .mouth {
+  left: 38%;
+  bottom: 23%;
+  width: 24%;
+  height: 9%;
+  border-top: 4px solid #111827;
+  border-radius: 999px;
+  background: #fff;
+  transform: rotate(-6deg);
+}
+
+.stage-16 .aura,
+.stage-17 .aura,
+.stage-18 .aura,
+.stage-19 .aura,
+.stage-20 .aura {
+  inset: -11%;
+  opacity: 0.86;
+  filter: blur(17px);
+  animation-duration: 5.5s, 1.55s;
+}
+
+.stage-16 .creature,
+.stage-17 .creature,
+.stage-18 .creature,
+.stage-19 .creature,
+.stage-20 .creature {
+  animation: idleBlob 1.74s ease-in-out infinite;
+}
+
+.stage-16 .eye,
+.stage-17 .eye,
+.stage-18 .eye,
+.stage-19 .eye,
+.stage-20 .eye {
+  top: 34%;
+  height: 13%;
+  background: #fff;
+  box-shadow: inset 4px -5px 0 rgba(0, 0, 0, 0.18), 0 0 18px rgba(103, 232, 249, 0.82);
+}
+
+.stage-16 .eye::after,
+.stage-17 .eye::after,
+.stage-18 .eye::after,
+.stage-19 .eye::after,
+.stage-20 .eye::after {
+  background: #67e8f9;
+  box-shadow: 0 0 20px rgba(103, 232, 249, 0.95);
+}
+
+.stage-16 .mouth,
+.stage-17 .mouth,
+.stage-18 .mouth,
+.stage-19 .mouth,
+.stage-20 .mouth {
+  left: 39%;
+  bottom: 22%;
+  width: 22%;
+  height: 8%;
+  border-top: 4px solid #111827;
+  border-radius: 999px;
+  background: #f8fafc;
+  transform: rotate(-10deg);
+}
+
+.stage-21 .aura,
+.stage-22 .aura,
+.stage-23 .aura,
+.stage-24 .aura,
+.stage-25 .aura,
+.stage-26 .aura,
+.stage-27 .aura {
+  inset: -14%;
+  opacity: 0.96;
+  filter: blur(22px);
+  background: conic-gradient(from 0deg, rgba(0, 0, 0, 0), rgba(255, 18, 63, 0.9), rgba(46, 16, 101, 0.88), rgba(0, 0, 0, 0.74), rgba(255, 18, 63, 0.9), rgba(0, 0, 0, 0));
+  animation-duration: 4.2s, 1.08s;
+}
+
+.stage-28 .aura,
+.stage-29 .aura,
+.stage-30 .aura {
+  inset: -20%;
+  opacity: 1;
+  filter: blur(30px);
+  background: conic-gradient(from 0deg, rgba(0,0,0,0), rgba(255,0,0,1), rgba(60,0,100,0.95), rgba(255,107,0,0.9), rgba(0,0,0,0.8), rgba(255,0,0,1), rgba(0,0,0,0));
+  animation-duration: 3s, 0.72s;
+}
+
+.stage-21 .creature,
+.stage-22 .creature,
+.stage-23 .creature,
+.stage-24 .creature,
+.stage-25 .creature,
+.stage-26 .creature,
+.stage-27 .creature {
+  animation: idleBlob 1.45s ease-in-out infinite, demonPresence 1.15s linear infinite;
+}
+
+.stage-28 .creature,
+.stage-29 .creature,
+.stage-30 .creature {
+  animation: idleBlob 1.1s ease-in-out infinite, ultimateDemonLord 0.8s linear infinite;
+}
+
+.stage-21 .eye,
+.stage-22 .eye,
+.stage-23 .eye,
+.stage-24 .eye,
+.stage-25 .eye,
+.stage-26 .eye,
+.stage-27 .eye {
+  top: 33%;
+  height: 11%;
+  border-color: #050508;
+  background: #fff;
+  box-shadow: 0 0 24px rgba(255, 18, 63, 0.95), inset 4px -5px 0 rgba(0, 0, 0, 0.22);
+}
+
+.stage-28 .eye,
+.stage-29 .eye,
+.stage-30 .eye {
+  top: 32%;
+  height: 10%;
+  border-color: #000;
+  background: #ff0000;
+  box-shadow: 0 0 36px rgba(255, 0, 0, 1), 0 0 18px rgba(255, 107, 0, 0.9), inset 4px -5px 0 rgba(0, 0, 0, 0.3);
+}
+
+.stage-21 .eye-left,
+.stage-22 .eye-left,
+.stage-23 .eye-left,
+.stage-24 .eye-left,
+.stage-25 .eye-left,
+.stage-26 .eye-left,
+.stage-27 .eye-left {
+  transform: rotate(-22deg) translateY(-4px);
+}
+
+.stage-21 .eye-right,
+.stage-22 .eye-right,
+.stage-23 .eye-right,
+.stage-24 .eye-right,
+.stage-25 .eye-right,
+.stage-26 .eye-right,
+.stage-27 .eye-right {
+  transform: rotate(22deg) translateY(-4px);
+}
+
+.stage-28 .eye-left,
+.stage-29 .eye-left,
+.stage-30 .eye-left {
+  transform: rotate(-28deg) translateY(-5px);
+}
+
+.stage-28 .eye-right,
+.stage-29 .eye-right,
+.stage-30 .eye-right {
+  transform: rotate(28deg) translateY(-5px);
+}
+
+.stage-21 .eye::after,
+.stage-22 .eye::after,
+.stage-23 .eye::after,
+.stage-24 .eye::after,
+.stage-25 .eye::after,
+.stage-26 .eye::after,
+.stage-27 .eye::after {
+  background: #ff123f;
+  box-shadow: 0 0 24px rgba(255, 18, 63, 1);
+}
+
+.stage-28 .eye::after,
+.stage-29 .eye::after,
+.stage-30 .eye::after {
+  background: #fff;
+  box-shadow: 0 0 32px #fff, 0 0 16px #ff6b00;
+}
+
+.stage-21 .mouth,
+.stage-22 .mouth,
+.stage-23 .mouth,
+.stage-24 .mouth,
+.stage-25 .mouth,
+.stage-26 .mouth,
+.stage-27 .mouth {
+  left: 38%;
+  bottom: 21%;
+  width: 24%;
+  height: 8%;
+  border-color: #050508;
+  border-top: 4px solid #050508;
+  border-radius: 999px;
+  background: #ffdde5;
+  transform: rotate(-14deg);
+}
+
+.stage-28 .mouth,
+.stage-29 .mouth,
+.stage-30 .mouth {
+  left: 35%;
+  bottom: 19%;
+  width: 30%;
+  height: 10%;
+  border-color: #000;
+  border-top: 4px solid #000;
+  border-radius: 999px;
+  background: #ff0000;
+  transform: rotate(-18deg);
+  box-shadow: 0 0 18px rgba(255, 0, 0, 0.8);
+}
+
+.stage-21 .horn,
+.stage-22 .horn,
+.stage-23 .horn,
+.stage-24 .horn,
+.stage-25 .horn,
+.stage-26 .horn,
+.stage-27 .horn {
+  top: -16%;
+  height: 34%;
+  background: linear-gradient(#ff123f, #111827);
+  filter: drop-shadow(0 0 16px rgba(255, 18, 63, 0.72));
+}
+
+.stage-21 .limb,
+.stage-22 .limb,
+.stage-23 .limb,
+.stage-24 .limb,
+.stage-25 .limb,
+.stage-26 .limb,
+.stage-27 .limb {
+  background: #050508;
+  filter: drop-shadow(0 0 12px rgba(255, 18, 63, 0.5));
+}
+
+/* ========== STAGE 28: DOUBLE HORNS ========== */
+.stage-28 .horn,
+.stage-29 .horn,
+.stage-30 .horn {
+  top: -20%;
+  height: 40%;
+  background: linear-gradient(#ff0000, #3d0080, #000);
+  filter: drop-shadow(0 0 22px rgba(255, 0, 0, 0.9));
+}
+
+.stage-28 .limb,
+.stage-29 .limb,
+.stage-30 .limb {
+  background: #1a0000;
+  filter: drop-shadow(0 0 18px rgba(255, 0, 0, 0.7));
+}
+
+/* Second horn pair via pseudo-elements — vertical, beside first pair */
+.stage-28 .horn-left::after,
+.stage-29 .horn-left::after,
+.stage-30 .horn-left::after {
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: -120%;
+  width: 80%;
+  height: 85%;
+  transform: rotate(-12deg);
+  border-radius: 55% 55% 10% 10%;
+  background: linear-gradient(#ff6b00, #ff0000, #000);
+  filter: drop-shadow(0 0 14px rgba(255, 107, 0, 0.85));
+  opacity: 1;
+}
+
+.stage-28 .horn-right::after,
+.stage-29 .horn-right::after,
+.stage-30 .horn-right::after {
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: 120%;
+  width: 80%;
+  height: 85%;
+  transform: rotate(12deg);
+  border-radius: 55% 55% 10% 10%;
+  background: linear-gradient(#ff6b00, #ff0000, #000);
+  filter: drop-shadow(0 0 14px rgba(255, 107, 0, 0.85));
+  opacity: 1;
+}
+
+/* Stage 29: slightly different color */
+.stage-29 .horn-left::after {
+  transform: rotate(-15deg);
+}
+
+.stage-29 .horn-right::after {
+  transform: rotate(15deg);
+  background: linear-gradient(#7c2dff, #ff0000, #000);
+}
+
+/* Stage 30 */
+.stage-30 .horn-left::after {
+  transform: rotate(-10deg);
+}
+
+.stage-30 .horn-right::after {
+  transform: rotate(10deg);
+  background: linear-gradient(#7c2dff, #ff6b00, #000);
+}
+
+.stage-30 .creature::before {
+  content: "";
+  position: absolute;
+  top: -42%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14%;
+  height: 52%;
+  border-radius: 55% 55% 10% 10%;
+  background: linear-gradient(#ffffff, #ff6b00, #ff0000, #000);
+  filter: drop-shadow(0 0 28px rgba(255, 255, 255, 1)) drop-shadow(0 0 16px rgba(255, 107, 0, 0.9));
+  z-index: 2;
+  opacity: 1;
+  animation: centralHornPulse 0.9s ease-in-out infinite;
+}
+
+body.mod-phase-1 .creature-button {
+  filter: drop-shadow(0 0 20px rgba(255, 77, 109, 0.18));
+}
+
+body.mod-phase-1 .aura {
+  inset: -10%;
+  animation-duration: 6s, 1.95s;
+}
+
+body.mod-phase-1 .creature {
+  filter: saturate(2.85) contrast(1.12) brightness(1.06);
+  box-shadow:
+    inset -24px -26px 0 rgba(0, 0, 0, 0.18),
+    0 18px 0 rgba(0, 0, 0, 0.22),
+    0 0 72px rgba(255, 77, 109, 0.38);
+}
+
+body.mod-phase-1 .eye {
+  top: 34%;
+  height: 18%;
+  background: #fff6d5;
+}
+
+body.mod-phase-1 .eye-left {
+  transform: rotate(-14deg) translateY(-2px);
+}
+
+body.mod-phase-1 .eye-right {
+  transform: rotate(15deg) translateY(-2px);
+}
+
+body.mod-phase-1 .eye::after {
+  background: #ff3d81;
+  box-shadow: 0 0 14px rgba(255, 61, 129, 0.85);
+}
+
+body.mod-phase-1 .mouth {
+  left: 38%;
+  bottom: 24%;
+  width: 24%;
+  height: 10%;
+  border-top: 4px solid #111827;
+  border-radius: 999px;
+  background: #fff;
+  transform: rotate(-6deg);
+}
+
+body.mod-phase-1 .horn,
+body.mod-phase-1 .limb {
+  filter: drop-shadow(0 0 10px rgba(255, 235, 59, 0.28));
+}
+
+body.mod-phase-1 .creature.clicked {
+  animation: clickBounce 0.22s ease-out, idleBlob 1.95s ease-in-out infinite 0.22s;
+}
+
+body.mod-phase-1 .creature.attacked {
+  animation: creatureBonked 0.5s ease-out, idleBlob 1.95s ease-in-out infinite 0.5s;
+}
+
+body.mod-phase-2 .creature-button {
+  filter: drop-shadow(0 0 28px rgba(255, 235, 59, 0.22));
+}
+
+body.mod-phase-2 .aura {
+  inset: -11%;
+  animation-duration: 5s, 1.55s;
+}
+
+body.mod-phase-2 .creature {
+  animation: idleBlob 1.68s ease-in-out infinite, ragePulse 1.08s linear infinite;
+}
+
+body.mod-phase-2 .eye {
+  top: 34%;
+  height: 14%;
+  background: #fff2b5;
+}
+
+body.mod-phase-2 .eye-left {
+  transform: rotate(-18deg) translateY(-3px);
+}
+
+body.mod-phase-2 .eye-right {
+  transform: rotate(18deg) translateY(-3px);
+}
+
+body.mod-phase-2 .eye::after {
+  background: #ff2058;
+  box-shadow: 0 0 18px rgba(255, 32, 88, 0.95);
+}
+
+body.mod-phase-2 .mouth {
+  left: 39%;
+  bottom: 23%;
+  width: 22%;
+  height: 8%;
+  border-top: 4px solid #111827;
+  border-radius: 999px;
+  background: #fff;
+  transform: rotate(-10deg);
+}
+
+body.mod-phase-2 .horn,
+body.mod-phase-2 .limb {
+  filter: drop-shadow(0 0 14px rgba(255, 235, 59, 0.34));
+}
+
+body.mod-phase-2 .creature.clicked {
+  animation: clickBounce 0.22s ease-out, idleBlob 1.68s ease-in-out infinite 0.22s, ragePulse 1.08s linear infinite 0.22s;
+}
+
+body.mod-phase-2 .creature.attacked {
+  animation: creatureBonked 0.5s ease-out, idleBlob 1.68s ease-in-out infinite 0.5s, ragePulse 1.08s linear infinite 0.5s;
+}
+
+body.mod-phase-3 .creature-button {
+  filter: drop-shadow(0 0 36px rgba(255, 255, 255, 0.28));
+}
+
+body.mod-phase-3 .aura {
+  inset: -13%;
+  animation-duration: 4.1s, 0.98s;
+}
+
+body.mod-phase-3 .creature {
+  animation: idleBlob 1.34s ease-in-out infinite, ascendPulse 0.78s linear infinite;
+}
+
+body.mod-phase-3 .eye {
+  top: 33%;
+  height: 12%;
+  background: #ffffff;
+}
+
+body.mod-phase-3 .eye-left {
+  transform: rotate(-22deg) translateY(-3px);
+}
+
+body.mod-phase-3 .eye-right {
+  transform: rotate(22deg) translateY(-3px);
+}
+
+body.mod-phase-3 .eye::after {
+  background: #ffffff;
+  box-shadow: 0 0 22px #ffffff, 0 0 30px rgba(103, 232, 249, 0.95);
+}
+
+body.mod-phase-3 .mouth {
+  left: 39%;
+  bottom: 22%;
+  width: 20%;
+  height: 7%;
+  border-top: 4px solid #111827;
+  border-radius: 999px;
+  background: #fff7ad;
+  transform: rotate(-13deg);
+}
+
+body.mod-phase-3 .horn,
+body.mod-phase-3 .limb {
+  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.52));
+}
+
+body.mod-phase-3 .creature.clicked {
+  animation: clickBounce 0.22s ease-out, idleBlob 1.34s ease-in-out infinite 0.22s, ascendPulse 0.78s linear infinite 0.22s;
+}
+
+body.mod-phase-3 .creature.attacked {
+  animation: creatureBonked 0.5s ease-out, idleBlob 1.34s ease-in-out infinite 0.5s, ascendPulse 0.78s linear infinite 0.5s;
+}
+
+.stage-panel {
+  width: min(620px, 100%);
+  margin-top: 12px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.stage-panel span {
+  display: block;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.progress-bar {
+  height: 18px;
+  margin: 10px 0 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.progress-bar div {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #61ff8b, #ffeb3b, #ff3d81);
+  transition: width 0.28s ease;
+}
+
+.stage-panel small {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.bonus-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Fifth stat (rebirth) injected at runtime */
+.bonus-row.bonus-row-cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.bonus-row article {
+  padding: 8px 10px;
+}
+
+.bonus-row strong {
+  display: block;
+  margin-top: 2px;
+  color: var(--accent);
+  font-size: 17px;
+}
+
+.shop-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.shop-list {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 14px 8px 14px 12px;   /* right stays tight — scrollbar lives there */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(97, 255, 139, 0.28) transparent;
+
+  /* Soft fade dissolve at top and bottom edges */
+  --fade-size: 16px;
+  -webkit-mask-image:
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      black var(--fade-size),
+      black calc(100% - var(--fade-size)),
+      transparent 100%
+    );
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      black var(--fade-size),
+      black calc(100% - var(--fade-size)),
+      transparent 100%
+    );
+}
+
+/* ── Webkit custom scrollbar ── */
+.shop-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.shop-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 99px;
+  margin: 10px 0;
+}
+
+.shop-list::-webkit-scrollbar-thumb {
+  background: rgba(97, 255, 139, 0.25);
+  border-radius: 99px;
+}
+
+.shop-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(97, 255, 139, 0.55);
+}
+
+.shop-list::-webkit-scrollbar-thumb:active {
+  background: rgba(97, 255, 139, 0.78);
+}
+
+.shop-list.page-swap {
+  animation: pageSwap 0.24s ease;
+}
+
+.shop-footer {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 34%),
+    rgba(0, 0, 0, 0.16);
+  flex-shrink: 0;
+}
+
+.shop-page-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.page-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: none;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    color 0.16s ease,
+    transform 0.14s ease,
+    filter 0.14s ease;
+}
+
+.page-button.active {
+  border-color: rgba(255, 235, 59, 0.46);
+  background: linear-gradient(135deg, #ffeb3b, #ff3d81);
+  color: #111827;
+  box-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.22),
+    0 10px 20px rgba(255, 61, 129, 0.12);
+}
+
+.page-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.page-button.active:hover {
+  background: linear-gradient(135deg, #ffeb3b, #ff3d81);
+  color: #111827;
+  box-shadow:
+    0 5px 0 rgba(0, 0, 0, 0.22),
+    0 12px 22px rgba(255, 61, 129, 0.16);
+}
+
+.page-button:active {
+  transform: translateY(1px);
+}
+
+.page-button.active:active {
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.22),
+    0 7px 14px rgba(255, 61, 129, 0.1);
+}
+
+.upgrade-button {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 10px;
+  width: 100%;
+  min-height: 86px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  text-align: left;
+  transition: transform 0.15s, background 0.15s, opacity 0.15s;
+  margin-bottom: 0;
+}

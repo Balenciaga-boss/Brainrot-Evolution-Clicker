@@ -1,0 +1,22 @@
+{
+  "name": "brainrot-evolution-clicker",
+  "version": "1.0.0",
+  "description": "HTML5 idle clicker for Yandex Games — click the creature, watch it evolve.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev":   "npx serve . --listen 8080",
+    "build": "echo 'No build step required — native ES modules. Deploy the folder as-is.'",
+    "check": "node --check src/main.js",
+    "lint":  "npx eslint src/main.js"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "serve":  "^14.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["game", "clicker", "idle", "yandex-games", "html5"],
+  "license": "MIT"
+}

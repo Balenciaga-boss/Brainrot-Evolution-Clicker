@@ -1,0 +1,87 @@
+/**
+ * data/achievements.js
+ * Achievement definitions. Each achievement is checked passively
+ * in the game loop; no side-effects live here — only pure data.
+ *
+ * trigger(state) → boolean — returns true when the achievement is earned.
+ */
+
+export const achievements = [
+  {
+    id:      "first_click",
+    name:    "Первый шаг в безумие",
+    desc:    "Сделай первый клик.",
+    icon:    "👆",
+    trigger: (state) => state.totalPoints >= 1,
+  },
+  {
+    id:      "combo_10",
+    name:    "Комбо-мастер",
+    desc:    "Набери комбо ×10.",
+    icon:    "🔥",
+    trigger: (state) => state.combo >= 10,
+  },
+  {
+    id:      "stage_5",
+    name:    "Пятая стадия",
+    desc:    "Достигни 5-й стадии.",
+    icon:    "🌀",
+    trigger: (state) => state.stage >= 4,
+  },
+  {
+    id:      "stage_10",
+    name:    "Десятая стадия",
+    desc:    "Достигни 10-й стадии.",
+    icon:    "💀",
+    trigger: (state) => state.stage >= 9,
+  },
+  {
+    id:      "stage_20",
+    name:    "Двадцатая стадия",
+    desc:    "Достигни 20-й стадии.",
+    icon:    "🪐",
+    trigger: (state) => state.stage >= 19,
+  },
+  {
+    id:      "stage_30",
+    name:    "Омега!",
+    desc:    "Достигни финальной 30-й стадии.",
+    icon:    "Ω",
+    trigger: (state) => state.stage >= 29,
+  },
+  {
+    id:      "first_pet",
+    name:    "Первый друг",
+    desc:    "Выведи первого питомца из яйца.",
+    icon:    "🐣",
+    trigger: (state) => Object.keys(state.pets).length >= 1,
+  },
+  {
+    id:      "rebirth_1",
+    name:    "Рождён заново",
+    desc:    "Соверши первое перерождение.",
+    icon:    "🔁",
+    trigger: (state) => state.rebirths >= 1,
+  },
+  {
+    id:      "rebirth_5",
+    name:    "Вечный Брейнрот",
+    desc:    "Соверши все пять перерождений.",
+    icon:    "🪞",
+    trigger: (state) => state.rebirths >= 5,
+  },
+  {
+    id:      "jackpot",
+    name:    "Счастливчик",
+    desc:    "Поймай джекпот-клик.",
+    icon:    "🎰",
+    trigger: (state) => (state._jackpotHits || 0) >= 1,
+  },
+  {
+    id:      "mutations_50",
+    name:    "Мутант",
+    desc:    "Накопи 50 мутаций.",
+    icon:    "🧬",
+    trigger: (state) => state.mutations >= 50,
+  },
+];

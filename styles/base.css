@@ -1,0 +1,233 @@
+:root {
+  --bg-a: #ff3d81;
+  --bg-b: #00d4ff;
+  --bg-c: #ffe600;
+  --panel: rgba(14, 18, 34, 0.82);
+  --panel-solid: #141829;
+  --text: #ffffff;
+  --muted: #c8d0e8;
+  --accent: #61ff8b;
+  --accent-2: #ffeb3b;
+  --danger: #ff4d6d;
+  --line: rgba(255, 255, 255, 0.14);
+  --shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
+  --mod-aura-opacity: 0.78;
+  --mod-aura-opacity-peak: 0.9;
+  --mod-aura-blur: 12px;
+  --mod-aura-blur-peak: 17px;
+  --mod-eye-glow: 4px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  overflow: hidden;
+  color: var(--text);
+  font-family: 'Outfit', 'Inter', Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.35), transparent 16rem),
+    radial-gradient(circle at 82% 10%, rgba(97, 255, 139, 0.35), transparent 14rem),
+    linear-gradient(125deg, var(--bg-a), var(--bg-b), var(--bg-c), #8d4dff);
+  background-size: 180% 180%;
+  animation: gradientDrift 13s ease-in-out infinite;
+  touch-action: manipulation;
+  /* П. 1.6.1.8 / 1.6.2.7: запрет системного меню при лонгтапе и выделения текста */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.25) 0 2px, transparent 3px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.13) 0 3px, transparent 4px);
+  background-size: 76px 76px, 121px 121px;
+  animation: floatPattern 18s linear infinite;
+}
+
+body::after {
+  opacity: 0.42;
+  filter: hue-rotate(90deg);
+  animation-duration: 27s;
+  animation-direction: reverse;
+}
+
+#effectsCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.game-shell {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  align-items: stretch;
+  gap: 18px;
+  width: min(1280px, 100%);
+  height: 100vh;
+  height: 100dvh;
+  margin: 0 auto;
+  padding: 18px;
+  overflow: hidden;
+}
+
+.play-area,
+.shop-panel {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(13px);
+}
+
+.play-area {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 18px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.shop-panel {
+  position: relative;
+  top: auto;
+  align-self: stretch;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-panel,
+.shop-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* top-panel: заголовок слева, таймер+кнопка звука справа вместе */
+.top-panel {
+  justify-content: flex-start;
+}
+.top-panel #soundButton {
+  flex-shrink: 0;
+}
+
+.mini-label {
+  display: block;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 3px 0 0;
+  line-height: 1;
+}
+
+h1 {
+  font-size: clamp(18px, 3vw, 45px);
+  text-shadow: 0 4px 0 rgba(0, 0, 0, 0.28);
+}
+
+h2 {
+  font-size: 25px;
+}
+
+.icon-button,
+.small-button,
+.upgrade-button {
+  border: 0;
+  color: var(--text);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 23px;
+}
+
+.small-button {
+  min-height: 38px;
+  padding: 0 13px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #22c55e, #06b6d4);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1.25fr repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+  flex-shrink: 0;
+}
+
+.stat-card,
+.bonus-row article {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.stat-card {
+  padding: 12px;
+}
+
+.stat-card strong {
+  display: block;
+  overflow-wrap: anywhere;
+  margin-top: 4px;
+  color: var(--accent-2);
+  font-size: clamp(21px, 3.2vw, 39px);
+  line-height: 1.05;
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.28);
+}
+
+.stat-card:not(.stat-main) strong {
+  font-size: clamp(18px, 2vw, 26px);
+}
+
+.stat-label,
+.bonus-row span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}

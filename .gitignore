@@ -1,0 +1,34 @@
+# Dependencies and package manager output
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build and deploy output
+dist/
+build/
+.cache/
+.parcel-cache/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local assistant/tool state
+.claude/
+.cursor/
+.dual-graph/
+CLAUDE.md
+
+# Runtime logs
+*.log
+*.pid

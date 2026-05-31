@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Brainrot Evolution Clicker - лёгкий HTML5 idle clicker для Яндекс Игр.">
+  <title>Brainrot Evolution Clicker</title>
+
+  <!-- Google Fonts for premium gaming aesthetics -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <!-- Styles split by concern -->
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/creature.css">
+  <link rel="stylesheet" href="styles/shop.css">
+  <link rel="stylesheet" href="styles/animations.css">
+  <link rel="stylesheet" href="styles/ads.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+</head>
+<body>
+  <canvas id="effectsCanvas" aria-hidden="true"></canvas>
+
+  <main class="game-shell" id="gameShell">
+    <section class="play-area" aria-label="Игровая область">
+      <header class="top-panel">
+        <div class="title-block">
+          <span class="mini-label">Кликер эволюции</span>
+          <h1>Brainrot Evolution Clicker</h1>
+        </div>
+        <button class="icon-button" id="soundButton" type="button" aria-label="Звук включён" title="Звук">
+          🔊
+        </button>
+      </header>
+
+      <section class="stats-grid" aria-label="Статистика">
+        <article class="stat-card stat-main">
+          <span class="stat-label">Брейнрот-очки</span>
+          <strong id="pointsText">0</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">В секунду</span>
+          <strong id="incomeText">0/с</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">За клик</span>
+          <strong id="clickPowerText">1</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Комбо</span>
+          <strong id="comboText">x1.00</strong>
+        </article>
+      </section>
+
+      <section class="creature-zone">
+        <div class="event-banner hidden" id="eventBanner">Мемный шторм!</div>
+        <button class="creature-button" id="creatureButton" type="button" aria-label="Кликнуть по существу">
+          <div class="aura"></div>
+          <div class="creature" id="creature">
+            <div class="eye eye-left"></div>
+            <div class="eye eye-right"></div>
+            <div class="mouth"></div>
+            <div class="horn horn-left"></div>
+            <div class="horn horn-right"></div>
+            <div class="limb limb-left"></div>
+            <div class="limb limb-right"></div>
+            <span class="creature-symbol" id="creatureSymbol">?</span>
+          </div>
+        </button>
+        <div class="active-pets hidden" id="activePet" aria-label="Активные брейнрот-питомцы"></div>
+        <div class="stage-panel">
+          <span id="stageName">Стадия 1: Странный Комочек</span>
+          <div class="progress-bar" aria-label="Прогресс эволюции">
+            <div id="evolutionProgress"></div>
+          </div>
+          <small id="nextStageText">До следующей формы: 250</small>
+        </div>
+      </section>
+
+      <section class="bonus-row" aria-label="Бонусы">
+        <article>
+          <span>Критический шанс</span>
+          <strong id="critText">5%</strong>
+        </article>
+        <article>
+          <span>Джекпот шанс</span>
+          <strong id="jackpotText">1%</strong>
+        </article>
+        <article>
+          <span>Мутации</span>
+          <strong id="mutationText">0</strong>
+        </article>
+        <article>
+          <span>Питомец</span>
+          <strong id="petBonusText">нет</strong>
+        </article>
+      </section>
+    </section>
+
+    <aside class="shop-panel" aria-label="Магазин улучшений">
+      <div class="shop-header">
+        <div>
+          <span class="mini-label" id="shopMiniTitle">Магазин безумия</span>
+          <h2 id="shopTitle">Улучшения</h2>
+        </div>
+        <button class="small-button" id="saveButton" type="button">Сохранить</button>
+      </div>
+      <div class="shop-list" id="shopList"></div>
+      <div class="shop-footer">
+        <button class="review-bonus-btn rb-btn-gone" id="reviewBonusBtn" type="button"
+                aria-label="Бонус за отзыв об игре">
+          <span class="rb-btn-icon">⭐</span>
+          <span class="rb-btn-text">Бонус за отзыв</span>
+        </button>
+        <nav class="shop-page-tabs" aria-label="Разделы магазина">
+          <button class="page-button shop-tab-button active" type="button" data-shop-page="upgrades" aria-pressed="true">Улучшения</button>
+          <button class="page-button shop-tab-button" type="button" data-shop-page="eggs" aria-pressed="false">Яйца</button>
+        </nav>
+      </div>
+    </aside>
+  </main>
+
+  <div class="hatch-overlay hidden" id="hatchOverlay" aria-live="polite">
+    <div class="hatch-card" id="hatchCard">
+      <div class="hatch-egg" id="hatchEgg">🥚</div>
+      <div class="hatch-result hidden" id="hatchResult">
+        <div class="hatch-pet" id="hatchPetFace">?</div>
+        <strong id="hatchPetName">Новый брейнрот</strong>
+        <span id="hatchPetRarity">Обычный</span>
+        <small id="hatchPetBonus">Бонус: +доход</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="big-announcement hidden" id="bigAnnouncement" aria-live="assertive"></div>
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <!-- Yandex Games SDK — load on hosted builds; local dev uses the fallback path. -->
+  <script>
+    (function () {
+      var host = window.location.hostname;
+      var isLocal = host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "";
+      if (!isLocal) {
+        document.write('<script src="https://yandex.ru/games/sdk/v2"><\/script>');
+      }
+    })();
+  </script>
+  <!-- Game — single bundled file built from src/ modules -->
+  <script src="src/main.js"></script>
+</body>
+</html>

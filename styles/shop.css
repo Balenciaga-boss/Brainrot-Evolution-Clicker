@@ -1,0 +1,980 @@
+.pet-card {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 10px;
+  width: 100%;
+  min-height: 86px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  text-align: left;
+  transition: transform 0.15s, background 0.15s, opacity 0.15s;
+}
+
+.pet-card {
+  margin-bottom: 10px;
+}
+
+.upgrade-button:hover,
+.upgrade-button:focus-visible,
+.pet-card:hover,
+.pet-card:focus-visible {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
+  outline: none;
+}
+
+.upgrade-button:active,
+.pet-card:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.upgrade-button.locked,
+.egg-button.locked,
+.egg-button.no-money,
+.egg-button.hatching {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.upgrade-icon,
+.egg-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 23px;
+}
+
+.upgrade-icon-multi {
+  font-size: 15px;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.upgrade-name,
+.egg-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.15;
+}
+
+.upgrade-desc,
+.upgrade-meta,
+.egg-desc,
+.egg-cost,
+.egg-drops {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.upgrade-meta,
+.egg-cost {
+  color: var(--accent-2);
+  font-weight: 900;
+}
+
+/* Upgrade phase headers */
+.upgrade-phase-header {
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  margin-top: 4px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--muted);
+}
+.upgrade-phase-1 { border-left: 3px solid #9ca3af; }
+.upgrade-phase-2 { border-left: 3px solid #38bdf8; color: #38bdf8; }
+.upgrade-phase-3 { border-left: 3px solid #a855f7; color: #c084fc; }
+.upgrade-phase-4 { border-left: 3px solid #ff2200; color: #ff6644; }
+
+/* Phase 3 late upgrades */
+.upgrade-button.upgrade-late {
+  border-color: rgba(168, 85, 247, 0.45);
+  background: rgba(168, 85, 247, 0.1);
+}
+.upgrade-button.upgrade-late .upgrade-name { color: #c084fc; }
+
+/* Phase 4 endgame upgrades */
+.upgrade-button.upgrade-endgame {
+  border-color: rgba(255, 34, 0, 0.55);
+  background: rgba(255, 34, 0, 0.08);
+  animation: endgameUpgradePulse 2.2s ease-in-out infinite;
+}
+.upgrade-button.upgrade-endgame .upgrade-name { color: #ff6644; }
+.upgrade-button.upgrade-endgame .upgrade-icon {
+  background: rgba(255, 34, 0, 0.22);
+}
+.upgrade-button.upgrade-endgame.locked {
+  animation: none;
+  opacity: 0.42;
+}
+
+.egg-grid {
+  display: grid;
+  gap: 14px;
+  padding: 4px 2px 6px;
+}
+
+.egg-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+  transition: transform 0.18s, background 0.18s, border-color 0.18s, box-shadow 0.18s, filter 0.18s;
+}
+
+.egg-card:hover,
+.egg-card:focus-within {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(97, 255, 139, 0.28);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22), 0 0 12px rgba(97, 255, 139, 0.08);
+}
+
+.egg-card.locked {
+  filter: grayscale(0.55);
+}
+
+.egg-tier-1 { box-shadow: 0 0 12px rgba(156, 163, 175, 0.2); }
+.egg-tier-2 { box-shadow: 0 0 15px rgba(34, 197, 94, 0.24); }
+.egg-tier-3 { box-shadow: 0 0 17px rgba(56, 189, 248, 0.3); }
+.egg-tier-4 { box-shadow: 0 0 20px rgba(168, 85, 247, 0.34); }
+.egg-tier-5 { box-shadow: 0 0 23px rgba(255, 61, 129, 0.38); }
+.egg-tier-6 { box-shadow: 0 0 26px rgba(250, 204, 21, 0.42); }
+.egg-tier-7,
+.egg-tier-8,
+.egg-tier-9,
+.egg-tier-10 {
+  border-color: rgba(255, 255, 255, 0.36);
+  animation: rareEggBorder 2.4s linear infinite;
+}
+
+.egg-main {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 11px;
+  align-items: start;
+  min-height: 108px;
+  padding: 13px 12px 12px;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.24), transparent 24%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+}
+
+.egg-main::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(transparent, rgba(255, 255, 255, 0.35), transparent);
+  animation: spin 5s linear infinite;
+  opacity: 0.32;
+}
+
+.egg-main > span {
+  position: relative;
+  z-index: 1;
+}
+
+.egg-card-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(92px, 0.8fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 62px;
+  padding: 9px 12px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.egg-button,
+.egg-chances-btn {
+  display: inline-grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 44px;
+  border: 0;
+  border-radius: 9px;
+  color: #111827;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.14s, opacity 0.14s, background 0.14s;
+}
+
+.egg-button {
+  background: linear-gradient(135deg, #61ff8b, #ffeb3b);
+}
+
+.egg-chances-btn {
+  border: 1px solid rgba(97, 255, 139, 0.35);
+  background: rgba(97, 255, 139, 0.12);
+  color: #d9ffe2;
+}
+
+.egg-card.preview-open .egg-chances-btn {
+  border-color: rgba(97, 255, 139, 0.75);
+  background: rgba(97, 255, 139, 0.22);
+  color: #fff;
+}
+
+.egg-button:hover:not(:disabled),
+.egg-button:focus-visible:not(:disabled),
+.egg-chances-btn:hover,
+.egg-chances-btn:focus-visible {
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.egg-button:active:not(:disabled),
+.egg-chances-btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.egg-icon {
+  align-self: start;
+  width: 58px;
+  height: 58px;
+  margin-top: 2px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 34px;
+  animation: eggPulse 1.7s ease-in-out infinite;
+}
+
+.egg-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.egg-name {
+  display: block;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.15;
+}
+
+.egg-desc {
+  display: block;
+  max-width: 100%;
+  opacity: 0.88;
+  line-height: 1.28;
+}
+
+.egg-meta-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.egg-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 5px 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.egg-meta b {
+  flex: 0 0 auto;
+  color: rgba(200, 208, 232, 0.82);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.egg-meta em {
+  min-width: 0;
+  overflow: hidden;
+  color: #fff;
+  font-style: normal;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.egg-action {
+  display: block;
+  min-width: 0;
+}
+
+.egg-button.locked {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--muted);
+}
+
+.egg-button.no-money {
+  background: rgba(255, 77, 109, 0.22);
+  color: #ffd6df;
+}
+
+.egg-button.hatching {
+  background: rgba(255, 235, 59, 0.22);
+  color: #fff7ad;
+}
+
+.egg-preview {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  max-height: 0;
+  margin: 0 12px;
+  padding: 0 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-width: 0;
+  border-radius: 8px;
+  background: rgba(14, 18, 34, 0.96);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: max-height 0.22s ease, margin 0.22s ease, padding 0.22s ease, opacity 0.18s, transform 0.18s;
+  pointer-events: auto;
+}
+
+.egg-card.preview-open .egg-preview {
+  max-height: min(520px, 58dvh);
+  margin: 0 12px 12px;
+  padding: 10px;
+  border-width: 1px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.egg-preview strong {
+  color: #fff;
+  font-size: 13px;
+}
+
+.egg-drop-list {
+  display: grid;
+  gap: 6px;
+  max-height: min(340px, 42dvh);
+  padding-right: 6px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(97, 255, 139, 0.58) rgba(12, 28, 24, 0.55);
+}
+
+.egg-drop-list::-webkit-scrollbar {
+  width: 7px;
+}
+
+.egg-drop-list::-webkit-scrollbar-track {
+  background: rgba(12, 28, 24, 0.55);
+  border-radius: 999px;
+}
+
+.egg-drop-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(97, 255, 139, 0.9), rgba(6, 182, 212, 0.72));
+  border: 1px solid rgba(14, 18, 34, 0.9);
+  border-radius: 999px;
+  box-shadow: 0 0 8px rgba(97, 255, 139, 0.22);
+}
+
+.egg-drop-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #a7ffbf, #22d3ee);
+}
+
+.egg-drop-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 42px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.egg-drop-face {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.24);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.egg-drop-row b,
+.egg-drop-row small,
+.egg-drop-row em {
+  display: block;
+  min-width: 0;
+}
+
+.egg-drop-row b {
+  color: #fff;
+  font-size: 12px;
+}
+
+.egg-drop-row small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.egg-drop-row em {
+  color: #fff;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+  text-align: right;
+}
+
+.inventory-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 6px;
+}
+
+.inventory-divider-line {
+  flex: 1 1 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(97, 255, 139, 0.55), transparent);
+}
+
+.inventory-divider-text {
+  flex-shrink: 0;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(97, 255, 139, 0.6);
+  white-space: nowrap;
+}
+
+.inventory-slots-badge {
+  text-align: center;
+  margin-bottom: 10px;
+  color: rgba(200, 208, 232, 0.45);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.empty-inventory {
+  padding: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.pet-grid {
+  display: grid;
+  gap: 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PET CARD v2 — полированный инвентарь брейнротов
+   ═══════════════════════════════════════════════════════════════ */
+
+.pc2-wrap {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(20, 24, 41, 0.72);
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.pc2-wrap:hover {
+  transform: translateY(-2px);
+}
+
+.pc2-wrap.pc2-active {
+  border-color: rgba(97, 255, 139, 0.5);
+  box-shadow: 0 0 22px rgba(97, 255, 139, 0.14), inset 0 0 0 1px rgba(97, 255, 139, 0.12);
+  background: rgba(20, 24, 41, 0.88);
+}
+
+/* leveled-up flash */
+.pc2-wrap.leveled-up {
+  animation: pc2LevelUp 0.9s ease-out;
+}
+
+@keyframes pc2LevelUp {
+  0%   { transform: scale(1.04); box-shadow: 0 0 40px rgba(255, 235, 59, 0.7); }
+  60%  { transform: scale(1.01); box-shadow: 0 0 16px rgba(255, 235, 59, 0.3); }
+  100% { transform: scale(1);    box-shadow: none; }
+}
+
+/* ── Top clickable row ── */
+.pc2-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px 10px;
+  border: 0;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.pc2-main:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.pc2-main:active {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* ── Face circle ── */
+.pc2-face {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 2px solid;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.32);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 900;
+  animation: petWiggle 2.2s ease-in-out infinite;
+  /* inherit border-color from rarity class */
+}
+
+/* ── Header section ── */
+.pc2-header {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pc2-name {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.pc2-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 1px;
+}
+
+.pc2-pill {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  border: 1px solid;
+  /* rarity class supplies color & border-color via pill-rarity below */
+}
+
+/* pill tints per rarity */
+.pc2-pill-rarity.rarity-common       { color: #9ca3af; border-color: rgba(156,163,175,0.4); background: rgba(156,163,175,0.1); }
+.pc2-pill-rarity.rarity-uncommon     { color: #4ade80; border-color: rgba(34,197,94,0.4);   background: rgba(34,197,94,0.1); }
+.pc2-pill-rarity.rarity-rare         { color: #7dd3fc; border-color: rgba(56,189,248,0.4);  background: rgba(56,189,248,0.1); }
+.pc2-pill-rarity.rarity-epic         { color: #c084fc; border-color: rgba(168,85,247,0.4);  background: rgba(168,85,247,0.1); }
+.pc2-pill-rarity.rarity-legendary    { color: #facc15; border-color: rgba(250,204,21,0.4);  background: rgba(250,204,21,0.08); }
+.pc2-pill-rarity.rarity-mythic       { color: #fb7185; border-color: rgba(255,77,109,0.45); background: rgba(255,77,109,0.1); }
+.pc2-pill-rarity.rarity-secret       { color: #67e8f9; border-color: rgba(103,232,249,0.45); background: rgba(103,232,249,0.1); }
+.pc2-pill-rarity.rarity-divine       { color: #fde68a; border-color: rgba(253,230,138,0.45); background: rgba(253,230,138,0.08); }
+.pc2-pill-rarity.rarity-cosmic       { color: #c4b5fd; border-color: rgba(139,92,246,0.5);  background: rgba(139,92,246,0.12); }
+.pc2-pill-rarity.rarity-transcendent { color: #fff;    border-color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.08); text-shadow: 0 0 6px #ff3d81; }
+.pc2-pill-rarity.rarity-demonic      { color: #fca5a5; border-color: rgba(255,34,0,0.5);    background: rgba(255,34,0,0.12); }
+
+.pc2-pill-dup {
+  color: var(--accent-2);
+  border-color: rgba(255,235,59,0.35);
+  background: rgba(255,235,59,0.08);
+}
+
+.pc2-pill-slot {
+  color: var(--accent);
+  border-color: rgba(97,255,139,0.4);
+  background: rgba(97,255,139,0.1);
+}
+
+/* equip hints */
+.pc2-equip-active,
+.pc2-equip-hint {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.pc2-equip-active {
+  color: var(--accent);
+}
+
+.pc2-equip-hint {
+  color: rgba(200,208,232,0.5);
+}
+
+/* ── Stat chips strip ── */
+.pc2-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 8px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.pc2-stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px 3px 6px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pc2-stat-icon {
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* ── Level + upgrade panel ── */
+.pc2-level {
+  padding: 10px 14px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pc2-level-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pc2-level-label {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pc2-level-label b {
+  color: #fff;
+}
+
+.pc2-level-bar-wrap {
+  flex: 1 1 0;
+  height: 5px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.pc2-level-bar {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--accent);
+  transition: width 0.4s ease;
+}
+
+/* rarity-tinted level bars */
+.pc2-level-bar.rarity-uncommon     { background: #22c55e; }
+.pc2-level-bar.rarity-rare         { background: linear-gradient(90deg, #38bdf8, #61ff8b); }
+.pc2-level-bar.rarity-epic         { background: linear-gradient(90deg, #a855f7, #ff3d81); }
+.pc2-level-bar.rarity-legendary    { background: linear-gradient(90deg, #facc15, #f97316); box-shadow: 0 0 6px rgba(250,204,21,0.6); }
+.pc2-level-bar.rarity-mythic       { background: linear-gradient(90deg, #ff4d6d, #ffeb3b); box-shadow: 0 0 8px rgba(255,77,109,0.55); }
+.pc2-level-bar.rarity-secret       { background: linear-gradient(90deg, #67e8f9, #ff3d81, #67e8f9); background-size: 200% 100%; animation: pc2BarSlide 2s linear infinite; }
+.pc2-level-bar.rarity-divine       { background: linear-gradient(90deg, #fff7ad, #facc15, #fff7ad); box-shadow: 0 0 10px rgba(255,247,173,0.7); }
+.pc2-level-bar.rarity-cosmic       { background: linear-gradient(90deg, #8b5cf6, #38bdf8, #8b5cf6); background-size: 200% 100%; animation: pc2BarSlide 1.8s linear infinite; }
+.pc2-level-bar.rarity-transcendent { background: linear-gradient(90deg, #ff3d81, #fff, #00d4ff, #ff3d81); background-size: 200% 100%; animation: pc2BarSlide 1.2s linear infinite; box-shadow: 0 0 12px rgba(255,255,255,0.5); }
+.pc2-level-bar.rarity-demonic      { background: linear-gradient(90deg, #ff2200, #ff6b00, #ff2200); background-size: 200% 100%; animation: pc2BarSlide 1s linear infinite; box-shadow: 0 0 12px rgba(255,34,0,0.7); }
+
+@keyframes pc2BarSlide {
+  from { background-position: 0% 0%; }
+  to   { background-position: 200% 0%; }
+}
+
+.pc2-level-cap {
+  flex-shrink: 0;
+  color: rgba(200,208,232,0.5);
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* upgrade row */
+.pc2-upg-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pc2-upg-hint {
+  font-size: 10px;
+  color: rgba(200,208,232,0.45);
+  font-weight: 700;
+}
+
+/* reuse existing pet-upgrade-btn + new specifics */
+.pet-upgrade-btn {
+  flex-shrink: 0;
+  padding: 7px 13px;
+  border: 1.5px solid rgba(97, 255, 139, 0.45);
+  border-radius: 8px;
+  background: rgba(97, 255, 139, 0.1);
+  color: var(--accent);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  white-space: nowrap;
+}
+
+.pet-upgrade-btn:hover:not(:disabled):not(.pet-upgrade-maxed):not(.pet-upgrade-locked) {
+  background: rgba(97, 255, 139, 0.22);
+  border-color: rgba(97, 255, 139, 0.75);
+  box-shadow: 0 0 12px rgba(97, 255, 139, 0.2);
+  transform: translateY(-1px);
+}
+
+.pet-upgrade-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.pet-upgrade-btn.pet-upgrade-locked {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(200,208,232,0.4);
+  cursor: not-allowed;
+}
+
+.pet-upgrade-btn.pet-upgrade-maxed {
+  border-color: rgba(250, 204, 21, 0.35);
+  background: rgba(250, 204, 21, 0.07);
+  color: #facc15;
+  cursor: default;
+  opacity: 0.8;
+}
+
+/* old classes kept for backwards compat (equipped modal etc.) */
+.pet-card {
+  grid-template-columns: 52px minmax(0, 1fr);
+  min-height: 94px;
+  border-width: 2px;
+}
+
+.pet-card.active {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.36), 0 0 18px rgba(255, 255, 255, 0.16);
+}
+
+.pet-card-face {
+  grid-row: span 4;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.26);
+  color: #fff;
+  font-size: 19px;
+  font-weight: 900;
+  animation: petWiggle 2.2s ease-in-out infinite;
+}
+
+.pet-card-name,
+.pet-card-rarity,
+.pet-card-bonus,
+.pet-card-equip {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.pet-card-name {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.pet-card-rarity,
+.pet-card-bonus {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.pet-card-equip {
+  color: var(--accent-2);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.rarity-common { border-color: #9ca3af; }
+.rarity-uncommon { border-color: #22c55e; box-shadow: 0 0 14px rgba(34, 197, 94, 0.28); }
+.rarity-rare { border-color: #38bdf8; box-shadow: 0 0 16px rgba(56, 189, 248, 0.32); }
+.rarity-epic { border-color: #a855f7; box-shadow: 0 0 18px rgba(168, 85, 247, 0.36); }
+.rarity-legendary { border-color: #facc15; box-shadow: 0 0 22px rgba(250, 204, 21, 0.48); }
+.rarity-mythic {
+  border-color: #ff4d6d;
+  box-shadow: 0 0 24px rgba(255, 77, 109, 0.5);
+}
+
+.pet-card.rarity-mythic {
+  animation: mythicGlow 1.1s linear infinite;
+}
+
+.active-pet.rarity-mythic.pet-orbit-1 {
+  animation: petOrbitOne 3.4s ease-in-out infinite, mythicGlow 1.1s linear infinite;
+}
+
+.active-pet.rarity-mythic.pet-orbit-2 {
+  animation: petOrbitTwo 3.9s ease-in-out infinite, mythicGlow 1.1s linear infinite;
+}
+
+.active-pet.rarity-mythic.pet-orbit-3 {
+  animation: petOrbitThree 4.2s ease-in-out infinite, mythicGlow 1.1s linear infinite;
+}
+
+.active-pet.rarity-secret.pet-orbit-1 { animation: petOrbitOne 3.4s ease-in-out infinite, secretGlow 1.6s linear infinite; }
+.active-pet.rarity-secret.pet-orbit-2 { animation: petOrbitTwo 3.9s ease-in-out infinite, secretGlow 1.6s linear infinite; }
+.active-pet.rarity-secret.pet-orbit-3 { animation: petOrbitThree 4.2s ease-in-out infinite, secretGlow 1.6s linear infinite; }
+.active-pet.rarity-divine.pet-orbit-1 { animation: petOrbitOne 3.4s ease-in-out infinite, divineGlow 1.45s ease-in-out infinite; }
+.active-pet.rarity-divine.pet-orbit-2 { animation: petOrbitTwo 3.9s ease-in-out infinite, divineGlow 1.45s ease-in-out infinite; }
+.active-pet.rarity-divine.pet-orbit-3 { animation: petOrbitThree 4.2s ease-in-out infinite, divineGlow 1.45s ease-in-out infinite; }
+.active-pet.rarity-cosmic.pet-orbit-1 { animation: petOrbitOne 3.4s ease-in-out infinite, cosmicGlow 1.8s linear infinite; }
+.active-pet.rarity-cosmic.pet-orbit-2 { animation: petOrbitTwo 3.9s ease-in-out infinite, cosmicGlow 1.8s linear infinite; }
+.active-pet.rarity-cosmic.pet-orbit-3 { animation: petOrbitThree 4.2s ease-in-out infinite, cosmicGlow 1.8s linear infinite; }
+.active-pet.rarity-transcendent.pet-orbit-1 { animation: petOrbitOne 3.4s ease-in-out infinite, transcendentGlitch 0.9s steps(2, end) infinite; }
+.active-pet.rarity-transcendent.pet-orbit-2 { animation: petOrbitTwo 3.9s ease-in-out infinite, transcendentGlitch 0.9s steps(2, end) infinite; }
+.active-pet.rarity-transcendent.pet-orbit-3 { animation: petOrbitThree 4.2s ease-in-out infinite, transcendentGlitch 0.9s steps(2, end) infinite; }
+.active-pet.rarity-demonic.pet-orbit-1 { animation: petOrbitOne 3.4s ease-in-out infinite, demonicGlow 0.7s ease-in-out infinite; }
+.active-pet.rarity-demonic.pet-orbit-2 { animation: petOrbitTwo 3.9s ease-in-out infinite, demonicGlow 0.7s ease-in-out infinite; }
+.active-pet.rarity-demonic.pet-orbit-3 { animation: petOrbitThree 4.2s ease-in-out infinite, demonicGlow 0.7s ease-in-out infinite; }
+
+.rarity-secret {
+  border-color: #67e8f9;
+  box-shadow: 0 0 24px rgba(103, 232, 249, 0.52);
+}
+
+.rarity-divine {
+  border-color: #fff7ad;
+  box-shadow: 0 0 28px rgba(255, 247, 173, 0.68), 0 0 8px rgba(250, 204, 21, 0.8);
+}
+
+.rarity-cosmic {
+  border-color: #8b5cf6;
+  background-image: radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.3), transparent 12%), linear-gradient(135deg, rgba(139, 92, 246, 0.34), rgba(6, 182, 212, 0.2));
+  box-shadow: 0 0 32px rgba(139, 92, 246, 0.72);
+}
+
+.rarity-transcendent {
+  border-color: #fff;
+  box-shadow: 0 0 34px rgba(255, 255, 255, 0.75), 0 0 22px rgba(255, 61, 129, 0.55);
+}
+
+.rarity-demonic {
+  border-color: #ff2200;
+  box-shadow: 0 0 38px rgba(255, 34, 0, 0.85), 0 0 20px rgba(180, 0, 0, 0.9), 0 0 8px #000;
+}
+
+.pet-card.rarity-secret,
+.active-pet.rarity-secret {
+  animation: secretGlow 1.6s linear infinite;
+}
+
+.pet-card.rarity-divine,
+.active-pet.rarity-divine {
+  animation: divineGlow 1.45s ease-in-out infinite;
+}
+
+.pet-card.rarity-cosmic,
+.active-pet.rarity-cosmic {
+  animation: cosmicGlow 1.8s linear infinite;
+}
+
+.pet-card.rarity-transcendent,
+.active-pet.rarity-transcendent {
+  animation: transcendentGlitch 0.9s steps(2, end) infinite;
+}
+
+.pet-card.rarity-demonic,
+.active-pet.rarity-demonic {
+  animation: demonicGlow 0.7s ease-in-out infinite;
+}
+
+.active-pet.attack-headbutt { animation: petAttackHeadbutt 0.58s ease-out !important; }
+.active-pet.attack-laser { animation: petAttackLaser 0.62s ease-out !important; }
+.active-pet.attack-throw { animation: petAttackThrow 0.62s ease-out !important; }
+.active-pet.attack-punch { animation: petAttackPunch 0.54s ease-out !important; }
+.active-pet.attack-spin { animation: petAttackSpin 0.62s ease-out !important; }
+
+.hatch-result .rarity-common { color: #d1d5db; }
+.hatch-result .rarity-uncommon { color: #22c55e; }
+.hatch-result .rarity-rare { color: #38bdf8; }
+.hatch-result .rarity-epic { color: #c084fc; }
+.hatch-result .rarity-legendary { color: #facc15; }
+.hatch-result .rarity-mythic {
+  color: #ff4d6d;
+  text-shadow: 0 0 14px #ffe600;
+}
+.hatch-result .rarity-secret { color: #67e8f9; text-shadow: 0 0 16px #fff; }
+.hatch-result .rarity-divine { color: #fff7ad; text-shadow: 0 0 18px #facc15; }
+.hatch-result .rarity-cosmic { color: #c4b5fd; text-shadow: 0 0 18px #38bdf8; }
+.hatch-result .rarity-transcendent { color: #fff; text-shadow: 0 0 10px #ff3d81, 0 0 22px #00d4ff; }
+.hatch-result .rarity-demonic { color: #ff2200; text-shadow: 0 0 12px #ff6600, 0 0 28px #ff0000, 0 0 4px #000; }

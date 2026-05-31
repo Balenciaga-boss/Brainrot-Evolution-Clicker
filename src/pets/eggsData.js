@@ -1,0 +1,25 @@
+// pets/eggsData.js  (lines 1396-1410 of src/main.js)
+// Egg definitions with drop tables.
+// NOTE: This file is a readable extract. The live bundle is src/main.js.
+
+/**
+ * pets/eggsData.js
+ * Egg definitions with drop tables.
+ * Part of src/main.js — do not load standalone.
+ */
+
+  var eggs = [
+    { id: "cheap", tier: 1, unlockStage: 2, icon: "🥚", name: "Дешёвое Яйцо", desc: "Первый маленький источник подозрительных друзей.", cost: 320, drops: [{ pet: "crumb", chance: 60 }, { pet: "noodle", chance: 30 }, { pet: "sock", chance: 10 }] },
+    { id: "weird", tier: 2, unlockStage: 4, icon: "🍳", name: "Странное Яйцо", desc: "Внутри кто-то листает мемы и тихо спорит.", cost: 6500, drops: [{ pet: "pickle", chance: 50 }, { pet: "wifi", chance: 35 }, { pet: "teapot", chance: 15 }] },
+    { id: "glitched", tier: 3, unlockStage: 6, icon: "🪩", name: "Глючное Яйцо", desc: "Мерцает так, будто знает пароль от реальности.", cost: 85000, drops: [{ pet: "pixel", chance: 50 }, { pet: "cursor", chance: 35 }, { pet: "portal", chance: 15 }] },
+    { id: "cosmic", tier: 4, unlockStage: 8, icon: "🌌", name: "Космическое Яйцо", desc: "Пахнет звёздами, кринжем и свежим комбо.", cost: 1400000, drops: [{ pet: "moon", chance: 48 }, { pet: "crown", chance: 34 }, { pet: "sun", chance: 18 }] },
+    { id: "reactorEgg", tier: 5, unlockStage: 10, icon: "☢", name: "Реакторное Яйцо", desc: "Греется даже когда на него просто смотришь.", cost: 22000000, drops: [{ pet: "antenna", chance: 45 }, { pet: "mixer", chance: 38 }, { pet: "idol", chance: 17 }] },
+    { id: "royal", tier: 6, unlockStage: 13, icon: "👑", name: "Королевское Яйцо", desc: "Ведёт себя дорого и требует оваций.", cost: 2800000000, drops: [{ pet: "clock", chance: 42 }, { pet: "drama", chance: 38 }, { pet: "throne", chance: 20 }] },
+    { id: "void", tier: 7, unlockStage: 16, icon: "🕳", name: "Пустотное Яйцо", desc: "Съедает свет и возвращает пассивный доход.", cost: 650000000000, drops: [{ pet: "cubelet", chance: 42 }, { pet: "angel", chance: 36 }, { pet: "voidling", chance: 22 }] },
+    { id: "neon", tier: 8, unlockStage: 19, icon: "💎", name: "Неоновое Яйцо", desc: "Слишком яркое, чтобы быть законным.", cost: 260000000000000, drops: [{ pet: "neon", chance: 40 }, { pet: "kingbyte", chance: 36 }, { pet: "mythsignal", chance: 24 }] },
+    { id: "forbidden", tier: 9, unlockStage: 22, icon: "🧿", name: "Запрещённое Яйцо", desc: "Лучше не спрашивать, почему оно смотрит. Внутри есть ультра-редкие сигналы.", cost: 180000000000000000, drops: [{ pet: "glitch", chance: 60 }, { pet: "oracle", chance: 20 }, { pet: "redacted", chance: 18.57 }, { pet: "secret404", chance: 1 }, { pet: "divinebell", chance: 0.3 }, { pet: "cosmicmouth", chance: 0.1 }, { pet: "transglitch", chance: 0.03 }] },
+    { id: "omega", tier: 10, unlockStage: 23, icon: "🔴", name: "Омега-Яйцо Апокалипсиса", desc: "Финальный контейнер для самой громкой странности и невозможных питомцев.", cost: 2400000000000000000, drops: [{ pet: "finalspark", chance: 45 }, { pet: "apocalypse", chance: 25 }, { pet: "overbrain", chance: 28.57 }, { pet: "hiddenmeme", chance: 1 }, { pet: "divinehand", chance: 0.3 }, { pet: "galaxyeye", chance: 0.1 }, { pet: "beyondbrain", chance: 0.03 }] },
+    { id: "infernal", tier: 11, unlockStage: 25, icon: "🔥", name: "Инфернальное Яйцо", desc: "Выкована в глубинах ада. Пылает изнутри и снаружи. Содержит существ, которых не должно существовать.", cost: 3.5e21, drops: [{ pet: "chaoscore", chance: 55 }, { pet: "demonlord", chance: 25 }, { pet: "infernalecho", chance: 18.57 }, { pet: "shadowpulse", chance: 1 }, { pet: "demonseraph", chance: 0.3 }, { pet: "abysswalker", chance: 0.1 }, { pet: "finaldemongod", chance: 0.02 }, { pet: "hellsovereign", chance: 0.01 }] },
+    { id: "absolute", tier: 12, unlockStage: 28, icon: "🌑", name: "Абсолютное Яйцо Демона", desc: "Тьма внутри тьмы. Оно не просто светится — оно поглощает реальность. Только истинные повелители бездны могут его открыть.", cost: 8e22, drops: [{ pet: "voidthrone", chance: 50 }, { pet: "infernalecho", chance: 27 }, { pet: "demonlord", chance: 21.57 }, { pet: "shadowpulse", chance: 1 }, { pet: "demonseraph", chance: 0.3 }, { pet: "abysswalker", chance: 0.1 }, { pet: "finaldemongod", chance: 0.02 }, { pet: "hellsovereign", chance: 0.007 }, { pet: "voidemperor", chance: 0.003 }] }
+  ];
+

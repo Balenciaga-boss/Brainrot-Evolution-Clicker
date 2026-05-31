@@ -1,0 +1,2456 @@
+@media (max-width: 940px) {
+  html,
+  body {
+    min-height: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  body {
+    overscroll-behavior: none;
+  }
+
+  .game-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    padding: 10px;
+    gap: 10px;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .play-area {
+    min-height: 0;
+    overflow: visible;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .shop-panel {
+    position: relative;
+    top: 0;
+    height: auto;
+    max-height: min(58vh, 520px);
+    min-height: 280px;
+    flex-shrink: 0;
+  }
+
+  .shop-list {
+    max-height: none;
+    /* Mask creates clipping issues in constrained mobile height — disable */
+    -webkit-mask-image: none;
+    mask-image: none;
+    padding: 10px;
+    scrollbar-width: none;   /* hide scrollbar on mobile, rely on touch */
+  }
+
+  .shop-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .top-panel,
+  .shop-header {
+    gap: 8px;
+  }
+
+  .title-block,
+  .shop-header > div {
+    min-width: 0;
+  }
+
+  .title-block h1,
+  .shop-header h2 {
+    overflow-wrap: anywhere;
+  }
+
+  .icon-button {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .small-button {
+    min-height: 34px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  .rb-cooldown-badge {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .review-bonus-btn {
+    left: 10px;
+    right: 10px;
+    bottom: calc(100% + 6px);
+    max-width: calc(100vw - 40px);
+  }
+
+  .toast-stack {
+    left: 10px;
+    right: 10px;
+    top: auto;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+    width: auto;
+    max-height: min(28vh, 160px);
+    overflow: hidden;
+  }
+
+  .toast {
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  #adBuffPopup,
+  #adActiveBuff,
+  .invite-offer-btn {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: none;
+  }
+
+  #adBuffPopup {
+    top: calc(env(safe-area-inset-top, 0px) + 10px);
+  }
+
+  #adActiveBuff {
+    top: calc(env(safe-area-inset-top, 0px) + 10px);
+    justify-content: center;
+  }
+
+  .invite-offer-btn {
+    top: calc(env(safe-area-inset-top, 0px) + 58px);
+    justify-content: center;
+    white-space: normal;
+    text-align: center;
+  }
+
+  /* Keep creature tappable while scrolling to the shop */
+  .creature-zone {
+    position: sticky;
+    top: calc(env(safe-area-inset-top, 0px));
+    z-index: 0;
+    margin-left: -12px;
+    margin-right: -12px;
+    padding-left: 12px;
+    padding-right: 12px;
+    background: linear-gradient(
+      180deg,
+      rgba(14, 18, 34, 0.97) 0%,
+      rgba(14, 18, 34, 0.94) 72%,
+      rgba(14, 18, 34, 0) 100%
+    );
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .big-announcement {
+    top: 18%;
+    padding: 14px 16px;
+    font-size: clamp(22px, 9vw, 44px);
+  }
+
+  .active-pets {
+    width: min(78vw, 290px);
+    height: min(78vw, 290px);
+  }
+
+  .active-pet {
+    width: 62px;
+    height: 62px;
+  }
+}
+
+@media (max-width: 640px) {
+  .game-shell {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .top-panel {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .top-panel .title-block {
+    flex: 1 1 calc(100% - 52px);
+  }
+
+  .shop-header {
+    align-items: flex-start;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .stat-card {
+    padding: 9px;
+  }
+
+  .stat-label,
+  .bonus-row span {
+    font-size: 11px;
+  }
+
+  .stat-card strong {
+    font-size: 20px;
+  }
+
+  .stat-card:not(.stat-main) strong {
+    font-size: 17px;
+  }
+
+  .creature-zone {
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    min-height: 0;
+    padding-top: 10px;
+    padding-bottom: 8px;
+  }
+
+  .creature-button {
+    width: min(66vw, 240px, 34vh);
+  }
+
+  .stage-actions {
+    margin-top: 6px;
+    gap: 5px;
+  }
+
+  .rebirth-open-btn,
+  .autoclicker-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+
+  .bonus-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .bonus-row.bonus-row-cols-5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bonus-row-pet-article {
+    grid-column: 1 / -1;
+  }
+
+  .bonus-row article {
+    min-height: 54px;
+    padding: 7px 8px;
+  }
+
+  .bonus-row strong {
+    font-size: 14px;
+  }
+
+  .upgrade-button,
+  .pet-card {
+    min-height: 86px;
+  }
+
+  .egg-main {
+    min-height: 100px;
+    padding: 12px 10px;
+    grid-template-columns: 50px minmax(0, 1fr);
+  }
+
+  .shop-list {
+    padding: 12px;
+  }
+
+  .upgrade-ad-btn {
+    margin-left: 0;
+  }
+
+  .egg-card-actions {
+    grid-template-columns: minmax(0, 1fr) minmax(92px, 0.72fr);
+  }
+
+  .active-pet {
+    width: 52px;
+    height: 52px;
+  }
+
+  .pet-face {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-shell {
+    padding: 6px;
+  }
+
+  .play-area {
+    padding: 10px;
+  }
+
+  .title-block h1 {
+    font-size: 16px;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+
+  h1 {
+    font-size: 16px;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: 19px;
+  }
+
+  .mini-label {
+    font-size: 10px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .stat-card {
+    padding: 7px 5px;
+  }
+
+  .stat-label {
+    font-size: 9px;
+  }
+
+  .stat-card strong,
+  .stat-card:not(.stat-main) strong {
+    font-size: 13px;
+    line-height: 1.1;
+  }
+
+  .creature-zone {
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .creature-button {
+    width: min(58vw, 190px, 30vh);
+  }
+
+  .stage-panel {
+    margin-top: 6px;
+  }
+
+  .stage-panel span {
+    font-size: 13px;
+  }
+
+  .progress-bar {
+    height: 12px;
+    margin: 6px 0 4px;
+  }
+
+  .stage-panel small {
+    font-size: 10px;
+  }
+
+  .stage-actions {
+    margin-top: 5px;
+    gap: 5px;
+  }
+
+  .rebirth-open-btn,
+  .autoclicker-btn {
+    max-width: 100%;
+    justify-content: center;
+    padding: 4px 8px;
+    font-size: 10px;
+    gap: 4px;
+  }
+
+  .bonus-row span {
+    font-size: 9px;
+    line-height: 1.15;
+  }
+
+  .bonus-row strong {
+    font-size: 12px;
+  }
+
+  .bonus-row article {
+    min-height: 48px;
+    padding: 6px 5px;
+  }
+
+  .equipped-pets-btn {
+    width: 100%;
+    justify-content: center;
+    gap: 3px;
+    padding: 4px 3px;
+    font-size: 9px;
+  }
+
+  .creature-zone {
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .shop-panel {
+    max-height: min(64vh, 460px);
+    min-height: 260px;
+  }
+
+  .shop-header {
+    padding: 10px;
+  }
+
+  .shop-footer {
+    padding: 8px 10px 12px;
+  }
+
+  .page-button {
+    min-height: 38px;
+  }
+
+  .toast-stack {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+    max-height: 112px;
+  }
+
+  #adBuffPopup {
+    padding: 10px 12px;
+  }
+
+  .invite-offer-btn {
+    top: calc(env(safe-area-inset-top, 0px) + 50px);
+  }
+}
+
+/* Short viewports (split screen, small laptop) — sizing only, not full phone layout */
+@media (max-height: 680px) and (min-width: 481px) and (max-width: 940px) {
+  .creature-zone {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .creature-button {
+    width: min(48vw, 220px, 34vh);
+  }
+
+  .shop-panel {
+    max-height: min(40vh, 360px);
+  }
+
+  .stats-grid {
+    margin-top: 6px;
+  }
+}
+
+@media (max-width: 380px) {
+  .stage-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .stage-actions .rebirth-bar,
+  .stage-actions .autoclicker-bar {
+    width: 100%;
+  }
+
+  .rebirth-open-btn,
+  .autoclicker-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 480px) {
+  .game-shell {
+    grid-template-columns: minmax(0, 1fr) minmax(270px, 40vw);
+    grid-template-rows: 1fr;
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .play-area,
+  .shop-panel {
+    max-height: none;
+    min-height: calc(100dvh - 12px);
+  }
+
+  .shop-panel {
+    height: calc(100dvh - 12px);
+  }
+
+  .bonus-row.bonus-row-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .bonus-row-pet-article {
+    grid-column: auto;
+  }
+
+  .creature-button {
+    width: min(32vw, 46vh, 210px);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AD MANAGER STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.ad-hidden  { display: none !important; }
+
+/* ── Buff Offer Popup (top-left) ── */
+#adBuffPopup {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 220px;
+  background: rgba(14, 18, 34, 0.97);
+  border: 1px solid rgba(97, 255, 139, 0.35);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+  animation: adPopupIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes adPopupIn {
+  from { opacity: 0; transform: translateX(-20px) scale(0.93); }
+  to   { opacity: 1; transform: none; }
+}
+.ad-popup-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.ad-popup-icon  { font-size: 24px; line-height: 1; }
+.ad-popup-label { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.3; }
+.ad-popup-sublabel { font-size: 11px; color: var(--muted); }
+.ad-popup-buttons { display: flex; flex-direction: column; gap: 6px; margin-top: 2px; }
+
+.ad-watch-btn {
+  background: linear-gradient(135deg, #61ff8b, #00d4ff);
+  color: #0a0e1a;
+  font-weight: 800;
+  font-size: 13px;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.12s;
+}
+.ad-watch-btn:hover  { opacity: 0.9; transform: scale(1.03); }
+.ad-watch-btn:active { transform: scale(0.97); }
+
+.ad-cancel-btn {
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.ad-cancel-btn:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+
+/* ── Active Buff Badge (top-left) ── */
+#adActiveBuff {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 499;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(14, 18, 34, 0.93);
+  border: 1px solid rgba(255, 235, 59, 0.4);
+  border-radius: 10px;
+  padding: 8px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-2);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.4), 0 0 12px rgba(255,235,59,0.12);
+  pointer-events: none;
+  /* Promote to its own compositing layer so scroll and triggerFlash reflows
+     don't cause the element to flicker or disappear. translateZ(0) avoids
+     creating a new fixed-positioning containing block (unlike will-change:transform
+     on a parent), because the element itself is already fixed. */
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ── Ad Simulation Overlay ── */
+#adSimOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(8px);
+}
+.ad-sim-card {
+  width: min(340px, 90vw);
+  background: #141829;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 32px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.7);
+}
+.ad-sim-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.ad-sim-screen {
+  width: 100%;
+  height: 110px;
+  background: linear-gradient(135deg, #1a1f35, #0e1222);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.ad-sim-logo {
+  font-size: 32px;
+  animation: adLogoPulse 1.4s ease-in-out infinite;
+}
+@keyframes adLogoPulse {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.1); opacity: 0.8; }
+}
+.ad-sim-tagline { font-size: 12px; color: var(--muted); font-style: italic; }
+.ad-sim-progress-wrap { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+.ad-sim-progress-label { font-size: 11px; color: var(--muted); text-align: center; }
+.ad-sim-progress-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+#adSimBar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), #00d4ff);
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
+.ad-sim-actions { display: flex; gap: 10px; width: 100%; }
+
+#adSimCancel {
+  flex: 1;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+#adSimCancel:hover:not(:disabled) { border-color: rgba(255,255,255,0.35); color: #fff; }
+#adSimCancel:disabled              { opacity: 0.35; cursor: not-allowed; }
+
+#adSimConfirm {
+  flex: 1;
+  background: linear-gradient(135deg, #61ff8b, #00d4ff);
+  border: none;
+  border-radius: 10px;
+  color: #0a0e1a;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 10px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.12s;
+}
+#adSimConfirm:hover  { opacity: 0.9; transform: scale(1.03); }
+#adSimConfirm:active { transform: scale(0.97); }
+
+/* ── Ad button on each upgrade ── */
+.upgrade-row {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 14px;
+}
+.upgrade-row .upgrade-button {
+  width: 100%;
+  margin-bottom: 0;
+  order: 2;
+  border-top-left-radius: 0;
+}
+.upgrade-ad-btn {
+  order: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: flex-start;
+  margin-left: 0;
+  margin-bottom: 0;
+  background: rgba(255, 235, 59, 0.1);
+  border: 1px solid rgba(255, 235, 59, 0.32);
+  border-radius: 20px 20px 0 0;
+  border-bottom: none;
+  color: var(--accent-2);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 11px 6px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  line-height: 1.4;
+}
+.upgrade-ad-btn::before {
+  content: "▶";
+  font-size: 8px;
+  opacity: 0.7;
+}
+.upgrade-ad-btn:hover:not(:disabled) {
+  background: rgba(255,235,59,0.2);
+  border-color: rgba(255,235,59,0.58);
+  box-shadow: 0 0 8px rgba(255,235,59,0.2);
+}
+.upgrade-ad-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.upgrade-ad-btn:disabled { opacity: 0.32; cursor: not-allowed; color: var(--muted); }
+
+/* ── Ad section on each egg card ── */
+.egg-ad-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 0;
+  padding: 10px 12px 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  width: 100%;
+}
+.egg-ad-btn {
+  width: 100%;
+  background: rgba(97, 255, 139, 0.08);
+  border: 1px solid rgba(97, 255, 139, 0.24);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  line-height: 1.4;
+}
+.egg-ad-btn:hover:not(:disabled) {
+  background: rgba(97,255,139,0.17);
+  border-color: rgba(97,255,139,0.48);
+  box-shadow: 0 0 10px rgba(97,255,139,0.14);
+}
+.egg-ad-btn:disabled { opacity: 0.38; cursor: not-allowed; color: var(--muted); }
+.egg-ad-counter { font-size: 11px; color: var(--muted); font-weight: 600; }
+.egg-ad-cooldown { font-size: 11px; color: var(--danger); font-weight: 700; }
+
+/* ═══════════════════════════════════════════════════════════════
+   SPECIAL UPGRADES SECTION
+   ═══════════════════════════════════════════════════════════════ */
+
+.upgrade-phase-special {
+  margin-top: 14px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(124, 45, 255, 0.25), rgba(255, 61, 129, 0.18));
+  border-left: 3px solid #c084fc;
+  color: #e9d5ff;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.upgrade-special {
+  border: 1px solid rgba(192, 132, 252, 0.45) !important;
+  background: rgba(124, 45, 255, 0.1) !important;
+}
+
+.upgrade-special:not(:disabled):hover {
+  background: rgba(124, 45, 255, 0.22) !important;
+  border-color: rgba(192, 132, 252, 0.8) !important;
+  box-shadow: 0 0 16px rgba(192, 132, 252, 0.25) !important;
+}
+
+.upgrade-special-bought {
+  border-color: rgba(97, 255, 139, 0.4) !important;
+  background: rgba(97, 255, 139, 0.08) !important;
+  cursor: default !important;
+  opacity: 0.75;
+}
+
+.upgrade-special-bought .upgrade-name small {
+  color: #61ff8b;
+}
+
+.upgrade-special-locked {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+.upgrade-special-locked .upgrade-meta {
+  color: #f59e0b !important;
+}
+
+.upgrade-special-effect {
+  display: block;
+  margin-top: 3px;
+  color: #fde68a !important;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REBIRTH BUTTON
+   ═══════════════════════════════════════════════════════════════ */
+
+.rebirth-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.stage-actions .rebirth-bar {
+  flex-direction: row;
+  width: auto;
+  margin-top: 0;
+}
+
+.rebirth-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border: 2px solid rgba(255, 61, 129, 0.55);
+  border-radius: 10px;
+  background: rgba(255, 61, 129, 0.12);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, box-shadow 0.18s, transform 0.14s;
+  white-space: nowrap;
+}
+
+.rebirth-btn:not(:disabled):hover {
+  background: rgba(255, 61, 129, 0.28);
+  border-color: rgba(255, 61, 129, 0.85);
+  box-shadow: 0 0 22px rgba(255, 61, 129, 0.4), 0 0 6px rgba(255, 61, 129, 0.2);
+  transform: translateY(-2px);
+}
+
+.rebirth-btn:not(:disabled):active {
+  transform: scale(0.96);
+}
+
+.rebirth-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.rebirth-btn:not(:disabled) {
+  animation: rebirthPulse 2s ease-in-out infinite;
+}
+
+@keyframes rebirthPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 61, 129, 0.2); }
+  50%       { box-shadow: 0 0 22px rgba(255, 61, 129, 0.55), 0 0 40px rgba(255, 61, 129, 0.15); }
+}
+
+.bonus-row-pet-article {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: visible !important;
+}
+
+.bonus-row-pet-article > strong {
+  display: none;
+}
+
+.bonus-row-pet-article .equipped-pets-btn {
+  margin-top: 4px;
+  align-self: flex-start;
+  max-width: 100%;
+  /* override any .bonus-row span color leaking into button spans */
+  color: #fff !important;
+}
+
+/* Prevent .bonus-row span from styling button spans */
+.bonus-row-pet-article button span {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.equipped-pets-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 2px;
+  padding: 5px 9px;
+  min-width: 0;
+  min-height: 30px;
+  max-width: 100%;
+  border: 1px solid rgba(97, 255, 139, 0.5);
+  border-radius: 7px;
+  background: rgba(97, 255, 139, 0.12);
+  color: var(--text);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  align-self: flex-start;
+}
+
+.equipped-pets-btn-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.equipped-pets-btn:hover {
+  background: rgba(97, 255, 139, 0.24);
+  border-color: rgba(97, 255, 139, 0.8);
+  box-shadow: 0 0 12px rgba(97, 255, 139, 0.25);
+  transform: translateY(-1px);
+}
+
+.equipped-pets-btn:active {
+  transform: scale(0.96);
+}
+
+.equipped-pets-btn-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.equipped-pets-btn-count {
+  flex: 0 0 auto;
+  padding: 1px 6px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+@media (max-width: 640px), (max-height: 680px) and (min-width: 481px) {
+  .bonus-row-pet-article .equipped-pets-btn {
+    align-self: stretch;
+  }
+
+  .equipped-pets-btn {
+    width: 100%;
+    padding-inline: 7px;
+    gap: 4px;
+  }
+
+  .equipped-pets-btn-label {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EQUIPPED PETS MODAL
+   ═══════════════════════════════════════════════════════════════ */
+
+.equipped-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(6px);
+  padding: 18px;
+  animation: equippedBackdropIn 0.22s ease;
+}
+
+.equipped-modal-backdrop.hidden {
+  display: none;
+}
+
+@keyframes equippedBackdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.equipped-modal-box {
+  width: min(480px, 100%);
+  max-height: calc(100vh - 36px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel-solid);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.65), 0 0 40px rgba(97, 255, 139, 0.06);
+  animation: equippedBoxIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes equippedBoxIn {
+  from { opacity: 0; transform: scale(0.88) translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.equipped-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.equipped-modal-title {
+  margin: 3px 0 0;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.equipped-modal-close {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.equipped-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.equipped-modal-body {
+  overflow-y: auto;
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Scrollbar styling for the modal */
+.equipped-modal-body::-webkit-scrollbar {
+  width: 5px;
+}
+.equipped-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.equipped-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+}
+
+/* Empty state */
+.equipped-modal-empty {
+  padding: 28px 16px;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Equipped pet card */
+.equipped-pet-card {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 0 14px;
+  align-items: start;
+  padding: 14px;
+  border: 2px solid;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.equipped-pet-card:hover {
+  transform: translateY(-2px);
+}
+
+.equipped-pet-card-face {
+  grid-row: span 3;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.32);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 900;
+  animation: petWiggle 2.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.equipped-pet-card-slot {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.equipped-pet-card-name {
+  display: block;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.equipped-pet-card-rarity {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.equipped-pet-card-buffs {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.equipped-pet-buff-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.equipped-pet-buff-line::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* Rarity-specific text color for pet card rarity label */
+.equipped-pet-card.rarity-common .equipped-pet-card-rarity  { color: #9ca3af; }
+.equipped-pet-card.rarity-uncommon .equipped-pet-card-rarity { color: #22c55e; }
+.equipped-pet-card.rarity-rare .equipped-pet-card-rarity     { color: #38bdf8; }
+.equipped-pet-card.rarity-epic .equipped-pet-card-rarity     { color: #c084fc; }
+.equipped-pet-card.rarity-legendary .equipped-pet-card-rarity { color: #facc15; }
+.equipped-pet-card.rarity-mythic .equipped-pet-card-rarity   { color: #ff4d6d; }
+.equipped-pet-card.rarity-secret .equipped-pet-card-rarity   { color: #67e8f9; }
+.equipped-pet-card.rarity-divine .equipped-pet-card-rarity   { color: #fff7ad; }
+.equipped-pet-card.rarity-cosmic .equipped-pet-card-rarity   { color: #c4b5fd; }
+.equipped-pet-card.rarity-transcendent .equipped-pet-card-rarity { color: #fff; text-shadow: 0 0 8px #ff3d81, 0 0 18px #00d4ff; }
+.equipped-pet-card.rarity-demonic .equipped-pet-card-rarity  { color: #ff2200; text-shadow: 0 0 8px #ff6600; }
+
+/* Buff dot color per rarity */
+.equipped-pet-card.rarity-common .equipped-pet-buff-line { color: #9ca3af; }
+.equipped-pet-card.rarity-uncommon .equipped-pet-buff-line { color: #86efac; }
+.equipped-pet-card.rarity-rare .equipped-pet-buff-line     { color: #7dd3fc; }
+.equipped-pet-card.rarity-epic .equipped-pet-buff-line     { color: #d8b4fe; }
+.equipped-pet-card.rarity-legendary .equipped-pet-buff-line { color: #fde68a; }
+.equipped-pet-card.rarity-mythic .equipped-pet-buff-line   { color: #fda4af; }
+.equipped-pet-card.rarity-secret .equipped-pet-buff-line   { color: #a5f3fc; }
+.equipped-pet-card.rarity-divine .equipped-pet-buff-line   { color: #fef9c3; }
+.equipped-pet-card.rarity-cosmic .equipped-pet-buff-line   { color: #ddd6fe; }
+.equipped-pet-card.rarity-transcendent .equipped-pet-buff-line { color: #f0abfc; }
+.equipped-pet-card.rarity-demonic .equipped-pet-buff-line  { color: #fca5a5; }
+
+/* Animated glow variants for ultra rarities in the modal */
+.equipped-pet-card.rarity-mythic { animation: mythicGlow 1.1s linear infinite; }
+.equipped-pet-card.rarity-secret { animation: secretGlow 1.6s linear infinite; }
+.equipped-pet-card.rarity-divine { animation: divineGlow 1.45s ease-in-out infinite; }
+.equipped-pet-card.rarity-cosmic { animation: cosmicGlow 1.8s linear infinite; }
+.equipped-pet-card.rarity-transcendent { animation: transcendentGlitch 0.9s steps(2, end) infinite; }
+.equipped-pet-card.rarity-demonic { animation: demonicGlow 0.7s ease-in-out infinite; }
+
+@media (max-width: 480px) {
+  .equipped-modal-box {
+    border-radius: 12px;
+  }
+
+  .equipped-pet-card {
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 0 10px;
+  }
+
+  .equipped-pet-card-face {
+    width: 52px;
+    height: 52px;
+    font-size: 20px;
+  }
+}
+/* ── Balance rework: phase locks & level caps ── */
+.upgrade-phase-locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: rgba(255,255,255,0.03) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+.upgrade-locked-hint {
+  color: #f87171;
+  font-size: 0.75rem;
+}
+.phase-lock-note {
+  font-size: 0.7rem;
+  opacity: 0.8;
+  color: #fbbf24;
+  margin-left: 6px;
+}
+.upgrade-maxed-btn {
+  opacity: 0.55;
+  cursor: default;
+  background: rgba(34,197,94,0.07) !important;
+  border-color: rgba(34,197,94,0.25) !important;
+}
+.upgrade-maxed-btn .upgrade-name { color: #4ade80; }
+small.upgrade-maxed { color: #4ade80; font-weight: 700; margin-left: 4px; }
+small.upgrade-maxlevel { color: #94a3b8; margin-left: 4px; }
+/* ═══════════════════════════════════════════════════════════════
+   STAGE RARITY VISUAL SYSTEM
+   Tier 1: Обычный   (стадии 1–5)   — мягкое свечение
+   Tier 2: Редкий    (стадии 6–10)  — синее свечение
+   Tier 3: Эпический (стадии 11–15) — фиолетовое свечение
+   Tier 4: Космический(стадии 16–20)— голубое сияние
+   Tier 5: Трансц.   (стадии 21–25) — мультицветное
+   Tier 6: Демонич.  (стадии 26–30) — красно-тёмное
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Stage name glow by tier */
+.stage-tier-1 #stageName  { color: #c8d0e8; text-shadow: none; }
+.stage-tier-2 #stageName  { color: #7dd3fc; text-shadow: 0 0 18px rgba(56,189,248,0.55); }
+.stage-tier-3 #stageName  { color: #d8b4fe; text-shadow: 0 0 22px rgba(168,85,247,0.65), 0 0 8px rgba(168,85,247,0.35); }
+.stage-tier-4 #stageName  { color: #67e8f9; text-shadow: 0 0 28px rgba(103,232,249,0.75), 0 0 12px rgba(97,255,139,0.4); animation: stageTier4NamePulse 2.4s ease-in-out infinite; }
+.stage-tier-5 #stageName  { color: #fff; text-shadow: 0 0 32px rgba(255,61,129,0.7), 0 0 18px rgba(168,85,247,0.6); animation: stageTier5NamePulse 1.8s ease-in-out infinite; }
+.stage-tier-6 #stageName  { color: #fca5a5; text-shadow: 0 0 38px rgba(255,0,0,0.85), 0 0 20px rgba(255,107,0,0.6); animation: stageTier6NamePulse 1.2s ease-in-out infinite; }
+
+/* Progress bar gradient by tier */
+.stage-tier-1 .progress-bar div { background: linear-gradient(90deg, #61ff8b, #ffeb3b); }
+.stage-tier-2 .progress-bar div { background: linear-gradient(90deg, #38bdf8, #61ff8b, #7dd3fc); box-shadow: 0 0 10px rgba(56,189,248,0.5); }
+.stage-tier-3 .progress-bar div { background: linear-gradient(90deg, #a855f7, #ff3d81, #a855f7); box-shadow: 0 0 14px rgba(168,85,247,0.55); }
+.stage-tier-4 .progress-bar div { background: linear-gradient(90deg, #67e8f9, #61ff8b, #a855f7, #67e8f9); box-shadow: 0 0 18px rgba(103,232,249,0.6); animation: tier4BarShimmer 2s linear infinite; background-size: 200% 100%; }
+.stage-tier-5 .progress-bar div { background: linear-gradient(90deg, #ff3d81, #a855f7, #00d4ff, #ffeb3b, #ff3d81); box-shadow: 0 0 22px rgba(255,61,129,0.6), 0 0 10px rgba(168,85,247,0.4); animation: tier5BarShimmer 1.6s linear infinite; background-size: 200% 100%; }
+.stage-tier-6 .progress-bar div { background: linear-gradient(90deg, #ff0000, #ff6b00, #3d0080, #ff0000); box-shadow: 0 0 28px rgba(255,0,0,0.7), 0 0 14px rgba(255,107,0,0.5); animation: tier6BarShimmer 1.2s linear infinite; background-size: 200% 100%; }
+
+/* Stage panel border glow by tier */
+.stage-tier-2 .stage-panel { filter: drop-shadow(0 0 8px rgba(56,189,248,0.2)); }
+.stage-tier-3 .stage-panel { filter: drop-shadow(0 0 12px rgba(168,85,247,0.3)); }
+.stage-tier-4 .stage-panel { filter: drop-shadow(0 0 16px rgba(103,232,249,0.35)); }
+.stage-tier-5 .stage-panel { filter: drop-shadow(0 0 20px rgba(255,61,129,0.4)) drop-shadow(0 0 10px rgba(168,85,247,0.3)); }
+.stage-tier-6 .stage-panel { filter: drop-shadow(0 0 26px rgba(255,0,0,0.5)) drop-shadow(0 0 14px rgba(255,107,0,0.4)); }
+
+/* Progress bar border glow by tier */
+.stage-tier-2 .progress-bar { border-color: rgba(56,189,248,0.5); }
+.stage-tier-3 .progress-bar { border-color: rgba(168,85,247,0.55); }
+.stage-tier-4 .progress-bar { border-color: rgba(103,232,249,0.6); }
+.stage-tier-5 .progress-bar { border-color: rgba(255,61,129,0.65); }
+.stage-tier-6 .progress-bar { border-color: rgba(255,0,0,0.75); }
+
+/* Tier badge on stage name — small floating label */
+.stage-rarity-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+.stage-tier-1 .stage-rarity-badge { background: rgba(156,163,175,0.18); color: #9ca3af; border: 1px solid rgba(156,163,175,0.3); }
+.stage-tier-2 .stage-rarity-badge { background: rgba(56,189,248,0.14); color: #7dd3fc; border: 1px solid rgba(56,189,248,0.4); box-shadow: 0 0 8px rgba(56,189,248,0.2); }
+.stage-tier-3 .stage-rarity-badge { background: rgba(168,85,247,0.16); color: #d8b4fe; border: 1px solid rgba(168,85,247,0.45); box-shadow: 0 0 10px rgba(168,85,247,0.25); }
+.stage-tier-4 .stage-rarity-badge { background: rgba(103,232,249,0.14); color: #67e8f9; border: 1px solid rgba(103,232,249,0.5); box-shadow: 0 0 12px rgba(103,232,249,0.3); animation: stageTier4BadgePulse 2.2s ease-in-out infinite; }
+.stage-tier-5 .stage-rarity-badge { background: rgba(255,61,129,0.14); color: #fff; border: 1px solid rgba(255,61,129,0.5); text-shadow: 0 0 8px rgba(255,61,129,0.7); box-shadow: 0 0 14px rgba(255,61,129,0.25); animation: stageTier5BadgePulse 1.6s ease-in-out infinite; }
+.stage-tier-6 .stage-rarity-badge { background: rgba(255,0,0,0.18); color: #fca5a5; border: 1px solid rgba(255,0,0,0.55); text-shadow: 0 0 8px rgba(255,0,0,0.8); box-shadow: 0 0 16px rgba(255,0,0,0.35); animation: stageTier6BadgePulse 1s ease-in-out infinite; }
+
+/* Tier-specific keyframes */
+@keyframes stageTier4NamePulse {
+  0%, 100% { text-shadow: 0 0 28px rgba(103,232,249,0.75), 0 0 12px rgba(97,255,139,0.4); }
+  50%       { text-shadow: 0 0 40px rgba(103,232,249,1), 0 0 20px rgba(97,255,139,0.65); }
+}
+@keyframes stageTier5NamePulse {
+  0%   { text-shadow: 0 0 32px rgba(255,61,129,0.7), 0 0 18px rgba(168,85,247,0.6); }
+  33%  { text-shadow: 0 0 32px rgba(0,212,255,0.7), 0 0 18px rgba(255,235,59,0.55); }
+  66%  { text-shadow: 0 0 32px rgba(168,85,247,0.7), 0 0 18px rgba(255,61,129,0.55); }
+  100% { text-shadow: 0 0 32px rgba(255,61,129,0.7), 0 0 18px rgba(168,85,247,0.6); }
+}
+@keyframes stageTier6NamePulse {
+  0%, 100% { text-shadow: 0 0 38px rgba(255,0,0,0.85), 0 0 20px rgba(255,107,0,0.6); color: #fca5a5; }
+  50%       { text-shadow: 0 0 55px rgba(255,0,0,1), 0 0 30px rgba(255,107,0,0.85); color: #fff; }
+}
+@keyframes tier4BarShimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes tier5BarShimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes tier6BarShimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes stageTier4BadgePulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(103,232,249,0.3); }
+  50%       { box-shadow: 0 0 22px rgba(103,232,249,0.65); }
+}
+@keyframes stageTier5BadgePulse {
+  0%   { box-shadow: 0 0 14px rgba(255,61,129,0.25); border-color: rgba(255,61,129,0.5); }
+  50%  { box-shadow: 0 0 22px rgba(168,85,247,0.4); border-color: rgba(168,85,247,0.65); }
+  100% { box-shadow: 0 0 14px rgba(255,61,129,0.25); border-color: rgba(255,61,129,0.5); }
+}
+@keyframes stageTier6BadgePulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(255,0,0,0.35); }
+  50%       { box-shadow: 0 0 28px rgba(255,0,0,0.7), 0 0 14px rgba(255,107,0,0.5); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REBIRTH MILESTONE TRACK
+   ═══════════════════════════════════════════════════════════════ */
+
+.rebirth-track {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: min(560px, 100%);
+  margin: 0 auto;
+  padding: 12px 14px 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  background: rgba(0,0,0,0.22);
+}
+
+.rebirth-track-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.rebirth-track-title-label {
+  color: var(--accent);
+}
+
+.rebirth-track-title-count {
+  color: var(--muted);
+}
+
+.rebirth-nodes-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+
+/* Connector lines between nodes */
+.rebirth-connector {
+  flex: 1 1 0;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.rebirth-connector.done {
+  background: linear-gradient(90deg, #facc15, #ffeb3b);
+  box-shadow: 0 0 8px rgba(250,204,21,0.5);
+}
+
+.rebirth-connector.active {
+  background: rgba(255,255,255,0.12);
+}
+
+.rebirth-connector.active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #ff3d81, #a855f7);
+  animation: rebirthConnectorFill 2s ease-in-out infinite;
+  transform-origin: left center;
+}
+
+@keyframes rebirthConnectorFill {
+  0%, 100% { transform: scaleX(0.3); opacity: 0.6; }
+  50%       { transform: scaleX(0.7); opacity: 1; }
+}
+
+/* Individual milestone nodes */
+.rebirth-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  cursor: default;
+  position: relative;
+}
+
+.rebirth-node-circle {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.35);
+  font-size: 14px;
+  font-weight: 900;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  position: relative;
+}
+
+.rebirth-node-label {
+  font-size: 10px;
+  font-weight: 900;
+  text-align: center;
+  max-width: 58px;
+  line-height: 1.2;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Done node — golden */
+.rebirth-node.done .rebirth-node-circle {
+  background: linear-gradient(135deg, #92400e, #facc15, #fde68a);
+  border-color: #facc15;
+  box-shadow: 0 0 16px rgba(250,204,21,0.6), 0 0 6px rgba(250,204,21,0.3);
+  color: #111827;
+}
+
+.rebirth-node.done .rebirth-node-label {
+  color: #facc15;
+  text-shadow: 0 0 8px rgba(250,204,21,0.5);
+}
+
+/* Active node — pulsing pink/purple */
+.rebirth-node.current .rebirth-node-circle {
+  background: linear-gradient(135deg, #7c2dff, #ff3d81);
+  border-color: #ff3d81;
+  box-shadow: 0 0 20px rgba(255,61,129,0.65), 0 0 40px rgba(124,45,255,0.3);
+  animation: rebirthNodeCurrentPulse 1.8s ease-in-out infinite;
+  color: #fff;
+}
+
+.rebirth-node.current .rebirth-node-circle::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,61,129,0.4);
+  animation: rebirthNodeRing 1.8s ease-in-out infinite;
+}
+
+.rebirth-node.current .rebirth-node-label {
+  color: #f9a8d4;
+  font-size: 10px;
+}
+
+/* Locked nodes — muted */
+.rebirth-node.locked .rebirth-node-circle {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.25);
+}
+
+.rebirth-node.locked .rebirth-node-label {
+  color: rgba(200,208,232,0.35);
+}
+
+/* Max node special */
+.rebirth-node.max .rebirth-node-circle {
+  background: linear-gradient(135deg, #78350f, #f97316, #fde68a, #fff);
+  border-color: #fff;
+  box-shadow: 0 0 24px rgba(255,255,255,0.7), 0 0 12px rgba(249,115,22,0.5);
+  animation: rebirthNodeMaxGlow 2s ease-in-out infinite;
+  color: #111827;
+}
+
+.rebirth-node.max .rebirth-node-label {
+  color: #fdba74;
+  text-shadow: 0 0 8px rgba(249,115,22,0.5);
+}
+
+@keyframes rebirthNodeCurrentPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255,61,129,0.65), 0 0 40px rgba(124,45,255,0.3); transform: scale(1); }
+  50%       { box-shadow: 0 0 30px rgba(255,61,129,0.9), 0 0 60px rgba(124,45,255,0.5); transform: scale(1.08); }
+}
+
+@keyframes rebirthNodeRing {
+  0%   { transform: scale(1); opacity: 0.6; }
+  50%  { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+@keyframes rebirthNodeMaxGlow {
+  0%, 100% { box-shadow: 0 0 24px rgba(255,255,255,0.7), 0 0 12px rgba(249,115,22,0.5); }
+  50%       { box-shadow: 0 0 40px rgba(255,255,255,1), 0 0 24px rgba(249,115,22,0.8); }
+}
+
+/* Unlock preview tooltip on hover */
+.rebirth-node:hover .rebirth-node-circle {
+  transform: scale(1.12);
+}
+
+.rebirth-node.done:hover .rebirth-node-circle {
+  transform: scale(1.12);
+  box-shadow: 0 0 24px rgba(250,204,21,0.8);
+}
+
+/* Stage-hint text below the track */
+.rebirth-track-hint {
+  margin-top: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(200,208,232,0.5);
+  text-align: center;
+}
+
+.rebirth-track-hint.ready {
+  color: #f9a8d4;
+  text-shadow: 0 0 8px rgba(255,61,129,0.4);
+  animation: hintReadyPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes hintReadyPulse {
+  0%, 100% { opacity: 0.85; }
+  50%       { opacity: 1; text-shadow: 0 0 14px rgba(255,61,129,0.65); }
+}
+/* ═══════════════════════════════════════════════════════════════
+   REBIRTH MODAL
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Stage-panel open button: slimmer, always-enabled style */
+.rebirth-open-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border: 1.5px solid rgba(168, 85, 247, 0.55);
+  border-radius: 10px;
+  background: rgba(124, 45, 255, 0.13);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.18s, border-color 0.18s, box-shadow 0.18s, transform 0.14s;
+  white-space: nowrap;
+}
+
+.rebirth-open-btn:hover {
+  background: rgba(124, 45, 255, 0.28);
+  border-color: rgba(168, 85, 247, 0.9);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.35), 0 0 6px rgba(124, 45, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.rebirth-open-btn:active {
+  transform: scale(0.96);
+}
+
+/* Pulsing animation when rebirth is ready */
+.rebirth-open-btn.rebirth-ready {
+  animation: rebirthOpenPulse 2s ease-in-out infinite;
+  border-color: rgba(255, 61, 129, 0.75);
+  background: rgba(255, 61, 129, 0.15);
+}
+
+@keyframes rebirthOpenPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 61, 129, 0.2); }
+  50%       { box-shadow: 0 0 22px rgba(255, 61, 129, 0.55), 0 0 40px rgba(255, 61, 129, 0.15); }
+}
+
+/* ── Backdrop ── */
+.rebirth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 10, 22, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 16px;
+  animation: rebirthBackdropIn 0.22s ease-out both;
+}
+
+.rebirth-modal-backdrop.hidden {
+  display: none;
+}
+
+@keyframes rebirthBackdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Modal box ── */
+.rebirth-modal-box {
+  display: flex;
+  flex-direction: column;
+  width: min(620px, 100%);
+  max-height: min(88vh, 88dvh);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-radius: 20px;
+  background: rgba(14, 18, 34, 0.97);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 40px rgba(124, 45, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+  animation: rebirthBoxIn 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rebirthBoxIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Header ── */
+.rebirth-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.rebirth-modal-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.rebirth-modal-close {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.13s;
+  flex-shrink: 0;
+}
+
+.rebirth-modal-close:hover {
+  background: rgba(255, 61, 129, 0.18);
+  color: #fff;
+  border-color: rgba(255, 61, 129, 0.45);
+  transform: scale(1.08);
+}
+
+.rebirth-modal-close:active {
+  transform: scale(0.93);
+}
+
+/* ── Scrollable body ── */
+.rebirth-modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 20px 20px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 85, 247, 0.4) transparent;
+}
+
+.rebirth-modal-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.rebirth-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.4);
+  border-radius: 3px;
+}
+
+/* Track inside modal: override width constraint to fill box */
+.rebirth-modal-body .rebirth-track {
+  width: 100%;
+  padding: 14px 16px 12px;
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+/* ── Action button area ── */
+.rebirth-modal-action {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 18px;
+  flex-shrink: 0;
+}
+
+/* Action button inside modal (performs the rebirth) */
+.rebirth-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border: 2px solid rgba(255, 61, 129, 0.55);
+  border-radius: 12px;
+  background: rgba(255, 61, 129, 0.12);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.18s, border-color 0.18s, box-shadow 0.18s, transform 0.14s;
+  white-space: nowrap;
+}
+
+.rebirth-action-btn:not(:disabled):hover {
+  background: rgba(255, 61, 129, 0.28);
+  border-color: rgba(255, 61, 129, 0.85);
+  box-shadow: 0 0 28px rgba(255, 61, 129, 0.45), 0 0 8px rgba(255, 61, 129, 0.2);
+  transform: translateY(-2px);
+}
+
+.rebirth-action-btn:not(:disabled):active {
+  transform: scale(0.96);
+}
+
+.rebirth-action-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.rebirth-action-btn:not(:disabled) {
+  animation: rebirthPulse 2s ease-in-out infinite;
+}
+
+/* ── Mobile adjustments ── */
+/* Smart layout scaling: final overrides for compact screens and long labels. */
+.game-shell,
+.play-area,
+.shop-panel,
+.top-panel,
+.title-block,
+.stats-grid,
+.stat-card,
+.bonus-row,
+.bonus-row article,
+.shop-header,
+.shop-list,
+.upgrade-button,
+.egg-button,
+.pet-card,
+.pc2-inventory,
+.pc2-active-slots,
+.pc2-card,
+.stage-panel,
+.stage-actions,
+.rebirth-track,
+.rebirth-modal-box,
+.rebirth-modal-body {
+  min-width: 0;
+}
+
+.title-block h1,
+.shop-header h2,
+.mini-label,
+.stat-label,
+.stat-card strong,
+.bonus-row span,
+.bonus-row strong,
+.upgrade-info,
+.upgrade-info strong,
+.upgrade-info small,
+.egg-info,
+.egg-info strong,
+.egg-info small,
+.pet-name,
+.pet-bonus,
+.pet-card small,
+.pc2-card-name,
+.pc2-card-bonus,
+.pc2-card-detail,
+.stage-panel span,
+.stage-panel small,
+.stage-rarity-badge,
+.rebirth-track-title,
+.rebirth-track-hint,
+.rebirth-modal-title,
+button {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+button,
+.small-button,
+.page-button,
+.tab-button,
+.upgrade-ad-btn,
+.egg-ad-btn,
+.egg-action,
+.pet-upgrade-btn,
+.pc2-equip-btn,
+.pc2-upgrade-btn,
+.rebirth-open-btn,
+.rebirth-action-btn,
+.autoclicker-btn {
+  min-width: 0;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.small-button,
+.page-button,
+.tab-button,
+.upgrade-ad-btn,
+.egg-ad-btn,
+.egg-action,
+.pet-upgrade-btn,
+.pc2-equip-btn,
+.pc2-upgrade-btn,
+.rebirth-open-btn,
+.rebirth-action-btn,
+.autoclicker-btn,
+.equipped-pets-btn {
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-page-tabs,
+.shop-footer,
+.stage-actions,
+.ad-sim-actions,
+.rebirth-modal-action {
+  flex-wrap: wrap;
+}
+
+.upgrade-icon,
+.egg-icon,
+.pet-emoji,
+.pc2-card-emoji,
+.icon-button {
+  flex: 0 0 auto;
+}
+
+.stage-panel span {
+  display: block;
+  line-height: 1.2;
+}
+
+.stage-rarity-badge {
+  margin-top: 4px;
+  margin-left: 0;
+  vertical-align: baseline;
+}
+
+.creature-zone {
+  isolation: isolate;
+}
+
+.creature-button {
+  z-index: 0;
+}
+
+.active-pets {
+  z-index: 1;
+}
+
+.stage-panel,
+.stage-actions {
+  position: relative;
+  z-index: 2;
+}
+
+.stats-grid,
+.bonus-row,
+.top-panel,
+.shop-panel {
+  position: relative;
+  z-index: 3;
+}
+
+.title-block .mini-label,
+.title-block h1 {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+@media (max-width: 1180px), (max-height: 820px) {
+  .play-area {
+    display: grid;
+    grid-template-rows: auto auto minmax(250px, 38dvh) auto;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .stats-grid {
+    margin-top: 0;
+  }
+
+  .creature-zone {
+    position: relative;
+    top: auto;
+    flex: none;
+    justify-content: center;
+    min-height: 250px;
+    height: min(38dvh, 340px);
+    margin: 0;
+    padding: 4px 0 66px;
+    overflow: hidden;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .creature-button,
+  .active-pets {
+    width: min(42vw, 250px, 28dvh);
+    height: min(42vw, 250px, 28dvh);
+  }
+
+  .active-pets {
+    top: 44%;
+  }
+
+  .active-pet {
+    width: 58px;
+    height: 58px;
+  }
+
+  .stage-panel {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 8px;
+    width: auto;
+    margin: 0;
+    padding-inline: 4px;
+  }
+
+  .stage-panel span {
+    font-size: 18px;
+  }
+
+  .stage-panel small {
+    font-size: 12px;
+  }
+
+  .progress-bar {
+    margin: 7px 0 5px;
+  }
+
+  .bonus-row {
+    margin-top: 0;
+  }
+
+}
+
+@media (max-width: 940px), (max-height: 720px) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  .shake,
+  body.mod-phase-2 .shake,
+  body.mod-phase-3 .shake,
+  body.mod-phase-4 .shake {
+    animation: screenShakeCompact 0.16s linear;
+  }
+
+  .tiny-shake,
+  body.mod-phase-1 .tiny-shake,
+  body.mod-phase-2 .tiny-shake,
+  body.mod-phase-3 .tiny-shake,
+  body.mod-phase-4 .tiny-shake {
+    animation: tinyShakeCompact 0.1s linear;
+  }
+
+  .top-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 42px;
+    grid-template-areas:
+      "title sound"
+      "timer timer";
+    align-items: flex-start;
+  }
+
+  .top-panel .title-block {
+    grid-area: title;
+    width: 100%;
+  }
+
+  .top-panel #soundButton {
+    grid-area: sound;
+    justify-self: end;
+  }
+
+  .top-panel .rb-cooldown-badge {
+    grid-area: timer;
+    width: 100%;
+    justify-self: stretch;
+    margin-left: 0;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .upgrade-button,
+  .pet-card {
+    gap: 9px;
+    padding: 9px;
+  }
+
+  .upgrade-button {
+    grid-template-columns: 40px minmax(0, 1fr);
+    min-height: 78px;
+  }
+
+  .egg-main {
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+
+  .egg-card-actions {
+    padding-inline: 9px;
+  }
+
+  .pc2-inventory {
+    grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  }
+
+  .pc2-active-slots {
+    grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  }
+
+  .pc2-card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .rebirth-track-title {
+    gap: 8px;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 641px) {
+  .play-area {
+    grid-template-rows: auto auto minmax(210px, 34dvh) auto;
+    gap: 8px;
+  }
+
+  .creature-zone {
+    min-height: 210px;
+    height: min(34dvh, 280px);
+    padding-bottom: 58px;
+  }
+
+  .creature-button,
+  .active-pets {
+    width: min(36vw, 210px, 25dvh);
+    height: min(36vw, 210px, 25dvh);
+  }
+
+  .active-pet {
+    width: 50px;
+    height: 50px;
+  }
+
+  .pet-face {
+    font-size: 17px;
+  }
+
+  .stage-panel span {
+    font-size: 15px;
+  }
+
+  .stage-panel small {
+    font-size: 11px;
+  }
+
+  .bonus-row article {
+    min-height: 54px;
+    padding: 7px 8px;
+  }
+}
+
+@keyframes screenShakeCompact {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(2px, -1px); }
+  50% { transform: translate(-2px, 1px); }
+  75% { transform: translate(1px, 2px); }
+}
+
+@keyframes tinyShakeCompact {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(1px, -1px); }
+}
+
+@media (max-width: 640px) {
+  .top-panel,
+  .shop-header,
+  .rebirth-modal-header {
+    gap: 8px;
+  }
+
+  .top-panel {
+    align-items: start;
+  }
+
+  .top-panel .title-block {
+    flex-basis: auto;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stat-card strong {
+    font-size: 18px;
+  }
+
+  .stat-card:not(.stat-main) strong {
+    font-size: 15px;
+  }
+
+  .bonus-row article {
+    gap: 4px;
+  }
+
+  .upgrade-button,
+  .pet-card {
+    min-height: auto;
+  }
+
+  .egg-card.preview-open {
+    z-index: 5;
+  }
+
+  .egg-card .egg-preview {
+    margin: 0 10px 10px;
+  }
+
+  .egg-card.preview-open .egg-preview {
+    max-height: min(460px, 58dvh);
+  }
+
+  .egg-drop-list {
+    max-height: min(300px, 44dvh);
+    padding-right: 8px;
+  }
+
+  .upgrade-info small,
+  .egg-info small,
+  .pet-bonus,
+  .pc2-card-detail {
+    line-height: 1.25;
+  }
+
+  .pet-upgrade-btn,
+  .pc2-equip-btn,
+  .pc2-upgrade-btn {
+    min-height: 34px;
+    padding: 7px 8px;
+    font-size: 11px;
+  }
+
+  .rebirth-modal-backdrop {
+    align-items: stretch;
+    padding: 8px;
+  }
+
+  .rebirth-modal-box {
+    max-height: calc(100dvh - 16px);
+    border-radius: 14px;
+  }
+
+  .rebirth-modal-header,
+  .rebirth-modal-body {
+    padding-inline: 12px;
+  }
+
+  .rebirth-track {
+    padding-inline: 10px;
+  }
+
+  .rebirth-node-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .rebirth-node-label {
+    max-width: 46px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .shop-page-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tab-button,
+  .page-button,
+  .small-button {
+    min-height: 38px;
+    padding-inline: 8px;
+    font-size: 11px;
+  }
+
+  .top-panel {
+    grid-template-columns: minmax(0, 1fr) 38px;
+  }
+
+  .top-panel .icon-button {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+
+  .upgrade-button {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .egg-main {
+    grid-template-columns: 42px minmax(0, 1fr);
+    min-height: 88px;
+    padding: 10px;
+  }
+
+  .egg-card-actions {
+    grid-template-columns: 1fr 1fr;
+    min-height: 58px;
+    padding: 8px 10px 10px;
+  }
+
+  .upgrade-icon,
+  .egg-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+
+  .upgrade-info strong,
+  .egg-info strong,
+  .pet-name,
+  .pc2-card-name {
+    font-size: 12px;
+  }
+
+  .upgrade-info small,
+  .egg-info small,
+  .pc2-card-detail {
+    font-size: 10px;
+  }
+
+  .egg-button,
+  .egg-chances-btn {
+    min-height: 38px;
+    font-size: 11px;
+  }
+
+  .shop-list {
+    padding: 10px;
+  }
+
+  .pc2-inventory,
+  .pc2-active-slots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pc2-card {
+    padding: 8px;
+  }
+
+  .pc2-card-emoji {
+    font-size: 26px;
+  }
+
+  .rebirth-track-title {
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.2;
+  }
+
+  .rebirth-action-btn {
+    width: 100%;
+    min-height: 40px;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .stats-grid,
+  .bonus-row,
+  .bonus-row.bonus-row-cols-5,
+  .pc2-inventory,
+  .pc2-active-slots {
+    grid-template-columns: 1fr;
+  }
+
+  .shop-page-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .upgrade-button,
+  .pet-card {
+    grid-template-columns: 32px minmax(0, 1fr);
+    padding: 8px;
+  }
+
+  .egg-main {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .egg-card-actions {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding: 8px;
+  }
+
+  .upgrade-icon,
+  .egg-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+
+  .stage-panel {
+    padding-inline: 8px;
+  }
+
+  .stage-rarity-badge {
+    display: table;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .top-panel {
+    padding: 8px 10px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .stat-card {
+    padding: 6px;
+  }
+
+  .creature-zone {
+    padding-block: 4px;
+  }
+
+  .stage-panel {
+    margin-top: 4px;
+  }
+
+  .stage-panel span {
+    font-size: 12px;
+  }
+
+  .stage-panel small {
+    font-size: 9px;
+  }
+
+  .shop-header {
+    padding-block: 8px;
+  }
+
+  .shop-list {
+    padding-block: 8px;
+  }
+}

@@ -1,0 +1,488 @@
+@media (max-width: 600px) {
+  .rebirth-modal-header {
+    padding: 14px 14px 12px;
+  }
+
+  .rebirth-modal-body {
+    padding: 14px 12px 6px;
+  }
+
+  .rebirth-modal-title {
+    font-size: 14px;
+  }
+
+  .rebirth-action-btn {
+    font-size: 13px;
+    padding: 10px 20px;
+  }
+
+  .rebirth-modal-body .rebirth-track {
+    padding: 10px 10px 10px;
+  }
+}
+/* ══════════════════════════════════════════════════════════════
+   STAGE ACTIONS — rebirth + auto-clicker row
+   ══════════════════════════════════════════════════════════════ */
+.stage-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.stage-actions .rebirth-bar,
+.stage-actions .autoclicker-bar {
+  margin-top: 0;
+  width: auto;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   AUTO CLICKER — same footprint as .rebirth-open-btn
+   ══════════════════════════════════════════════════════════════ */
+.autoclicker-bar {
+  display: flex;
+  justify-content: center;
+}
+
+.autoclicker-btn {
+  border-color: rgba(56, 189, 248, 0.55);
+  background: rgba(14, 165, 233, 0.13);
+  letter-spacing: 0.04em;
+}
+
+.autoclicker-btn:hover:not(:disabled) {
+  background: rgba(14, 165, 233, 0.28);
+  border-color: rgba(56, 189, 248, 0.9);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.35), 0 0 6px rgba(14, 165, 233, 0.2);
+}
+
+.autoclicker-btn:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.autoclicker-btn .ac-time {
+  font-size: 0.85em;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.autoclicker-btn.autoclicker-active {
+  border-color: rgba(16, 185, 129, 0.65);
+  background: rgba(5, 46, 30, 0.55);
+  animation: acActivePulse 1.6s ease-in-out infinite;
+}
+
+.autoclicker-btn.autoclicker-active .ac-time {
+  color: #6ee7b7;
+}
+
+@keyframes acActivePulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(16, 185, 129, 0.28); }
+  50%       { box-shadow: 0 0 16px rgba(16, 185, 129, 0.52); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REVIEW BONUS SYSTEM
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Daily/review bonus overlay: anchored to the footer, never part of footer layout. */
+.review-bonus-btn {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: calc(100% + 8px);
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: auto;
+  padding: 10px 16px;
+  margin-top: 0;
+  background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.08));
+  border: 1px solid rgba(251,191,36,0.45);
+  border-radius: 10px;
+  color: #fbbf24;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  overflow: hidden;
+  opacity: 1;
+  transition:
+    opacity 0.45s ease,
+    border-color 0.18s,
+    background 0.18s,
+    transform 0.12s,
+    box-shadow 0.18s;
+  box-shadow: 0 0 10px rgba(251,191,36,0.12);
+  letter-spacing: 0.3px;
+  transform: translateY(0);
+}
+
+/* Начало исчезновения: fade opacity */
+.review-bonus-btn.rb-btn-fading {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* Hidden state keeps layout stable because the button is absolutely positioned. */
+.review-bonus-btn.rb-btn-gone {
+  border-color: transparent;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+}
+
+/* Suppress transitions during initial state restore — no animation on first paint */
+.review-bonus-btn.rb-no-transition {
+  transition: none !important;
+}
+
+.review-bonus-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(251,191,36,0.28), rgba(245,158,11,0.18));
+  border-color: rgba(251,191,36,0.75);
+  box-shadow: 0 0 18px rgba(251,191,36,0.3);
+  transform: translateY(-1px);
+}
+
+.review-bonus-btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 0 8px rgba(251,191,36,0.15);
+}
+
+.rb-btn-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  animation: rbStarSpin 3.5s linear infinite;
+  display: inline-block;
+}
+
+@keyframes rbStarSpin {
+  0%   { transform: rotate(0deg)   scale(1);    }
+  45%  { transform: rotate(160deg) scale(1.18); }
+  50%  { transform: rotate(180deg) scale(1.22); }
+  55%  { transform: rotate(200deg) scale(1.18); }
+  100% { transform: rotate(360deg) scale(1);    }
+}
+
+.review-bonus-btn.rb-btn-fading .rb-btn-icon,
+.review-bonus-btn.rb-btn-gone .rb-btn-icon {
+  animation: none;
+}
+
+.rb-btn-text {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Бейдж кулдауна — flex-item внутри .top-panel (левая игровая панель) ── */
+.rb-cooldown-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  background: rgba(14, 18, 34, 0.75);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  border-radius: 20px;
+  color: #fbbf24;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: auto;   /* отталкивает себя и кнопку звука вправо */
+  opacity: 0;          /* начинаем невидимым */
+  transition: opacity 0.3s ease;
+}
+
+/* display:none когда совсем скрыт — не занимает место в flex */
+.rb-cooldown-badge.rb-badge-hidden {
+  display: none;
+}
+
+/* opacity:1 после rAF — плавное появление */
+.rb-cooldown-badge.rb-badge-visible {
+  opacity: 1;
+}
+
+.rb-badge-icon {
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* ── Общие оверлеи (благодарность и награда) ── */
+.rb-thanks-screen,
+.rb-reward-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 8, 26, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.rb-thanks-screen.rb-visible,
+.rb-reward-screen.rb-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.rb-hidden {
+  display: none !important;
+}
+
+/* ── Карточка экрана благодарности ── */
+.rb-thanks-card {
+  background: rgba(20, 16, 44, 0.96);
+  border: 1px solid rgba(251,191,36,0.35);
+  border-radius: 20px;
+  padding: 36px 44px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(251,191,36,0.18), 0 20px 60px rgba(0,0,0,0.5);
+  max-width: 340px;
+  width: 90%;
+  transform: scale(0.92);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.rb-thanks-screen.rb-visible .rb-thanks-card {
+  transform: scale(1);
+}
+
+.rb-thanks-icon {
+  font-size: 44px;
+  margin-bottom: 14px;
+  animation: rbHeartbeat 1.2s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes rbHeartbeat {
+  0%, 100% { transform: scale(1);    }
+  14%       { transform: scale(1.18); }
+  28%       { transform: scale(1);    }
+  42%       { transform: scale(1.12); }
+  56%       { transform: scale(1);    }
+}
+
+.rb-thanks-title {
+  font-family: Arial Black, sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 8px;
+  letter-spacing: 0.3px;
+}
+
+.rb-thanks-sub {
+  font-size: 13px;
+  color: #c8d0e8;
+  margin: 0 0 20px;
+}
+
+/* Dots loader */
+.rb-thanks-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.rb-thanks-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fbbf24;
+  opacity: 0.3;
+  animation: rbDot 1.2s ease-in-out infinite;
+}
+
+.rb-thanks-dots span:nth-child(2) { animation-delay: 0.2s; }
+.rb-thanks-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes rbDot {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.85); }
+  40%           { opacity: 1;   transform: scale(1.15); }
+}
+
+/* ── Карточка экрана награды ── */
+.rb-reward-card {
+  background: rgba(20, 16, 44, 0.97);
+  border: 1px solid rgba(97,255,139,0.4);
+  border-radius: 20px;
+  padding: 38px 44px;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(97,255,139,0.2), 0 20px 60px rgba(0,0,0,0.55);
+  max-width: 360px;
+  width: 90%;
+  transform: scale(0.9);
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.rb-reward-screen.rb-visible .rb-reward-card {
+  transform: scale(1);
+}
+
+.rb-reward-icon {
+  font-size: 52px;
+  margin-bottom: 12px;
+  display: inline-block;
+  animation: rbGiftBounce 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes rbGiftBounce {
+  0%   { transform: scale(0) rotate(-12deg); opacity: 0; }
+  70%  { transform: scale(1.15) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.rb-reward-title {
+  font-family: Arial Black, sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 10px;
+}
+
+.rb-reward-amount {
+  font-family: Arial Black, sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: #61ff8b;
+  margin: 0 0 12px;
+  text-shadow: 0 0 20px rgba(97,255,139,0.6);
+}
+
+.rb-reward-sub {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.rb-reward-close {
+  display: inline-block;
+  padding: 11px 32px;
+  background: linear-gradient(135deg, #61ff8b, #00d4ff);
+  border: none;
+  border-radius: 10px;
+  color: #0a0514;
+  font-size: 14px;
+  font-weight: 900;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.18s;
+  box-shadow: 0 0 18px rgba(97,255,139,0.35);
+  letter-spacing: 0.5px;
+}
+
+.rb-reward-close:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px rgba(97,255,139,0.55);
+}
+
+.rb-reward-close:active {
+  transform: scale(0.97);
+}
+
+/* ── Mobile adjustments ── */
+@media (max-width: 480px) {
+  .rb-thanks-card,
+  .rb-reward-card {
+    padding: 28px 24px;
+  }
+
+  .rb-reward-amount {
+    font-size: 22px;
+  }
+}
+/* ═══════════════════════════════════════════════════════════════
+   PERIODIC INVITE BONUS BUTTON
+   ═══════════════════════════════════════════════════════════════ */
+
+.invite-offer-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px 8px 11px;
+  border: 1px solid rgba(99, 230, 190, 0.55);
+  border-radius: 999px;
+  background: rgba(10, 30, 22, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #6ee7b7;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow:
+    0 0 14px rgba(52, 211, 153, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.35s ease, transform 0.35s ease,
+              box-shadow 0.18s ease, border-color 0.18s ease;
+  pointer-events: none;
+}
+
+.invite-offer-btn.invite-hidden {
+  display: none;
+}
+
+.invite-offer-btn.invite-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.invite-offer-btn:hover {
+  border-color: rgba(99, 230, 190, 0.9);
+  box-shadow:
+    0 0 22px rgba(52, 211, 153, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.invite-offer-btn:active {
+  transform: scale(0.96);
+}
+
+.invite-icon {
+  font-size: 15px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.invite-text {
+  line-height: 1.2;
+}
+
+/* Mobile: чуть меньше, чтобы не перекрывать UI */
+@media (max-width: 600px) {
+  .invite-offer-btn {
+    top: 12px;
+    right: 12px;
+    font-size: 11px;
+    padding: 6px 11px 6px 9px;
+    gap: 5px;
+  }
+  .invite-icon {
+    font-size: 13px;
+  }
