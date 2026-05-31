@@ -21,7 +21,6 @@
     if (crit) {
       value *= CRIT_DAMAGE_MULT;
       textPrefix = "КРИТ +";
-      triggerFlash();
       showStackedToast("crit", "💥 Критический удар!");
     }
 
